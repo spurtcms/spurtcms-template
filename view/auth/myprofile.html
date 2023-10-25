@@ -1,0 +1,77 @@
+{{template "header" .}}
+<section class="profile-section p-md-25">
+  <div class="myCms-profile">
+    <div class="profile-heading">
+      <h1>My Profile</h1>
+    </div>
+
+    <div class="profile-top">
+      <h3>Basic Profile</h3>
+      <div class="profile-pic-form">
+        <div class="profile-img">
+          <img src="/public/images/Ellipse 6.png" alt="" />
+          <input type="file">
+        </div>
+        <div class="profile-form">
+          <form action="">
+            <div class="input-container">
+              <input type="text" id="firstname" class="w-100" value="{{.member.FirstName}}" required />
+              <label for="myInput">First name</label>
+              <span class="err-txt" id="memfname" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your first
+                name</span>
+            </div>
+
+            <div class="input-container">
+              <input type="text" id="lastname" class="w-100" value="{{.member.LastName}}" required />
+              <label for="myInput">Last name</label>
+              <span class="err-txt" id="memlname" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your last
+                name</span>
+            </div>
+
+            <div class="input-container">
+              <input type="text" id="mobileNumber" class="w-100" value="{{.member.MobileNo}}" required />
+              <label for="myInput">Mobile number</label>
+              <span class="err-txt" id="memnumber" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your mobile
+                number</span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-bottom">
+      <h3>Login info</h3>
+      <div class="profile-pic-form">
+        <div class="profile-form">
+          <form action="">
+            <div class="input-container change">
+              <input type="text" id="emailAddress" class="w-100 label-style" value="{{.member.Email}}" required
+                readonly />
+              <!-- <label for="myInput">Email address</label> -->
+              <a href="/change-email">change</a>
+            </div>
+            <div class="input-container change">
+              <input type="password" id="myPassword " class="w-100 label-style" value="" required readonly />
+              <!-- <label for="myInput">Password</label> -->
+              <a href="/reset">change</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cancel-update">
+    <div class="mx-976">
+      <button class="cancel-btn" type="reset" id="cancel-btn">Cancel</button>
+      <button class="update-btn" type="submit" id="update-btn">Update</button>
+    </div>
+  </div>
+</section>
+<script src="/public/js/myprofile.js"></script>
+</body>
+
+</html>

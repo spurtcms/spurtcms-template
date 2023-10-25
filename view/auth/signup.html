@@ -1,0 +1,68 @@
+{{template "authheader" .}}
+<section class="login-section p-md-25">
+  <div class="cmsLogin mx-400">
+    <div class="login-top">
+      <h1 class="loginHeading">Sign up Into SpurtCMS</h1>
+    </div>
+    <div class="login-content">
+
+      <div class="mail-signIn mx-400">
+        <form id="yourFormId" action="">
+          <div class="input-grp">
+            <div class="input-container" id="fname-con">
+              <input type="text" id="firstname" class="mx-400" required />
+              <label for="myInput">First name</label>
+              <span class="err-txt" id="memfname" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your first
+                name</span>
+            </div>
+            <div class="input-container" id="lname-con">
+              <input type="text" id="lastname" class="mx-400" required />
+              <label for="myInput">Last name</label>
+              <span class="err-txt" id="memlname" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your last
+                name</span>
+            </div>
+          </div>
+          <div class="input-container" id="mobile-con">
+            <input type="text" id="myInput" class="mx-400" required />
+            <label for="myInput">Mobile number (with country code)</label>
+            <span class="err-txt" id="memnumber" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your mobile
+              number</span>
+          </div>
+
+          <div class="input-container" id="email-con">
+            <input type="text" id="email" class="mx-400" required />
+            <label for="myInput">Email address</label>
+            <span class="err-txt" id="mememail" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your
+              email</span>
+          </div>
+
+          <div class="input-container passwordEye signupEye" id="pass-con">
+            <input type="password" id="myPassword" class="mx-400" required />
+            <label for="myInput">Password</label>
+            <span class="err-txt" id="mempass" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your
+              password</span>
+          </div>
+
+          <p class="signUp-Comdition txt-center">
+            By signing up you agree to our
+            <a href="">Terms of Service </a>and
+            <a href="">Privacy Policy</a>
+          </p>
+
+          <button class="cms-btn-dark mx-400" type="button" id="create-btn">Create Account</button>
+
+          <div class="account-forgot flex-center">
+            <a href="/" class="">Already have an account? Log in here</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/public/js/signup.js"></script>
+
+  {{template "authfooter" .}}

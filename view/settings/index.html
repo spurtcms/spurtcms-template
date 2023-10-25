@@ -1,0 +1,34 @@
+{{template "header" .}}
+
+<div class="space-container">
+  <div class="space-container-top">
+    <h1>Spaces</h1>
+    <span>{{.Count}} Spaces</span>
+  </div>
+  <!--grid-card-->
+  <div class="space-container-bottom">
+    <!--crd-->
+    {{range .Space}}
+    <div class="space-container-crd">
+      <a href="/space/{{.Id}}">
+        <div class="space-container-crd-top">
+          <img src="/public/images/Rectangle 2979.png" alt="" />
+        </div>
+
+        <div class="space-container-crd-btm">
+          <span class="crd-badge">{{.SpacesSlug}}</span>
+          <h5>{{.SpacesName}}</h5>
+          <p>
+            {{.SpacesDescription}}
+          </p>
+          <div class="time-n-date">
+            <span>3 min read</span> <span>Sep 20 2023</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {{end}}
+   
+  </div>
+</div>
+{{template "footer" .}}

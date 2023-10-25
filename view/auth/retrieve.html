@@ -1,0 +1,26 @@
+{{template "authheader" .}}
+      <section class="login-section p-md-25">
+        <div class="cmsLogin mx-400">
+            <div class="login-top mb-64">
+          <h1 class="loginHeading">Retrieve Your Account</h1>
+          <p>You will receive an OTP on your registered credentials</p>
+        </div>
+          <div class="login-content">
+            <div class="mail-signIn mx-400">
+              <form action="">
+                <div class="input-container mb-16">
+                  <input type="text" id="myInput" class="mx-400" required />
+                  <label for="myInput">Email address</label>
+                </div>
+
+                <button class="cms-btn-dark mx-400"  onclick="window.location.href = '/reset'">Submit</button>
+
+                <div class="account-forgot">
+                  <a href="/" class="">Return to Login</a>
+                  <a href="/signup" class="">Don’t have an account?</a>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {{template "authfooter" .}}
