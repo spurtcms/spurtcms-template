@@ -1,42 +1,52 @@
 {{template "authheader" .}}
 
-      <section class="login-section p-md-25">
-        <div class="cmsLogin mx-400">
-          <div class="login-top mb-64">
-            <h1 class="loginHeading">Change Your email</h1>
-            <p>Lorem ipsum dolor sit amet, consetetur sadipscing</p>
+<section class="login-section p-md-25">
+  <div class="cmsLogin mx-400">
+    <div class="login-top mb-64">
+      <h1 class="loginHeading">Change Your email</h1>
+      <p>Lorem ipsum dolor sit amet, consetetur sadipscing</p>
+    </div>
+    <div class="login-content">
+      <div class="mail-signIn mx-400">
+        <form action="">
+          <div class="input-container" id="otp-con">
+            <input type="text" id="otp" class="mx-400" required />
+            <label for="myInput">Enter 6 digit OTP</label>
+            <span class="err-txt" id="memotp" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your
+              otp</span>
           </div>
-          <div class="login-content">
-            <div class="mail-signIn mx-400">
-              <form action="">
-                <div class="input-container">
-                  <input type="text" id="otp" class="mx-400"  required />
-                  <label for="myInput">Enter 6 digit OTP</label>
-                </div>
 
-              
-                <div class="input-container">
-                    <input type="text" id="emailaddress" class="mx-400" required>
-                    <label for="myInput">New Email address</label>
-                </div>
 
-                <div class="input-container">
-                    <input type="text" id="confrimemail" class="mx-400" required>
-                    <label for="myInput">Confirm New Email address</label>
-                </div>
-                <p class="signUp-Comdition mb-16">
-                  Did not receive the OTP?
-                  <a href="">Send again</a>
-                </p>
-
-                <button class="cms-btn-dark mx-400">Submit</button>
-
-                <div class="account-forgot">
-                  <a href="login.html" class="">Return to Login</a>
-                  <a href="signup.html" class="">Don’t have an account?</a>
-                </div>
-              </form>
-            </div>
+          <div class="input-container" id="email-con">
+            <input type="text" id="emailaddress" class="mx-400" required>
+            <label for="myInput">New Email address</label>
+            <span class="err-txt" id="mememail" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your new
+              email</span>
           </div>
-        </div>
-        {{template "authfooter" .}}
+
+          <div class="input-container" id="confrimemail-con">
+            <input type="text" id="confrimemail" class="mx-400" required>
+            <label for="myInput">Confirm New Email address</label>
+            <span class="err-txt" id="mem-co-email" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please re-enter your new
+              email</span>
+          </div>
+          <p class="signUp-Comdition mb-16">
+            Did not receive the OTP?
+            <a href="">Send again</a>
+          </p>
+
+          <button class="cms-btn-dark mx-400" type="button" id="submit">Submit</button>
+
+          <div class="account-forgot">
+            <a href="login.html" class="">Return to Login</a>
+            <a href="signup.html" class="">Don’t have an account?</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script src="/public/js/changeEmail.js"></script>
+  {{template "authfooter" .}}

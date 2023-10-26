@@ -2,9 +2,11 @@ package controller
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +14,7 @@ import (
 	spurtcore "github.com/spurtcms/spurtcms-core"
 	"github.com/spurtcms/spurtcms-core/auth"
 	"github.com/spurtcms/spurtcms-core/member"
+	"gopkg.in/gomail.v2"
 	"gorm.io/gorm"
 )
 
@@ -53,7 +56,9 @@ func CheckMemberLogin(c *gin.Context) {
 	token, err := mem.CheckMemberLogin(member.MemberLogin{Emailid: name, Password: password}, DB, os.Getenv("JWT_SECRET"))
 
 	GetAuth(token)
+
 	log.Println("token", token)
+
 	sp.MemAuth = &Auth
 
 	log.Println("auth", Auth)
@@ -143,24 +148,25 @@ func MyprofileUpdate(c *gin.Context) {
 
 func ChangeEmail(c *gin.Context) {
 
-	mem.Auth = &Auth
+	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail"})
+}
+func AddNewEmail(c *gin.Context) {
 
-	memb, _ := mem.GetMemberDetails()
+	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail"})
 
-	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail", "member": memb})
 }
 
 func OtpGenarate(c *gin.Context) {
 
 	eamil := c.PostForm("email")
 
-	log.Println("email",eamil)
+	log.Println("email", eamil)
 
 	mem.Auth = &Auth
 
 	memb, _ := mem.GetMemberDetails()
 
-	if (memb.Email == eamil) {
+	if memb.Email == eamil {
 
 		rand.Seed(time.Now().UnixNano())
 
@@ -170,9 +176,64 @@ func OtpGenarate(c *gin.Context) {
 
 		randomNumber := min + rand.Intn(max-min+1)
 
+		otp := strconv.Itoa(randomNumber)
+
+		subject := "Your OTP Code"
+
+		from := os.Getenv("MAIL_USERNAME")
+
+		password := os.Getenv("MAIL_PASSWORD")
+
+		to := memb.Email
+
 		mem.UpdateOtp(randomNumber)
 
-		c.HTML(200, "changeEmail.html", gin.H{"title": "Change Email", "otp": randomNumber})
+		message := fmt.Sprintf("Your OTP code is: %s", otp)
+
+		m := gomail.NewMessage()
+
+		m.SetHeader("From", from)
+
+		m.SetHeader("To", to)
+
+		m.SetHeader("Subject", subject)
+
+		m.SetBody("text/plain", message)
+
+		d := gomail.NewDialer("smtp.gmail.com", 587, from, password)
+
+		err := d.DialAndSend(m)
+
+		log.Println("error", err)
+
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
+
+	} else {
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": "invalid email"})
+
+	}
+
+}
+func OtpVerify(c *gin.Context) {
+
+	num := c.PostForm("otp")
+
+	otp, _ := strconv.Atoi(num)
+
+	newemail := c.PostForm("newemail")
+
+	log.Println("newemail", newemail)
+
+	// confirmemail := c.PostForm("confirmemail")
+
+	_, err := mem.ChangeEmailId(otp, newemail)
+
+	if err != nil {
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
+
+	} else {
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
+
 	}
 
 }
