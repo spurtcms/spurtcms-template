@@ -21,7 +21,7 @@ $(document).ready(function () {
         } else {
             $("#mememail").hide()
             $("#mempass").hide()
-            $("#email-con").addClass("err")
+            $("#email-con").removeClass("err")
             $("#pass-con").removeClass("err")
 
             $.ajax({
