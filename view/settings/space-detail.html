@@ -3,11 +3,11 @@
   <div class="tab space-tab">
     <input type="hidden" value="{{.Spaceid}}" id="spid">
     {{range .Spaces}}
-    <a href="/space/{{.Id}}">
+    <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/{{.Id}}">
       <button class="tablinks" sp-id="{{.Id}}" onclick="openCity(event, 'AccountsInDailyLife')">
-        {{.SpacesName}}
+        {{.SpaceName}}
       </button>
-      </a>
+    </a>
     {{end}}
     <!-- <button class="tablinks" onclick="openCity(event, 'xx')">
       Cost Estimation
@@ -83,7 +83,7 @@
 
       <div class="center-section content" id="centerSection">
         <div class="secton-content">
-          
+
         </div>
         <!--color-picker-->
 

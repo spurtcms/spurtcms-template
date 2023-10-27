@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"log"
 	"github.com/gin-gonic/gin"
 	"github.com/spurtcms/spurtcms-content/spaces"
+	"log"
 )
 
 var sp spaces.MemberSpace
@@ -16,44 +16,39 @@ func IndexView(c *gin.Context) {
 
 	memb, _ := mem.GetMemberDetails()
 
-	log.Println("memberData",memb)
+	log.Println(Auth)
 
-	spacelist, count, err := sp.MemberSpaceList(10, 0, spaces.Filter{})
+	pl.MemAuth = &Auth
 
-	log.Println(spacelist)
+	spacelist, count, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
 
-	log.Println("error", err)
+	pl.MemAuth = &Auth
 
-	// if err != nil {
+	var spaces []SpaceData
 
-	// 	c.Redirect(301, "/")
-
-	// }
-
-	var spacedata []spaces.TblSpacesAliases
-
-	var spaceobj spaces.TblSpacesAliases
+	var data SpaceData
 
 	for _, space := range spacelist {
 
-		spaceobj.Id = space.Id
+		data.Id = space.Id
 
-		spaceobj.SpacesId = space.SpacesId
+		_, pages, _, _ := pl.MemberPageList(space.Id)
 
-		spaceobj.SpacesName = space.SpacesName
+		data.PageSlug = pages[0].Name
 
-		spaceobj.SpacesDescription = space.SpacesDescription
+		data.SpaceName = space.SpacesName
+
+		data.SpaceDescription = space.SpacesDescription
 
 		for _, val := range space.ChildCategories {
 
-			spaceobj.SpacesSlug = val.CategoryName
+			data.SpaceSlug = val.CategoryName
 
 		}
-
-		spacedata = append(spacedata, spaceobj)
+		spaces = append(spaces, data)
 
 	}
 
-	c.HTML(200, "index.html", gin.H{"Space": spacedata, "Count": count,"title":"Index","member":memb})
+	c.HTML(200, "index.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index", "member": memb})
 
 }
