@@ -10,16 +10,16 @@
     <!--crd-->
     {{range .Space}}
     <div class="space-container-crd">
-      <a href="/space/{{.Id}}">
+      <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/{{.Id}}">
         <div class="space-container-crd-top">
           <img src="/public/images/Rectangle 2979.png" alt="" />
         </div>
 
         <div class="space-container-crd-btm">
-          <span class="crd-badge">{{.SpacesSlug}}</span>
-          <h5>{{.SpacesName}}</h5>
+          <span class="crd-badge">{{.SpaceSlug}}</span>
+          <h5>{{.SpaceName}}</h5>
           <p>
-            {{.SpacesDescription}}
+            {{.SpaceDescription}}
           </p>
           <div class="time-n-date">
             <span>3 min read</span> <span>Sep 20 2023</span>

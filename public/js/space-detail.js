@@ -231,20 +231,20 @@ function AddGroupString(groupname, gid) {
 function AddPageString(name, pgid) {
 
   return `
-  <div class="accordion-item page accordion-item`+ pgid + `" data-id="` + pgid + `">
+  <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
   <h2 class="accordion-header" id="headingOne">
-  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne`+ pgid + `"
+  <button class="accordion-button page collapsed" data-id="` + pgid + `" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne` + pgid + `"
    aria-expanded="false" aria-controls="collapseOne">` + name + `
    </button>
    </h2>
   </div>`
 }
 /*addsub page string */
-function AddSubPageString(value, dataid) {
+function AddSubPageString(value, dataid, id) {
   return `
-  <div id="collapseOne`+ dataid + `" class="accordion-collapse page collapse" aria-labelledby="headingOne"
+  <div id="collapseOne`+ dataid + `" class="accordion-collapse  collapse" aria-labelledby="headingOne"
   data-bs-parent="#accordionExample">
-  <div class="accordion-body">
+  <div class="accordion-body subpage" data-id="` + id + `">
   <p>` + value + `</p>
   </div>
  </div>`
@@ -261,6 +261,7 @@ $(document).ready(function () {
     },
     cache: false,
     success: function (result) {
+      console.log("s", result.subpage);
       if (result.group != null) {
         newGroup = result.group
       }
@@ -307,7 +308,7 @@ function PGList() {
 
         if (j['ParentId'] == x['PgId']) {
 
-          var AddSubPage = AddSubPageString(j['Name'], x['ParentId'])
+          var AddSubPage = AddSubPageString(j['Name'], x['ParentId'], j['SpgId'])
 
           $('.accordion-item' + j['ParentId']).append(AddSubPage)
 
@@ -349,7 +350,7 @@ function PGList() {
 
         suborderindex = j['OrderIndex']
 
-        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'])
+        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'])
 
         $('.accordion-item' + j['ParentId']).append(AddSubPage)
 
@@ -365,6 +366,20 @@ $(document).on('click', '.page', function () {
   var pgid = $(this).attr("data-id")
   for (let j of newpages) {
     if (j['PgId'] == pgid) {
+      $("#Title").text(j['Name'])
+      $(".secton-content").append(j['Content'])
+
+    }
+
+  }
+})
+
+/* Subpage Content View */
+$(document).on('click', '.subpage', function () {
+  $(".secton-content").empty();
+  var pgid = $(this).attr("data-id")
+  for (let j of Subpage) {
+    if (j['SpgId'] == pgid) {
       $("#Title").text(j['Name'])
       $(".secton-content").append(j['Content'])
 
