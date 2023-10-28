@@ -387,3 +387,13 @@ $(document).on('click', '.subpage', function () {
 
   }
 })
+/* Read Button */
+$(document).ready(function () {
+  $("#liveToastBtn").click(function () {
+    var divContent = $(".content").html();
+    console.log("ad",divContent);
+    var content = new SpeechSynthesisUtterance(divContent);
+    console.log("sdfg",content);
+    window.speechSynthesis.speak(content);
+  });
+});
