@@ -389,11 +389,71 @@ $(document).on('click', '.subpage', function () {
 })
 /* Read Button */
 $(document).ready(function () {
+  var speechContent = [];
+  var Paused = false;
+  var Speaking = false;
+  var currentSpeech;
   $("#liveToastBtn").click(function () {
-    var divContent = $(".content").html();
-    console.log("ad",divContent);
-    var content = new SpeechSynthesisUtterance(divContent);
-    console.log("sdfg",content);
-    window.speechSynthesis.speak(content);
+    if (Speaking) {
+
+      window.speechSynthesis.cancel();
+      Paused = false;
+    }
+    Speaking = true;
+    var content = $(".content").text();
+    var words = content.split(/\s+/);
+    var ContentSize = 30;
+    var NewContent = [];
+    for (var i = 0; i < words.length; i += ContentSize) {
+      NewContent.push(words.slice(i, i + ContentSize).join(' '));
+    }
+
+    speechContent = NewContent;
+    speakNextChunk();
+
   });
+
+  $('#pauseButton').click(function () {
+    if (Speaking && !Paused) {
+      if (currentSpeech) {
+        currentSpeech.onend = null;
+        window.speechSynthesis.pause();
+        Paused = true;
+      }
+    }
+  });
+
+  $('#resumeButton').click(function () {
+    if (Speaking && Paused) {
+      window.speechSynthesis.resume();
+      Paused = false;
+    }
+  });
+
+
+  window.speechSynthesis.onend = function (event) {
+    if (speechContent.length > 0) {
+      speakNextChunk();
+    } else {
+      Speaking = false;
+    }
+  };
+
+  function speakNextChunk() {
+    if (Speaking && !Paused && speechContent.length > 0) {
+      var chunk = speechContent.shift();
+      var utterance = new SpeechSynthesisUtterance(chunk);
+      currentSpeech = utterance;
+      window.speechSynthesis.speak(utterance);
+
+
+      utterance.onend = function (event) {
+        if (speechContent.length > 0) {
+          speakNextChunk();
+        } else {
+          Speaking = false;
+        }
+      };
+    }
+  }
 });
