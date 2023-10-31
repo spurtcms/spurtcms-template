@@ -349,6 +349,7 @@ header {
 
 .lft-sidebar,
 .rgt-sidebar {
+    min-width: 320px;
     max-width: 320px;
     /* width: 100%; */
     height: auto;
@@ -409,6 +410,7 @@ header {
     padding: 20px 16px;
     position: relative;
     /* margin-inline: 16px; */
+    flex-basis: 100%;
 }
 
 .lgFont .secton-content:first-child>h3 {
