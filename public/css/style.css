@@ -19,7 +19,7 @@ body button {
 body img {
     width: auto;
     max-width: 100%;
-    display: block;
+    /* display: block; */
     margin: auto;
 }
 

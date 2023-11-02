@@ -3,6 +3,7 @@
   <div class="tab space-tab">
     <input type="hidden" value="{{.Spaceid}}" id="spid">
     {{range .Spaces}}
+    <input type="hidden" value="{{.SpaceSlug}}" id="spSulg">
     <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/{{.Id}}">
       <button class="tablinks" sp-id="{{.Id}}" onclick="openCity(event, 'AccountsInDailyLife')">
         {{.SpaceName}}

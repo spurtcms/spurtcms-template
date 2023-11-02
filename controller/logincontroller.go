@@ -10,30 +10,16 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	spurtcore "github.com/spurtcms/spurtcms-core"
 	"github.com/spurtcms/spurtcms-core/auth"
 	"github.com/spurtcms/spurtcms-core/member"
 	"gopkg.in/gomail.v2"
-	"gorm.io/gorm"
 )
 
 var Auth auth.Authority
 
 var mem member.MemberAuth
 
-var DB *gorm.DB
-
-func init() {
-
-	er := godotenv.Load()
-
-	if er != nil {
-		log.Fatalf("Error loading .env file")
-	}
-
-	DB = spurtcore.DBInstance(os.Getenv("DB_HOST"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
-}
 func GetAuth(token string) {
 
 	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
@@ -51,17 +37,11 @@ func CheckMemberLogin(c *gin.Context) {
 
 	password := c.PostForm("password")
 
-	log.Println("chk", name, password)
-
 	token, err := mem.CheckMemberLogin(member.MemberLogin{Emailid: name, Password: password}, DB, os.Getenv("JWT_SECRET"))
 
 	GetAuth(token)
 
-	log.Println("token", token)
-
 	sp.MemAuth = &Auth
-
-	log.Println("auth", Auth)
 
 	if err != nil {
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
@@ -79,8 +59,6 @@ func MemberRegister(c *gin.Context) {
 
 	mem.Auth = &Auth
 
-	log.Println("athu", Auth)
-
 	fname := c.PostForm("fname")
 
 	lname := c.PostForm("lname")
@@ -90,8 +68,6 @@ func MemberRegister(c *gin.Context) {
 	email := c.PostForm("email")
 
 	password := c.PostForm("password")
-
-	log.Println(fname, lname, mobile, email, password)
 
 	reg, err := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
 

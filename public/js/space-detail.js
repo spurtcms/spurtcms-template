@@ -252,6 +252,7 @@ function AddSubPageString(value, dataid, id) {
 
 /* List Page */
 $(document).ready(function () {
+  var spsulg = $("#spSulg").val()
   $.ajax({
     type: "get",
     url: "/page",
@@ -280,6 +281,8 @@ $(document).ready(function () {
             $("#Title").text(newpages[j]['Name'])
             $(".secton-content").append(newpages[j]['Content'])
           }
+          console.log("space", spsulg);
+
 
         }
       }
@@ -427,6 +430,7 @@ $(document).ready(function () {
     if (Speaking && Paused) {
       window.speechSynthesis.resume();
       Paused = false;
+      speakNextChunk();
     }
   });
 

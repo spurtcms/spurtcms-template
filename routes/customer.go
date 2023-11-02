@@ -24,7 +24,7 @@ func SetupRoutes() *gin.Engine {
 	r.LoadHTMLFiles(htmlfiles...)
 
 	r.Static("/public", "./public")
-	r.GET("/", controller.MemberLogin)
+	r.GET("/login", controller.MemberLogin)
 	r.GET("/signup", controller.SignUp)
 	r.GET("/retrieve", controller.Retrieve)
 	r.GET("/reset", controller.Reset)
@@ -36,8 +36,9 @@ func SetupRoutes() *gin.Engine {
 	r.POST("/myprofileupdate", controller.MyprofileUpdate)
 	r.POST("/otp-genrate", controller.OtpGenarate)
 	r.POST("/verify-otp", controller.OtpVerify)
-	r.GET("/index", controller.IndexView)
+	r.GET("/", controller.IndexView)
 	r.GET("/space/:stitle/:pgtitle/:id", controller.SpaceDetail)
+	r.GET("/space/:stitle/:pgtitle/:id/:pageid", controller.SpaceDetail)
 	r.GET("/page", controller.PageView)
 	return r
 }
