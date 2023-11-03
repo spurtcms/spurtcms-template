@@ -15,6 +15,7 @@ import (
 	"github.com/spurtcms/spurtcms-core/member"
 	"gopkg.in/gomail.v2"
 )
+var flg = false 
 
 var Auth auth.Authority
 
@@ -47,6 +48,7 @@ func CheckMemberLogin(c *gin.Context) {
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
 
 	} else {
+		flg = true
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
 
 	}

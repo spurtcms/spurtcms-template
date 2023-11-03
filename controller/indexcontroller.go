@@ -40,8 +40,13 @@ func IndexView(c *gin.Context) {
 	// mem.Auth = &Auth
 
 	// memb, _ := mem.GetMemberDetails()
+	if flg {
+		pl.MemAuth = &Auth
+	}else{
 
-	pl.MemAuth = &auth1
+		pl.MemAuth = &auth1
+		
+	}
 
 	spacelist, count, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
 
@@ -51,7 +56,7 @@ func IndexView(c *gin.Context) {
 
 	var data SpaceData
 
-	log.Println("spaceslist",spacelist)
+	log.Println("spaceslist", spacelist)
 
 	for _, space := range spacelist {
 
@@ -59,13 +64,12 @@ func IndexView(c *gin.Context) {
 
 		_, pages, _, _ := pl.MemberPageList(space.SpacesId)
 
-
-		log.Println("pagename",pages[0].Name)
+		log.Println("pagename", pages[0].Name)
 
 		data.PageSlug = strings.ReplaceAll(strings.ToLower(pages[0].Name), " ", "_")
 
-		log.Println("pgslug",data.PageSlug)
-		
+		log.Println("pgslug", data.PageSlug)
+
 		data.SpaceName = space.SpacesName
 
 		data.SpaceDescription = space.SpacesDescription
@@ -85,8 +89,7 @@ func IndexView(c *gin.Context) {
 		spaces = append(spaces, data)
 
 		log.Println("hghg", data.PageSlug)
-		
-		
+
 	}
 
 	c.HTML(200, "index.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index"})

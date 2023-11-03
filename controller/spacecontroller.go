@@ -84,11 +84,15 @@ func SpaceDetail(c *gin.Context) {
 }
 func PageView(c *gin.Context) {
 
+	var Content string 
+
 	Spid, _ := strconv.Atoi(c.Query("sid"))
 
 	pl.MemAuth = &auth1
 
 	pagegroups, pages, subpages, _ := pl.MemberPageList(Spid)
+
+	log.Println("new",pages)
 
 	for _, value := range pages {
 
@@ -96,10 +100,12 @@ func PageView(c *gin.Context) {
 
 			var PageContent, _ = pl.GetPageContent(value.PgId)
 
+			Content = PageContent.PageDescription
+
 			log.Println("hhh",PageContent)
 		}
 		break
 	}
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "title": "pages"})
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "title": "pages","content": Content})
 }

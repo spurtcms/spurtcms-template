@@ -228,31 +228,32 @@ function AddGroupString(groupname, gid) {
   </div>`
 }
 /**Add page string */
-function AddPageString(name, pgid) {
+function AddPageString(name, pgid, space, pgslug, spid) {
 
-  return `
+  return `<a href="/space/`+ space + `/` + pgslug + `/` + spid + `/` + pgid + `">
   <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
   <h2 class="accordion-header" id="headingOne">
   <button class="accordion-button page collapsed" data-id="` + pgid + `" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne` + pgid + `"
    aria-expanded="false" aria-controls="collapseOne">` + name + `
    </button>
    </h2>
-  </div>`
+  </div></a>`
 }
 /*addsub page string */
-function AddSubPageString(value, dataid, id) {
-  return `
+function AddSubPageString(value, dataid, id, space, pgslug, subslug, spid) {
+  return `<a href="/space/` + space + `/` + pgslug + `/` + spid + `/` + id + `/` + subslug + `">
   <div id="collapseOne`+ dataid + `" class="accordion-collapse  collapse" aria-labelledby="headingOne"
   data-bs-parent="#accordionExample">
   <div class="accordion-body subpage" data-id="` + id + `">
   <p>` + value + `</p>
   </div>
- </div>`
+ </div></a>`
 }
 
 /* List Page */
 $(document).ready(function () {
   var spsulg = $("#spSulg").val()
+  var spid = $("#spid").val();
   $.ajax({
     type: "get",
     url: "/page",
@@ -275,11 +276,11 @@ $(document).ready(function () {
 
       if (newpages.length > 0 || newGroup.length > 0) {
         overallarray = overallarray.concat(newpages, newGroup)
-        PGList()
+        PGList(spsulg, spid)
         for (let j in newpages) {
           if (j == 0) {
             $("#Title").text(newpages[j]['Name'])
-            $(".secton-content").append(newpages[j]['Content'])
+            $(".secton-content").append(result.content)
           }
           console.log("space", spsulg);
 
@@ -293,7 +294,7 @@ $(document).ready(function () {
 });
 
 
-function PGList() {
+function PGList(spslug, spid) {
 
   $('.accordion').html('');
   for (let x of overallarray) {
@@ -303,7 +304,13 @@ function PGList() {
     /**this page */
     if (x['PgId'] !== undefined && x['Pgroupid'] == 0) {
 
-      var AddPage = AddPageString(x['Name'], x['PgId']);
+      var pa = x['Name']
+
+      var pgslug = pa.toLowerCase().replace(/ /g, '_').replace(/ ?/g, '');
+
+      console.log("fsdd", pgslug);
+
+      var AddPage = AddPageString(x['Name'], x['PgId'], spslug, pgslug, spid);
 
       $('.accordion').append(AddPage);
 
@@ -311,7 +318,11 @@ function PGList() {
 
         if (j['ParentId'] == x['PgId']) {
 
-          var AddSubPage = AddSubPageString(j['Name'], x['ParentId'], j['SpgId'])
+          var sp = j['Name']
+
+          var subslug = sp.toLowerCase().replace(/ /g, '_');
+
+          var AddSubPage = AddSubPageString(j['Name'], x['ParentId'], j['SpgId'], spslug, pgslug, subslug, spid)
 
           $('.accordion-item' + j['ParentId']).append(AddSubPage)
 
@@ -333,7 +344,12 @@ function PGList() {
 
         if ((x['GroupId'] == y['Pgroupid']) && y['GroupId'] === undefined) {
 
-          var AddPage = AddPageString(y['Name'], y['PgId'])
+          var pa = y['Name']
+
+          var pgslug = pa.toLowerCase().replace(/ /g, '_');
+
+
+          var AddPage = AddPageString(y['Name'], y['PgId'], spslug, pgslug, spid)
 
           $('.groupdiv' + x['GroupId']).append(AddPage)
 
@@ -349,11 +365,21 @@ function PGList() {
 
     /**this sub */
     for (let j of Subpage) {
+
       if (j['ParentId'] == x['PgId']) {
+
+        var pa = x['Name']
+
+        var pgslug = pa.toLowerCase().replace(/ /g, '_');
+
 
         suborderindex = j['OrderIndex']
 
-        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'])
+        var sp = j['Name']
+
+        var subslug = sp.toLowerCase().replace(/ /g, '_');
+
+        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'], spslug, pgslug, subslug, spid)
 
         $('.accordion-item' + j['ParentId']).append(AddSubPage)
 
@@ -363,33 +389,33 @@ function PGList() {
   }
 }
 /* Page Content View */
-$(document).on('click', '.page', function () {
-  $("#Title").empty();
-  $(".secton-content").empty();
-  var pgid = $(this).attr("data-id")
-  for (let j of newpages) {
-    if (j['PgId'] == pgid) {
-      $("#Title").text(j['Name'])
-      $(".secton-content").append(j['Content'])
+// $(document).on('click', '.page', function () {
+//   $("#Title").empty();
+//   $(".secton-content").empty();
+//   var pgid = $(this).attr("data-id")
+//   for (let j of newpages) {
+//     if (j['PgId'] == pgid) {
+//       $("#Title").text(j['Name'])
+//       $(".secton-content").append(j['Content'])
 
-    }
+//     }
 
-  }
-})
+//   }
+// })
 
 /* Subpage Content View */
-$(document).on('click', '.subpage', function () {
-  $(".secton-content").empty();
-  var pgid = $(this).attr("data-id")
-  for (let j of Subpage) {
-    if (j['SpgId'] == pgid) {
-      $("#Title").text(j['Name'])
-      $(".secton-content").append(j['Content'])
+// $(document).on('click', '.subpage', function () {
+//   $(".secton-content").empty();
+//   var pgid = $(this).attr("data-id")
+//   for (let j of Subpage) {
+//     if (j['SpgId'] == pgid) {
+//       $("#Title").text(j['Name'])
+//       $(".secton-content").append(j['Content'])
 
-    }
+//     }
 
-  }
-})
+//   }
+// })
 /* Read Button */
 $(document).ready(function () {
   var speechContent = [];

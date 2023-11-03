@@ -39,6 +39,7 @@ func SetupRoutes() *gin.Engine {
 	r.GET("/", controller.IndexView)
 	r.GET("/space/:stitle/:pgtitle/:id", controller.SpaceDetail)
 	r.GET("/space/:stitle/:pgtitle/:id/:pageid", controller.SpaceDetail)
+	r.GET("/space/:stitle/:pgtitle/:id/:pageid/:subtitle", controller.SpaceDetail)
 	r.GET("/page", controller.PageView)
 	return r
 }
