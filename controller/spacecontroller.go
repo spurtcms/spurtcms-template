@@ -23,14 +23,15 @@ type SpaceData struct {
 	SpaceDescription string
 	SpaceSlug        string
 	PageSlug         string
+	PageId           int
 	CategoryName     []string
 }
 
 func SpaceDetail(c *gin.Context) {
 
-	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: "", Secret: ""})
+	auth12 := spurtcore.NewInstance(&auth.Option{DB: DB, Token: "", Secret: ""})
 
-	sp.MemAuth = &auth
+	sp.MemAuth = &auth12
 
 	// pl.MemAuth = &Auth
 
@@ -38,7 +39,7 @@ func SpaceDetail(c *gin.Context) {
 
 	log.Println("sp", spacelist)
 
-	pl.MemAuth = &auth
+	pl.MemAuth = &auth12
 
 	var spaces []SpaceData
 
@@ -56,8 +57,10 @@ func SpaceDetail(c *gin.Context) {
 
 				data.PageSlug = strings.ReplaceAll(strings.ToLower(value.Name), " ", "_")
 
+				data.PageId = value.PgId
+
+				break
 			}
-			break
 		}
 		data.SpaceName = space.SpacesName
 
@@ -76,36 +79,34 @@ func SpaceDetail(c *gin.Context) {
 		data.SpaceSlug = strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_")
 
 		spaces = append(spaces, data)
-
-		log.Println("hghg", data.PageSlug)
 	}
 
-	c.HTML(200, "space-detail.html", gin.H{"Spaces": spaces, "Spaceid": c.Param("id"), "title": "Spaces"})
+	c.HTML(200, "space-detail.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Spaces", "pageid": c.Query("pageid")})
 }
+
 func PageView(c *gin.Context) {
 
-	var Content string 
+	var Content string
 
 	Spid, _ := strconv.Atoi(c.Query("sid"))
+
+	pid, _ := strconv.Atoi(c.Query("pid"))
 
 	pl.MemAuth = &auth1
 
 	pagegroups, pages, subpages, _ := pl.MemberPageList(Spid)
 
-	log.Println("new",pages)
+	var PageContent, err = pl.GetPageContent(pid)
 
-	for _, value := range pages {
+	Content = PageContent.PageDescription
 
-		if value.OrderIndex == 1 {
+	var Error string
 
-			var PageContent, _ = pl.GetPageContent(value.PgId)
+	if err != nil {
 
-			Content = PageContent.PageDescription
-
-			log.Println("hhh",PageContent)
-		}
-		break
+		Error = err.Error()
 	}
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "title": "pages","content": Content})
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "title": "pages", "content": Content, "error": Error})
 }
+

@@ -37,9 +37,9 @@ func SetupRoutes() *gin.Engine {
 	r.POST("/otp-genrate", controller.OtpGenarate)
 	r.POST("/verify-otp", controller.OtpVerify)
 	r.GET("/", controller.IndexView)
-	r.GET("/space/:stitle/:pgtitle/:id", controller.SpaceDetail)
-	r.GET("/space/:stitle/:pgtitle/:id/:pageid", controller.SpaceDetail)
-	r.GET("/space/:stitle/:pgtitle/:id/:pageid/:subtitle", controller.SpaceDetail)
+	r.GET("/space/:stitle/:pgtitle/", controller.SpaceDetail)
+	r.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
 	r.GET("/page", controller.PageView)
 	return r
 }
+

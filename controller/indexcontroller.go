@@ -3,6 +3,7 @@ package controller
 import (
 	"log"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -37,20 +38,17 @@ func IndexView(c *gin.Context) {
 
 	sp.MemAuth = &auth1
 
-	// mem.Auth = &Auth
-
-	// memb, _ := mem.GetMemberDetails()
 	if flg {
+
 		pl.MemAuth = &Auth
-	}else{
+
+	} else {
 
 		pl.MemAuth = &auth1
-		
+
 	}
 
 	spacelist, count, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
-
-	// log.Println("sp.list", spacelist)
 
 	var spaces []SpaceData
 
@@ -64,9 +62,20 @@ func IndexView(c *gin.Context) {
 
 		_, pages, _, _ := pl.MemberPageList(space.SpacesId)
 
-		log.Println("pagename", pages[0].Name)
+		for _, val := range pages {
 
-		data.PageSlug = strings.ReplaceAll(strings.ToLower(pages[0].Name), " ", "_")
+			if val.OrderIndex == 1 {
+
+				log.Println(val)
+
+				data.PageSlug = strings.ReplaceAll(regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(strings.ToLower(val.Name), " "), " ", "_")
+
+				data.PageId = val.PgId
+
+				break
+			}
+
+		}
 
 		log.Println("pgslug", data.PageSlug)
 
@@ -87,8 +96,6 @@ func IndexView(c *gin.Context) {
 		data.SpaceSlug = strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_")
 
 		spaces = append(spaces, data)
-
-		log.Println("hghg", data.PageSlug)
 
 	}
 
