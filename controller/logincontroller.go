@@ -31,6 +31,7 @@ func GetAuth(token string) {
 
 func MemberLogin(c *gin.Context) {
 	c.HTML(200, "login.html", gin.H{"title": "Login"})
+	
 }
 func CheckMemberLogin(c *gin.Context) {
 

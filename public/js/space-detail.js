@@ -168,9 +168,22 @@ $(document).ready(function () {
 
 /* Notes and save */
 $(document).on('click', '#save-btn', function () {
+  var Pageid = $("#pgid").val();
   var text = $("#Textarea").val();
   $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + text + '</h5><span>Saved on 27sep23, 06:15pm</span></div>');
+  $.ajax({
+    type: "post",
+    url: "/notes",
+    dataType: 'json',
+    data: {
+      pgid: Pageid,
+      content: text
+    },
+    success: function (result) {
 
+
+    }
+  })
   $("#Textarea").val("");
 });
 
@@ -193,21 +206,41 @@ $(document).on("click", ".content", function () {
 
 /* Colour select for Highlights */
 $(document).on("click", ".clr", function () {
+  var Pageid = $("#pgid").val();
+  var htmlContent;
   var cl = $(this).attr("color-value")
   if (cl == "yellow") {
     span.className = 'selected-yellow';
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail"><h5 style="background-color: rgba(255, 215, 82, 0.2);">' + selectedContent + '</h5><span>Saved on 27sep23, 06:15pm</span></div>');
+    htmlContent = '<h5 style="background-color: rgba(255, 215, 82, 0.2);">' + selectedContent + '</h5>'
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
   } if (cl == "pink") {
     span.className = 'selected-pink';
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail"><h5 style="background-color: rgb(247, 156, 156, 0.2);">' + selectedContent + '</h5><span>Saved on 27sep23, 06:15pm</span></div>');
+    htmlContent = '<h5 style="background-color: rgba(247, 156, 156, 0.2);">' + selectedContent + '</h5>'
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
   } if (cl == "green") {
     span.className = 'selected-green';
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail"><h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5><span>Saved on 27sep23, 06:15pm</span></div>');
+    htmlContent = '<h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5>'
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
   } if (cl == "blue") {
     span.className = 'selected-blue';
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail"><h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5><span>Saved on 27sep23, 06:15pm</span></div>');
+    htmlContent = '<h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5>'
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
 
   }
+  console.log("cons", htmlContent);
+  $.ajax({
+    type: "post",
+    url: "/highlights",
+    dataType: 'json',
+    data: {
+      pgid: Pageid,
+      content: htmlContent
+    },
+    success: function (result) {
+
+
+    }
+  })
 })
 
 /* List Page */
@@ -302,16 +335,30 @@ $(document).ready(function () {
       if (result.subpage != null) {
         Subpage = result.subpage
       }
+      if (result.highlight != null) {
+        var Highlight = result.highlight
+        for (let j of Highlight) {
+
+          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn+'pm</span></div>');
+        }
+      }
+      if (result.note != null) {
+        for (let j of result.note) {
+
+          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><span>Saved on ' + j.CreatedOn+'pm</span></div>');
+        }
+      }
 
       if (newpages.length > 0 || newGroup.length > 0) {
         overallarray = overallarray.concat(newpages, newGroup)
-        PGList(spsulg, spid,Rpgid)
+        PGList(spsulg, spid, Rpgid)
         for (let j of newpages) {
           if (j['OrderIndex'] == 1) {
             $("#Title").text(j['Name'])
-            if (result.error!=""){
+            if (result.error != "") {
               $(".secton-content").append(result.error)
-            }else{
+              result.h
+            } else {
               $(".secton-content").append(result.content)
             }
           }
@@ -394,7 +441,7 @@ function PGList(spslug, spid, Rpgid) {
 
         var subslug = sp.toLowerCase().replace(/ /g, '_');
 
-        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'], spslug, pgslug, subslug, spid,Rpgid)
+        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'], spslug, pgslug, subslug, spid, Rpgid)
 
         $('.accordion-item' + j['ParentId']).append(AddSubPage)
 

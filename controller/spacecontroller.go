@@ -5,6 +5,7 @@ import (
 
 	"encoding/json"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 
@@ -13,6 +14,7 @@ import (
 	"github.com/spurtcms/spurtcms-content/spaces"
 	spurtcore "github.com/spurtcms/spurtcms-core"
 	"github.com/spurtcms/spurtcms-core/auth"
+	"github.com/spurtcms/spurtcms-core/member"
 )
 
 var pl pages.MemberPage
@@ -37,9 +39,15 @@ func SpaceDetail(c *gin.Context) {
 
 	spacelist, _, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
 
-	log.Println("sp", spacelist)
+	if flg {
 
-	pl.MemAuth = &auth12
+		pl.MemAuth = &Auth
+
+	} else {
+
+		pl.MemAuth = &auth1
+
+	}
 
 	var spaces []SpaceData
 
@@ -86,14 +94,29 @@ func SpaceDetail(c *gin.Context) {
 
 func PageView(c *gin.Context) {
 
+	token, token_err := mem.CheckMemberLogin(member.MemberLogin{Emailid: "parvesh@gmail.com", Password: "Thaya@1234"}, DB, os.Getenv("JWT_SECRET"))
+
+	log.Println("tokenerr", token_err)
+
+	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
+
+	pl.MemAuth = &auth
+
 	var Content string
 
 	Spid, _ := strconv.Atoi(c.Query("sid"))
 
 	pid, _ := strconv.Atoi(c.Query("pid"))
 
-	pl.MemAuth = &auth1
+	// if flg {
 
+	// 	pl.MemAuth = &Auth
+
+	// } else {
+
+	// 	pl.MemAuth = &auth1
+
+	// }
 	pagegroups, pages, subpages, _ := pl.MemberPageList(Spid)
 
 	var PageContent, err = pl.GetPageContent(pid)
@@ -106,7 +129,66 @@ func PageView(c *gin.Context) {
 
 		Error = err.Error()
 	}
+	log.Println("page", pid)
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "title": "pages", "content": Content, "error": Error})
+	var highlight, er = pl.GetHighlights(pid)
+
+	var note, er1 = pl.GetNotes(pid)
+
+	log.Println("notes", note, er1)
+
+	log.Println("highlights", highlight, er)
+
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "pages", "content": Content, "error": Error})
 }
 
+/* Update Highlights */
+
+func UpdateHighlights(c *gin.Context) {
+
+	token, token_err := mem.CheckMemberLogin(member.MemberLogin{Emailid: "parvesh@gmail.com", Password: "Thaya@1234"}, DB, os.Getenv("JWT_SECRET"))
+
+	log.Println("tokenerr", token_err)
+
+	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
+
+	pl.MemAuth = &auth
+
+	Id := c.PostForm("pgid")
+
+	page_id, _ := strconv.Atoi(Id)
+
+	content := c.PostForm("content")
+
+	log.Println("new value", page_id, content)
+
+	res, _ := pl.UpdateHighlights(page_id, content)
+
+	log.Println("res", res)
+
+}
+
+/* Update Notes */
+func UpdateNotes(c *gin.Context) {
+
+	token, token_err := mem.CheckMemberLogin(member.MemberLogin{Emailid: "parvesh@gmail.com", Password: "Thaya@1234"}, DB, os.Getenv("JWT_SECRET"))
+
+	log.Println("tokenerr", token_err)
+
+	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
+
+	pl.MemAuth = &auth
+
+	Id := c.PostForm("pgid")
+
+	page_id, _ := strconv.Atoi(Id)
+
+	content := c.PostForm("content")
+
+	log.Println("new value", page_id, content)
+
+	res, _ := pl.UpdateNotes(page_id, content)
+
+	log.Println("res", res)
+
+}

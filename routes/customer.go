@@ -40,6 +40,7 @@ func SetupRoutes() *gin.Engine {
 	r.GET("/space/:stitle/:pgtitle/", controller.SpaceDetail)
 	r.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
 	r.GET("/page", controller.PageView)
+	r.POST("/highlights", controller.UpdateHighlights)
+	r.POST("/notes", controller.UpdateNotes)
 	return r
 }
-

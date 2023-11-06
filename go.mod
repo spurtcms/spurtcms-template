@@ -5,8 +5,8 @@ go 1.20
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
-	github.com/spurtcms/spurtcms-content v1.0.15-0.20231101141739-d71aa05251f9
-	github.com/spurtcms/spurtcms-core v1.0.11-0.20231031141709-01991099d83c
+	github.com/spurtcms/spurtcms-content v1.0.15-0.20231104104818-96be8bf101e6
+	github.com/spurtcms/spurtcms-core v1.0.11-0.20231104104612-a68fd0a7564a
 )
 
 require (
