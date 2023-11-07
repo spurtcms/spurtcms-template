@@ -99,6 +99,6 @@ func IndexView(c *gin.Context) {
 
 	}
 
-	c.HTML(200, "index.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index"})
+	c.HTML(200, "index.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index","myprofile": flg})
 
 }

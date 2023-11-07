@@ -339,13 +339,26 @@ $(document).ready(function () {
         var Highlight = result.highlight
         for (let j of Highlight) {
 
-          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn+'pm</span></div>');
+          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn + 'pm</span></div>');
         }
+        var $container = $("#mySidenavRgtHigh>.note-content");
+
+        // Use $.each to iterate through the <h5> elements
+        $container.find("h5").each(function (index, element) {
+          // Get the text content of the <h5> element
+          var h5Value = $(element).text();
+          // Get the background-color style of the <h5> element
+          var h5BackgroundColor = $(element).css("background-color");
+
+          // Output the values and styles
+          console.log("Value of h5 element " + (index + 1) + ": " + h5Value);
+          console.log("Background-color of h5 element " + (index + 1) + ": " + h5BackgroundColor);
+        });
       }
       if (result.note != null) {
         for (let j of result.note) {
 
-          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><span>Saved on ' + j.CreatedOn+'pm</span></div>');
+          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><span>Saved on ' + j.CreatedOn + 'pm</span></div>');
         }
       }
 

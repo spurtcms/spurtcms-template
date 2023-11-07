@@ -15,7 +15,8 @@ import (
 	"github.com/spurtcms/spurtcms-core/member"
 	"gopkg.in/gomail.v2"
 )
-var flg = false 
+
+var flg = false
 
 var Auth auth.Authority
 
@@ -31,7 +32,12 @@ func GetAuth(token string) {
 
 func MemberLogin(c *gin.Context) {
 	c.HTML(200, "login.html", gin.H{"title": "Login"})
-	
+
+}
+func MemberLogout(c *gin.Context) {
+	flg = false
+	c.Redirect(301, "/")
+
 }
 func CheckMemberLogin(c *gin.Context) {
 

@@ -5,7 +5,6 @@ import (
 
 	"encoding/json"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 
@@ -38,6 +37,8 @@ func SpaceDetail(c *gin.Context) {
 	// pl.MemAuth = &Auth
 
 	spacelist, _, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
+
+	var memb member.TblMember
 
 	if flg {
 
@@ -89,18 +90,10 @@ func SpaceDetail(c *gin.Context) {
 		spaces = append(spaces, data)
 	}
 
-	c.HTML(200, "space-detail.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Spaces", "pageid": c.Query("pageid")})
+	c.HTML(200, "space-detail.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Spaces", "pageid": c.Query("pageid"), "member": memb})
 }
 
 func PageView(c *gin.Context) {
-
-	token, token_err := mem.CheckMemberLogin(member.MemberLogin{Emailid: "parvesh@gmail.com", Password: "Thaya@1234"}, DB, os.Getenv("JWT_SECRET"))
-
-	log.Println("tokenerr", token_err)
-
-	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
-
-	pl.MemAuth = &auth
 
 	var Content string
 
@@ -108,15 +101,15 @@ func PageView(c *gin.Context) {
 
 	pid, _ := strconv.Atoi(c.Query("pid"))
 
-	// if flg {
+	if flg {
 
-	// 	pl.MemAuth = &Auth
+		pl.MemAuth = &Auth
 
-	// } else {
+	} else {
 
-	// 	pl.MemAuth = &auth1
+		pl.MemAuth = &auth1
 
-	// }
+	}
 	pagegroups, pages, subpages, _ := pl.MemberPageList(Spid)
 
 	var PageContent, err = pl.GetPageContent(pid)
@@ -146,13 +139,15 @@ func PageView(c *gin.Context) {
 
 func UpdateHighlights(c *gin.Context) {
 
-	token, token_err := mem.CheckMemberLogin(member.MemberLogin{Emailid: "parvesh@gmail.com", Password: "Thaya@1234"}, DB, os.Getenv("JWT_SECRET"))
+	if flg {
 
-	log.Println("tokenerr", token_err)
+		pl.MemAuth = &Auth
 
-	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
+	} else {
 
-	pl.MemAuth = &auth
+		pl.MemAuth = &auth1
+
+	}
 
 	Id := c.PostForm("pgid")
 
@@ -171,13 +166,15 @@ func UpdateHighlights(c *gin.Context) {
 /* Update Notes */
 func UpdateNotes(c *gin.Context) {
 
-	token, token_err := mem.CheckMemberLogin(member.MemberLogin{Emailid: "parvesh@gmail.com", Password: "Thaya@1234"}, DB, os.Getenv("JWT_SECRET"))
+	if flg {
 
-	log.Println("tokenerr", token_err)
+		pl.MemAuth = &Auth
 
-	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
+	} else {
 
-	pl.MemAuth = &auth
+		pl.MemAuth = &auth1
+
+	}
 
 	Id := c.PostForm("pgid")
 

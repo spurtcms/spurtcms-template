@@ -25,6 +25,7 @@ func SetupRoutes() *gin.Engine {
 
 	r.Static("/public", "./public")
 	r.GET("/login", controller.MemberLogin)
+	r.GET("/logout",controller.MemberLogout)
 	r.GET("/signup", controller.SignUp)
 	r.GET("/retrieve", controller.Retrieve)
 	r.GET("/reset", controller.Reset)

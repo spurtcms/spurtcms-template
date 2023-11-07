@@ -29,18 +29,20 @@
     <div class="ourLogo">
       <a href="index.html"><img src="/public/images/MaskGroup39.svg" alt="" /></a>
     </div>
-
+    {{if eq .myprofile true}}
     <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
       aria-expanded="false">
-      <div class="usr-profile" style="color: white;">
-        <!-- <img src="/public/images/Ellipse 1.png" class="usr-profile-img" alt="" />
-        <span class="usr-name">{{.member.FirstName}}</span> -->
-        Login
+      <div class="usr-profile">
+        <img src="/public/images/Ellipse 1.png" class="usr-profile-img" alt="" />
+        <span class="usr-name">{{.member.FirstName}}</span>
       </div>
     </button>
-    <!-- <ul class="dropdown-menu">
+    <ul class="dropdown-menu">
       <li><a class="dropdown-item" href="/myprofile">My Profile</a></li>
-      <li><a class="dropdown-item" href="/">Logout</a></li>
-    </ul> -->
+      <li><a class="dropdown-item" href="/logout">Logout</a></li>
+    </ul>
+    {{else}}
+    <a href="/login">Login</a>
+    {{end}}
   </header>
   {{end}}

@@ -42,7 +42,7 @@ $(document).ready(function () {
                         $("#mempass").html(content)
                         $("#mempass").show()
                     } if (parse_data.verify == "") {
-                        window.location.href = "/index"
+                        window.location.href = "/"
                     }
 
                 }
