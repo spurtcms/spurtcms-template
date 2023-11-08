@@ -195,6 +195,7 @@ $(document).on("click", ".content", function () {
   selection = window.getSelection()
   selectedContent = selection.toString();
   var range = selection.getRangeAt(0);
+  console.log("range",range);
   span = document.createElement('span');
   range.surroundContents(span);
 
@@ -310,6 +311,8 @@ function AddSubPageString(value, parentid, id, space, pgslug, subslug, spid, Rpg
   return html
 }
 
+var ReadContent
+
 /* List Page */
 $(document).ready(function () {
   var spsulg = $("#spSulg").val()
@@ -335,26 +338,6 @@ $(document).ready(function () {
       if (result.subpage != null) {
         Subpage = result.subpage
       }
-      if (result.highlight != null) {
-        var Highlight = result.highlight
-        for (let j of Highlight) {
-
-          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn + 'pm</span></div>');
-        }
-        var $container = $("#mySidenavRgtHigh>.note-content");
-
-        // Use $.each to iterate through the <h5> elements
-        $container.find("h5").each(function (index, element) {
-          // Get the text content of the <h5> element
-          var h5Value = $(element).text();
-          // Get the background-color style of the <h5> element
-          var h5BackgroundColor = $(element).css("background-color");
-
-          // Output the values and styles
-          console.log("Value of h5 element " + (index + 1) + ": " + h5Value);
-          console.log("Background-color of h5 element " + (index + 1) + ": " + h5BackgroundColor);
-        });
-      }
       if (result.note != null) {
         for (let j of result.note) {
 
@@ -373,10 +356,55 @@ $(document).ready(function () {
               result.h
             } else {
               $(".secton-content").append(result.content)
+              ReadContent = $(".secton-content").html()
             }
           }
 
         }
+      }
+      if (result.highlight != null) {
+        var Highlight = result.highlight
+        for (let j of Highlight) {
+
+          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn + 'pm</span></div>');
+        }
+        var $container = $("#mySidenavRgtHigh>.note-content");
+        var highlight = []
+        var high_clr = []
+        $container.find("h5").each(function (_, element) {
+          var h5Value = $(element).text();
+          highlight.push(h5Value)
+          var h5BackgroundColor = $(element).css("background-color");
+          high_clr.push(h5BackgroundColor)
+          console.log("ddd",);
+        });
+        var $mainDiv = $('.secton-content');
+        function highlightTextInContent(text, bgColor) {
+          var $content = $mainDiv.find('*');
+          console.log("text", text);
+          var regex = new RegExp('\\b' + escapeRegExp(text), 'gi');
+
+          $content.each(function () {
+            var $this = $(this);
+
+            if ($this.text().match(regex)) {
+              $this.html(function (_, html) {
+                console.log("bg",bgColor);
+                return html.replace(regex, '<span style="background-color:' + bgColor + '" >$&</span>');
+              });
+            }
+          });
+        }
+
+        function escapeRegExp(text) {
+          return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+        }
+
+        highlight.forEach(function (text, index) {
+          var bgColor = high_clr[index] || '';
+          console.log("yes", bgColor);
+          highlightTextInContent(text, bgColor);
+        });
       }
 
     }
@@ -512,7 +540,6 @@ $(document).ready(function () {
     for (var i = 0; i < words.length; i += ContentSize) {
       NewContent.push(words.slice(i, i + ContentSize).join(' '));
     }
-
     speechContent = NewContent;
     speakNextChunk();
 
