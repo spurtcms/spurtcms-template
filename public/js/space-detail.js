@@ -195,21 +195,36 @@ $(document).on("click", ".content", function () {
   selection = window.getSelection()
   selectedContent = selection.toString();
   var range = selection.getRangeAt(0);
-  console.log("range",range);
   span = document.createElement('span');
   range.surroundContents(span);
-
   /* Selection Clear */
   selection.removeAllRanges();
-  // console.log("selection", selection);
-  // console.log("selectedContent", selectedContent);
 });
-
 /* Colour select for Highlights */
 $(document).on("click", ".clr", function () {
   var Pageid = $("#pgid").val();
   var htmlContent;
   var cl = $(this).attr("color-value")
+  var parag = span.parent().html()
+  console.log("parag", parag);
+  if (cl == "read") {
+    var Speaker = false;
+    var content = selectedContent
+    console.log("selec", selectedContent);
+    if (Speaker) {
+      if (window.speechSynthesis.speaking) {
+        window.speechSynthesis.cancel();
+      }
+    }
+    Speaker = true;
+
+    var utterance = new SpeechSynthesisUtterance(content);
+    window.speechSynthesis.speak(utterance);
+
+    utterance.onend = function (event) {
+      Speaker = false;
+    };
+  }
   if (cl == "yellow") {
     span.className = 'selected-yellow';
     htmlContent = '<h5 style="background-color: rgba(255, 215, 82, 0.2);">' + selectedContent + '</h5>'
@@ -228,7 +243,6 @@ $(document).on("click", ".clr", function () {
     $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
 
   }
-  console.log("cons", htmlContent);
   $.ajax({
     type: "post",
     url: "/highlights",
@@ -242,6 +256,7 @@ $(document).on("click", ".clr", function () {
 
     }
   })
+
 })
 
 /* List Page */
@@ -290,7 +305,6 @@ function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
 /*addsub page string */
 function AddSubPageString(value, parentid, id, space, pgslug, subslug, spid, Rpgid) {
   var html;
-  console.log("chk1", Rpgid == parentid, Rpgid, parentid);
   if (Rpgid == parentid) {
     html = `<a href="/space/` + space + `/` + pgslug + `/` + subslug + `?spid=` + spid + `&pageid=` + id + `">
   <div id="collapseOne`+ parentid + `" class="accordion-collapse  collapse show" aria-labelledby="headingOne"
@@ -328,7 +342,6 @@ $(document).ready(function () {
     },
     cache: false,
     success: function (result) {
-      console.log("s", result.subpage);
       if (result.group != null) {
         newGroup = result.group
       }
@@ -376,12 +389,10 @@ $(document).ready(function () {
           highlight.push(h5Value)
           var h5BackgroundColor = $(element).css("background-color");
           high_clr.push(h5BackgroundColor)
-          console.log("ddd",);
         });
         var $mainDiv = $('.secton-content');
         function highlightTextInContent(text, bgColor) {
           var $content = $mainDiv.find('*');
-          console.log("text", text);
           var regex = new RegExp('\\b' + escapeRegExp(text), 'gi');
 
           $content.each(function () {
@@ -389,7 +400,6 @@ $(document).ready(function () {
 
             if ($this.text().match(regex)) {
               $this.html(function (_, html) {
-                console.log("bg",bgColor);
                 return html.replace(regex, '<span style="background-color:' + bgColor + '" >$&</span>');
               });
             }
@@ -402,7 +412,6 @@ $(document).ready(function () {
 
         highlight.forEach(function (text, index) {
           var bgColor = high_clr[index] || '';
-          console.log("yes", bgColor);
           highlightTextInContent(text, bgColor);
         });
       }
@@ -414,7 +423,6 @@ $(document).ready(function () {
 
 function PGList(spslug, spid, Rpgid) {
 
-  console.log("rp", Rpgid);
 
   $('.accordion').html('');
   for (let x of overallarray) {
@@ -424,13 +432,11 @@ function PGList(spslug, spid, Rpgid) {
     /**this page */
     if (x['PgId'] !== undefined && x['Pgroupid'] == 0) {
 
-      console.log("pageid", x['PgId']);
 
       var pa = x['Name']
 
       var pgslug = pa.toLowerCase().replace(/ /g, '_');
 
-      console.log("fsdd", pgslug);
 
       var AddPage = AddPageString(x['Name'], x['PgId'], spslug, pgslug, spid, Rpgid);
 

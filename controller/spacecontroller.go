@@ -132,7 +132,7 @@ func PageView(c *gin.Context) {
 
 	log.Println("highlights", highlight, er)
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "pages", "content": Content, "error": Error})
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "pages", "content": Content, "error": Error,"myprofile": flg})
 }
 
 /* Update Highlights */
