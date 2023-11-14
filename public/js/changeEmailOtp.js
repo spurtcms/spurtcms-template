@@ -30,36 +30,92 @@
 /* ChangeEmail validation */
 
 $(document).ready(function () {
-    $(document).on("click", "#submit", function () {
-        var email = $("#oldmailaddredd").val()
-        console.log("email", email);
-        if (email == "") {
-            $("#mememail").show()
-            $("#email-con").addClass("err")
 
-        } else {
-            $("#mememail").hide()
-            $("#email-con").removeClass("err")
+    $.validator.addMethod("email_validator", function (value) {
+        return /(^[a-zA-Z_0-9\.-]+)@([a-z]+)\.([a-z]+)(\.[a-z]+)?$/.test(value);
+    }, '* Please Enter The Valid Email Address ');
 
-            $.ajax({
-                url: "/otp-genrate",
-                method: "POST",
-                data: { "email": email },
-                datatype: 'json',
-                success: function (data) {
-                    console.log(data);
-                    var parse_data = JSON.parse(data)
-                    console.log(parse_data.verify);
-                    if (parse_data.verify == "invalid email") {
-                        var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid email'
-                        $("#mememail").html(content)
-                        $("#mememail").show()
-                    } if (parse_data.verify == "") {
-                        window.location.href = "/new-email"
-                    }
+    $("#otpform").validate({
+        rules: {
+            email: {
+                required: true,
+                email_validator:true                   
+            }
+        },
 
+            messages: {             
+                email: {
+                    required: " Please Enter Your Old Email Address"
                 }
-            })
+            }
+        
+    })
+
+
+})
+
+
+$(document).on("click", "#submit", function () {
+
+   var formcheck = $("#otpform").valid()
+
+   var email = $("#oldemail").val()
+
+   if (formcheck == true){
+
+    $.ajax({
+        url: "/otp-genrate",
+        method: "POST",
+        data: { "email": email },
+        datatype: 'json',
+        success: function (data) {
+            console.log(data);
+            var parse_data = JSON.parse(data)
+            console.log(parse_data.verify);
+            if (parse_data.verify == "invalid email") {
+                var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid email'
+                $("#oldemail-error").html(content)
+                $("#oldemail-error").show()
+            } if (parse_data.verify == "") {
+                window.location.href = "/new-email"
+            }
+
         }
     })
+
+   }else{
+
+    $(document).on('keyup',".field",function(){
+        Validationcheck()
+    })
+   $('.input-container').each(function() {
+    var inputField = $(this).find('input');
+    var inputName = inputField.attr('name');
+    
+    if (!inputField.valid()) {
+      $(this).addClass("err");
+   
+    } else {
+      $(this).removeClass("err")
+    }
+     
+   })
+   
+}  
+      
 })
+
+function Validationcheck(){
+    let inputGro = document.querySelectorAll('.input-container');
+    inputGro.forEach(inputGroup => {
+        let inputField = inputGroup.querySelector('input');
+        var inputName = inputField.getAttribute('name');
+     
+        if (inputField.classList.contains('error')) {
+            inputGroup.classList.add('err');
+        } else {
+            inputGroup.classList.remove('err');
+        }
+      
+    });
+}

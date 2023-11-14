@@ -1,66 +1,48 @@
 $(document).ready(function () {
 
+    jQuery.validator.addMethod(
+        "pass_validator",
+        function (value, element) {
+            if (value != "") {
+                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value)) 
+                    return true;
+                else return false;
+            }
+            else return true;
+        },
+        " Please Enter at Least 1 Uppercase, 1 Lowercase, 1 Number,1 Special Character($,@),and 8 characters long",
+    );
 
-    // jQuery.validator.addMethod("duplicateemail", function (value) {
 
-    //     var result;
+    $.validator.addMethod("otp_validator", function (value) {
+        return /(^[0-9]\g){1,6}$/.test(value);
+    }, '* Please Enter 6 Digit Number ');
 
-    //     var id = $("#id").val()
-
-    //     $.ajax({
-    //         url: "/settings/users/checkemailinuser",
-    //         type: "POST",
-    //         async: false,
-    //         data: { "email": value, "id": id, csrf: $("input[name='csrf']").val() },
-    //         datatype: "json",
-    //         caches: false,
-    //         success: function (data) {
-
-    //             result = data.trim();
-
-    //         }
-    //     })
-    //     return result.trim() != "true"
-    // })
-
-    $.validator.addMethod("email_validator", function (value) {
-       return /(^[a-zA-Z_0-9\.-]+)@([a-z]+)\.([a-z]+)(\.[a-z]+)?$/.test(value);
-    }, ' Please Enter The Valid Email Address ');
-
-        // only allow numbers
- $('#otp').keyup(function () {
-    this.value = this.value.replace(/[^0-9\.]/g, '');
- });
-
-    // $.validator.addMethod("otp_validator", function (value) {
-    //     return /(^[0-9])$/.test(value);
-    // }, ' Please Enter 6 Digit Number ');
-
-        $("form[name='changeemail']").validate({
+        $("form[name='changepasswordform']").validate({
             rules: {
                 otp:{
                 required:true,
-                // otp_validator :true
+                otp_validator :true
                 },
-                emailaddress: {
+                mynewPassword: {
                     required: true,
-                    email_validator:true                   
+                    pass_validator:true                   
                 },
-                confrimemail: {
+                confrimPassword: {
                     required: true,
-                    equalTo: "#emailaddress"
+                    equalTo: "#mynewPassword"
                 }
             },
             messages: {
                 otp:{
                     required:"Please Enter The Otp "
                 },
-                emailaddress: {
-                    required: " Please Enter Your Email Address" ,
+                mynewPassword: {
+                    required: " Please Enter Your New Password" ,
                 },
-                confrimemail: {
-                    required: " Please Re-Enter Your Email Address ",
-                    equalTo:" Please Re-Enter The Same Email Address"
+                confrimPassword: {
+                    required: " Please Re-Enter Your New Password ",
+                    equalTo:" Please Enter The Same New Password"
                 }
                 }
         });
@@ -105,16 +87,16 @@ $(document).ready(function () {
 
 $(document).on("click", "#submit", function () {
 
-    var formcheck = $("form[name ='changeemail']").valid()
+    var formcheck = $("form[name ='changepasswordform']").valid()
 
     var otp = $("#otp").val()
-    var newemail = $("#emailaddress").val()
-    var confirmemail = $("#confirmemail").val()
+    var newpassword = $("#mynewPassword").val()
+    var confirmpassword = $("#confrimPassword").val()
     if (formcheck == true) {
         $.ajax({
             url: "/verify-otp",
             method: "POST",
-            data: { "otp": otp, "newemail": newemail, "confirmemail": confirmemail },
+            data: { "otp": otp, "newpassword": newpassword, "confirmpassword": confirmpassword },
             datatype: 'json',
             success: function (data) {
                 console.log(data);
@@ -162,6 +144,7 @@ function Validationcheck(){
     inputGro.forEach(inputGroup => {
         let inputField = inputGroup.querySelector('input');
         var inputName = inputField.getAttribute('name');
+        console.log("input",inputName)
       
         if (inputField.classList.contains('error')) {
             inputGroup.classList.add('err');

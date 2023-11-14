@@ -5,8 +5,9 @@ go 1.20
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
-	github.com/spurtcms/spurtcms-content v1.0.15-0.20231104104818-96be8bf101e6
-	github.com/spurtcms/spurtcms-core v1.0.11-0.20231104104612-a68fd0a7564a
+	github.com/spurtcms/spurtcms-content v1.0.15-0.20231110140117-2a24323e9387
+	github.com/spurtcms/spurtcms-core v1.0.11-0.20231108070039-c42ff31726bc
+	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 
 require (
@@ -50,7 +51,6 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
-	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	gorm.io/driver/postgres v1.5.2 // indirect
 )

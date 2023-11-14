@@ -8,30 +8,30 @@
     </div>
     <div class="login-content">
       <div class="mail-signIn mx-400">
-        <form action="">
+        <form action="" id="changeemail" name="changeemail" enctype="multipart/form-data">
           <div class="input-container" id="otp-con">
-            <input type="text" id="otp" class="mx-400" required />
-            <label for="myInput">Enter 6 digit OTP</label>
-            <span class="err-txt" id="memotp" style="display: none;">
-              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your
-              otp</span>
+            <input type="text" id="otp" class="mx-400 field" name="otp" maxlength="6" required />
+            <label for="myInput" class="input-label">Enter 6 digit OTP</label>
+             <label id="otp-error" class="error err-txt" for="otp" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter The Otp </label>
           </div>
 
 
-          <div class="input-container" id="email-con">
-            <input type="text" id="emailaddress" class="mx-400" required>
-            <label for="myInput">New Email address</label>
-            <span class="err-txt" id="mememail" style="display: none;">
-              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your new
-              email</span>
+          <div class="input-container" id="email-con"> 
+            <input type="text" id="emailaddress" name="emailaddress" class="mx-400 field" required>
+            <label for="myInput" class="input-label">New Email address</label>
+           
+              <label id="emailaddress-error" class="error err-txt" for="emailaddress" style="display: none;"> 
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your Email Address</label>
           </div>
 
           <div class="input-container" id="confrimemail-con">
-            <input type="text" id="confrimemail" class="mx-400" required>
-            <label for="myInput">Confirm New Email address</label>
-            <span class="err-txt" id="mem-co-email" style="display: none;">
-              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please re-enter your new
-              email</span>
+            <input type="text" id="confrimemail" name="confrimemail" class="mx-400 field" required>
+            <label for="myInput" class="input-label">Confirm New Email address</label>
+        
+              <label id="confrimemail-error" class="error err-txt" for="confrimemail" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />   Please Re-Enter Your Email Address </label>
+
           </div>
           <p class="signUp-Comdition mb-16">
             Did not receive the OTP?
@@ -39,11 +39,11 @@
           </p>
 
           <button class="cms-btn-dark mx-400" type="button" id="submit">Submit</button>
-
-          <div class="account-forgot">
+ 
+         <!-- <div class="account-forgot">
             <a href="login.html" class="">Return to Login</a>
             <a href="signup.html" class="">Don’t have an account?</a>
-          </div>
+          </div> -->
         </form>
       </div>
     </div>

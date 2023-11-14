@@ -190,11 +190,18 @@ $(document).on('click', '#save-btn', function () {
 /* Highlights */
 var selection;
 var selectedContent;
+var selectedTag, startoffset, endoffset
 var span
 $(document).on("click", ".content", function () {
   selection = window.getSelection()
+  console.log("selection",selection);
   selectedContent = selection.toString();
   var range = selection.getRangeAt(0);
+  selectedTag = range.startContainer.parentNode.innerText;
+  console.log("ss", selectedTag);
+  startoffset = range.startOffset
+  endoffset = range.endOffset
+  console.log("range",startoffset,endoffset);
   span = document.createElement('span');
   range.surroundContents(span);
   /* Selection Clear */
@@ -204,9 +211,8 @@ $(document).on("click", ".content", function () {
 $(document).on("click", ".clr", function () {
   var Pageid = $("#pgid").val();
   var htmlContent;
+  var con_clr;
   var cl = $(this).attr("color-value")
-  var parag = span.parent().html()
-  console.log("parag", parag);
   if (cl == "read") {
     var Speaker = false;
     var content = selectedContent
@@ -227,18 +233,22 @@ $(document).on("click", ".clr", function () {
   }
   if (cl == "yellow") {
     span.className = 'selected-yellow';
+    con_clr = "rgba(255, 215, 82, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(255, 215, 82, 0.2);">' + selectedContent + '</h5>'
     $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
   } if (cl == "pink") {
     span.className = 'selected-pink';
+    con_clr = "rgba(247, 156, 156, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(247, 156, 156, 0.2);">' + selectedContent + '</h5>'
     $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
   } if (cl == "green") {
     span.className = 'selected-green';
+    con_clr = "rgba(106, 171, 250, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5>'
     $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
   } if (cl == "blue") {
     span.className = 'selected-blue';
+    con_clr = "rgba(77, 200, 142, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5>'
     $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
 
@@ -249,7 +259,11 @@ $(document).on("click", ".clr", function () {
     dataType: 'json',
     data: {
       pgid: Pageid,
-      content: htmlContent
+      content: htmlContent,
+      selectedtag: selectedTag,
+      startoffset: startoffset,
+      endoffset: endoffset,
+      con_clr: con_clr
     },
     success: function (result) {
 
@@ -376,44 +390,71 @@ $(document).ready(function () {
         }
       }
       if (result.highlight != null) {
+        console.log("hights", result.highlight);
         var Highlight = result.highlight
         for (let j of Highlight) {
-
           $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn + 'pm</span></div>');
-        }
-        var $container = $("#mySidenavRgtHigh>.note-content");
-        var highlight = []
-        var high_clr = []
-        $container.find("h5").each(function (_, element) {
-          var h5Value = $(element).text();
-          highlight.push(h5Value)
-          var h5BackgroundColor = $(element).css("background-color");
-          high_clr.push(h5BackgroundColor)
-        });
-        var $mainDiv = $('.secton-content');
-        function highlightTextInContent(text, bgColor) {
-          var $content = $mainDiv.find('*');
-          var regex = new RegExp('\\b' + escapeRegExp(text), 'gi');
+          var start = j.HighlightsConfiguration.start
+          var offset = j.HighlightsConfiguration.offset
+          var s_para = j.HighlightsConfiguration.selectedpara
+          var c_clr = j.HighlightsConfiguration.color
+          console.log("clr", c_clr);
+          var newVariable = ""
+          $(".secton-content p").each(function () {
+            var elementText = $(this).text();
 
-          $content.each(function () {
-            var $this = $(this);
-
-            if ($this.text().match(regex)) {
-              $this.html(function (_, html) {
-                return html.replace(regex, '<span style="background-color:' + bgColor + '" >$&</span>');
+            console.log(elementText === s_para);
+            if (elementText === s_para) {
+              var originalContent = $(this).html();
+              console.log("ele", elementText);
+              console.log("orginal", originalContent);
+              for (var i = start; i <= offset; i++) {
+                newVariable += originalContent.charAt(i);
+              }
+              var coloredSpan = $("<span>").text(newVariable).css("background-color", c_clr);
+              $(this).html(function (_, oldHtml) {
+                return oldHtml.substring(0, start) + coloredSpan[0].outerHTML + oldHtml.substring(offset + 1);
               });
             }
+
+
           });
-        }
 
-        function escapeRegExp(text) {
-          return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-        }
 
-        highlight.forEach(function (text, index) {
-          var bgColor = high_clr[index] || '';
-          highlightTextInContent(text, bgColor);
-        });
+        }
+        // var $container = $("#mySidenavRgtHigh>.note-content");
+        // var highlight = []
+        // var high_clr = []
+        // $container.find("h5").each(function (_, element) {
+        //   var h5Value = $(element).text();
+        //   highlight.push(h5Value)
+        //   var h5BackgroundColor = $(element).css("background-color");
+        //   high_clr.push(h5BackgroundColor)
+        // });
+        // var $mainDiv = $('.secton-content');
+        // function highlightTextInContent(text, bgColor) {
+        //   var $content = $mainDiv.find('*');
+        //   var regex = new RegExp('\\b' + escapeRegExp(text), 'gi');
+
+        //   $content.each(function () {
+        //     var $this = $(this);
+
+        //     if ($this.text().match(regex)) {
+        //       $this.html(function (_, html) {
+        //         return html.replace(regex, '<span style="background-color:' + bgColor + '" >$&</span>');
+        //       });
+        //     }
+        //   });
+        // }
+
+        // function escapeRegExp(text) {
+        //   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+        // }
+
+        // highlight.forEach(function (text, index) {
+        //   var bgColor = high_clr[index] || '';
+        //   highlightTextInContent(text, bgColor);
+        // });
       }
 
     }
@@ -595,4 +636,12 @@ $(document).ready(function () {
       };
     }
   }
+});
+/* Copy func */
+$('#copybtn').click(function() {
+
+  var copyText = selectedContent
+
+  navigator.clipboard.writeText(copyText);  
+    
 });

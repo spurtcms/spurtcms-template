@@ -13,29 +13,32 @@
           <input type="file">
         </div>
         <div class="profile-form">
-          <form action="">
+          <form action="" id="myprofileform" name="myprofileform" method="post" enctype="multipart/form-data">
             <div class="input-container">
-              <input type="text" id="firstname" class="w-100" value="{{.member.FirstName}}" required />
-              <label for="myInput">First name</label>
-              <span class="err-txt" id="memfname" style="display: none;">
-                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your first
-                name</span>
+              <input type="text" id="firstname" class="w-100 field" name="firstname"  value="{{.member.FirstName}}" required />
+              <label for="myInput" class="input-label">First name</label>
+          
+                <label id="firstname-error" class="error err-txt" for="firstname" style="display: none;">
+                  <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your The First Name </label>
+
             </div>
 
             <div class="input-container">
-              <input type="text" id="lastname" class="w-100" value="{{.member.LastName}}" required />
-              <label for="myInput">Last name</label>
-              <span class="err-txt" id="memlname" style="display: none;">
-                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your last
-                name</span>
+              <input type="text" id="lastname" class="w-100 field" name="lastname" value="{{.member.LastName}}" required />
+              <label for="myInput" class="input-label">Last name</label>
+      
+                <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
+                  <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your The First Name </label>
+
+
             </div>
 
             <div class="input-container">
-              <input type="text" id="mobileNumber" class="w-100" value="{{.member.MobileNo}}" required />
-              <label for="myInput">Mobile number</label>
-              <span class="err-txt" id="memnumber" style="display: none;">
-                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your mobile
-                number</span>
+              <input type="text" id="mobileNumber" class="w-100 field" name="mobileNumber" maxlength="10" value="{{.member.MobileNo}}" required />
+              <label for="myInput" class="input-label">Mobile number</label>
+       
+             <label id="mobileNumber-error" class="error err-txt" for="mobileNumber" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your Mobile Number</label>
             </div>
           </form>
         </div>
@@ -56,7 +59,7 @@
             <div class="input-container change">
               <input type="password" id="myPassword " class="w-100 label-style" value="" required readonly />
               <!-- <label for="myInput">Password</label> -->
-              <a href="/reset">change</a>
+              <a href="/change-email">change</a>
             </div>
           </form>
         </div>
@@ -75,3 +78,5 @@
 </body>
 
 </html>
+
+{{template "footer" .}}

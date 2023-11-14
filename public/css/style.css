@@ -1088,7 +1088,7 @@ textarea::-webkit-scrollbar {
     font-weight: normal;
 
 }
-
+/* 
 .input-container label {
     position: absolute;
     top: 18px;
@@ -1100,7 +1100,7 @@ textarea::-webkit-scrollbar {
     line-height: 1;
     pointer-events: none;
     transition: transform 0.3s, font-size 0.3s, background-color 0.4s;
-}
+} */
 
 .input-container input:focus,
 .input-container input:valid {

@@ -8,29 +8,42 @@
 
       <div class="mail-signIn mx-400">
 
-        <form id="loginform">
+        <form id="loginform" method="post" name="loginform"  enctype="multipart/form-data" action="">
 
           <div class="input-container" id="email-con">
-            <input type="text" id="myInput" class="mx-400" name="email" required>
-            <label for="myInput">Email address</label>
-            <span class="err-txt" id="mememail" style="display: none;">
-              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your email</span>
+            <input type="text" id="myInput" class="mx-400 field" name="email" required>
+            <label for="myInput" class="input-label">Email address</label>
+            <!-- <span class="err-txt" id="mememail" style="display: none;">
+              </span> -->
+              <label id="myInput-error"  class="error err-txt" for="myInput" style="display:none;"> <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your Email Address </label>
+                
+
           </div>
 
           <div class="input-container passwordEye" id="pass-con">
-            <input type="password" id="myPassword" class="mx-400 " name="password" required>
-            <label for="myInput">Password</label>
-            <span class="err-txt" id="mempass" style="display: none;">
-              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your pass</span>
+            <input type="password" id="myPassword" class="mx-400 field" name="password" required>
+            <label for="myInput" class="input-label">Password</label>
+            <!-- <span class="err-txt" id="mempass" style="display: none;">
+             </span> -->
+
+             <label id="myPassword-error" class="error err-txt" for="myPassword" style="display: none;"> 
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0 " alt="" >
+              Please Enter Your Password </label>
+           
           </div>
+
+          
+
+
           <button class="cms-btn-dark mx-400" type="button" id="submit">Log In</button>
 
-          <div class="account-forgot  "><a href="/signup" class="">Don’t have an account?</a> <a href="/retrieve"
+          <div class="account-forgot"><a href="/signup" class="">Don’t have an account?</a> <a href="/retrieve"
               class="">Forgot Password?</a></div>
         </form>
       </div>
     </div>
   </div>
+
 <script src="/public/js/login.js"></script>
 
   {{template "authfooter" .}}

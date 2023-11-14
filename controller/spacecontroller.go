@@ -90,7 +90,7 @@ func SpaceDetail(c *gin.Context) {
 		spaces = append(spaces, data)
 	}
 
-	c.HTML(200, "space-detail.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Spaces", "pageid": c.Query("pageid"), "member": memb})
+	c.HTML(200, "space-detail.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Spaces", "pageid": c.Query("pageid"), "member": memb, "myprofile": flg})
 }
 
 func PageView(c *gin.Context) {
@@ -128,11 +128,20 @@ func PageView(c *gin.Context) {
 
 	var note, er1 = pl.GetNotes(pid)
 
+	// for _, value := range highlight {
+
+	// 	var newhigh map [string] interface {}
+
+	// 	newhigh = value.HighlightsConfiguration
+
+	// 	log.Println(newhigh["offset"])
+	// }
+
 	log.Println("notes", note, er1)
 
 	log.Println("highlights", highlight, er)
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "pages", "content": Content, "error": Error,"myprofile": flg})
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "pages", "content": Content, "error": Error, "myprofile": flg})
 }
 
 /* Update Highlights */
@@ -149,15 +158,29 @@ func UpdateHighlights(c *gin.Context) {
 
 	}
 
+	var high pages.HighlightsReq
+
 	Id := c.PostForm("pgid")
 
-	page_id, _ := strconv.Atoi(Id)
+	startoff := c.PostForm("startoffset")
 
-	content := c.PostForm("content")
+	endoffset := c.PostForm("endoffset")
 
-	log.Println("new value", page_id, content)
+	high.Pageid, _ = strconv.Atoi(Id)
 
-	res, _ := pl.UpdateHighlights(page_id, content)
+	high.Start, _ = strconv.Atoi(startoff)
+
+	high.Offset, _ = strconv.Atoi(endoffset)
+
+	high.Content = c.PostForm("content")
+
+	high.SelectPara = c.PostForm("selectedtag")
+
+	high.ContentColor = c.PostForm("con_clr")
+
+	log.Println("high", high)
+
+	res, _ := pl.UpdateHighlights(high)
 
 	log.Println("res", res)
 

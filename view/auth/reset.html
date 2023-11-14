@@ -7,28 +7,18 @@
           </div>
           <div class="login-content">
             <div class="mail-signIn mx-400">
-              <form action="">
+              <form action="" name="changepasswordform"  id="changepasswordform" enctype="multipart/form-data" >
                 <div class="input-container">
-                  <input type="text" id="otp" class="mx-400" required />
+                  <input type="text" id="otp" name="otp" maxlength="6" class="mx-400 field" required />
                   <label for="myInput">Enter 6 digit OTP</label>
                 </div>
 
                 <div class="input-container passwordEye">
-                  <input
-                    type="password"
-                    id="mynewPassword "
-                    class="mx-400"
-                    required
-                  />
+                  <input  type="password" id="mynewPassword" name="mynewPassword" class="mx-400 field" required/>
                   <label for="myInput">New Password</label>
                 </div>
                 <div class="input-container passwordEye signupEye">
-                  <input
-                    type="password"
-                    id="confrimPassword "
-                    class="mx-400"
-                    required
-                  />
+                  <input type="password" id="confrimPassword" name="confrimPassword"  class="mx-400 field" required/>
                   <label for="myInput">Confirm New Password</label>
                 </div>
                 <p class="signUp-Comdition mb-16">
@@ -38,12 +28,14 @@
 
                 <button class="cms-btn-dark mx-400">Submit</button>
 
-                <div class="account-forgot">
+                <!-- <div class="account-forgot">
                   <a href="/" class="">Return to Login</a>
                   <a href="/signup" class="">Don’t have an account?</a>
-                </div>
+                </div> -->
               </form>
             </div>
           </div>
         </div>
+
+        
         {{template "authfooter" .}}

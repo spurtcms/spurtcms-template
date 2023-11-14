@@ -1,0 +1,32 @@
+/* input label design */
+.input-container .input-label{
+    
+    position: absolute;
+    top: 18px;
+    left: 10px;
+    color: #9F9F9F;
+    font-size: 16px;
+    background-color: transparent;
+    font-weight: normal;
+    line-height: 1;
+    pointer-events: none;
+    transition: transform 0.3s, font-size 0.3s, background-color 0.4s;
+}
+
+/*err-before*/
+.error::before {
+content: '';
+background-image: url("/public/images/Iconionic-ios-close-circle.svg");
+width: 10px;
+height: 10px;
+display: inline-block;
+}
+/* error Message style */
+
+.error{
+
+color: 9f9f9f;
+line-height: 14px;
+font-size: 12px;
+}
+

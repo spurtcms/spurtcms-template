@@ -7,13 +7,13 @@
     </div>
     <div class="login-content">
       <div class="mail-signIn mx-400">
-        <form id="otp-form">
+        <form id="otpform" name="otpform" method="" enctype="multipart/form-data">
           <div class="input-container mb-16" id="email-con">
-            <input type="text" id="oldmailaddredd" name="email" class="mx-400" />
-            <label for="myInput">Old Email address</label>
-            <span class="err-txt" id="mememail" style="display: none;">
-              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />please enter your old
-              email</span>
+            <input type="text" id="oldemail" name="email" class="mx-400 field" />
+            <label for="myInput" class="input-label">Old Email address</label>
+           
+              <label id="oldemail-error" class="error err-txt" for="oldemail" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />   Please Enter Your Old Email Address</label>
           </div>
           <button class="cms-btn-dark mx-400" type="button" id="submit">Submit</button>
         </form>
