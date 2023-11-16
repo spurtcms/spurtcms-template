@@ -2,6 +2,7 @@
 $("input[name='sname']").keyup(function () {
   $(".srch-arrow").addClass("div-show");
   $(".reset-inpt").attr("type", "reset");
+  search();
 });
 $(document).ready(function () {
   var Id = $("#spid").val()
@@ -71,16 +72,20 @@ $(document).on('click', '.search-cnl', function () {
 })
 
 /* Search and Highlight */
-$(document).ready(function () {
+function search(){
+
+
   var $searchInput = $('#search-data');
   var $mainDiv = $('#centerSection');
   var $count = $("#count");
   var currentIndex = 0;
   $content = $mainDiv.find('h3,p');
+  console.log("result", $content );
+  console.log("result",  $content.prevObject.context.firstElementChild.innerText);
 
   $searchInput.on('input', function () {
     var searchTerm = $searchInput.val().trim();
-    $content.find('.highlight-content').contents().unwrap();
+   $content.find('.highlight-content').contents().unwrap();
 
     if (searchTerm.length === 0) {
       cont = 0;
@@ -90,12 +95,15 @@ $(document).ready(function () {
     }
 
     var regex = new RegExp('\\b' + escapeRegExp(searchTerm), 'gi');
+    console.log("regex",regex);
     cont = 0;
     currentIndex = 0;
 
     $content.each(function () {
       var $this = $(this);
+      console.log("this ",$this);
       if (regex != "") {
+        console.log("($this.text().match(regex))",($this.text().match(regex)));
         if ($this.text().match(regex)) {
           $this.html(function (_, html) {
             cont++;
@@ -164,7 +172,7 @@ $(document).ready(function () {
     }
   });
 
-});
+}
 
 /* Notes and save */
 $(document).on('click', '#save-btn', function () {
@@ -197,7 +205,10 @@ $(document).on("click", ".content", function () {
   console.log("selection",selection);
   selectedContent = selection.toString();
   var range = selection.getRangeAt(0);
+  console.log("rages",range);
   selectedTag = range.startContainer.parentNode.innerText;
+  var ch = range.startContainer.childNodes.innerText;
+  console.log("ch",ch);
   console.log("ss", selectedTag);
   startoffset = range.startOffset
   endoffset = range.endOffset
@@ -567,6 +578,7 @@ function PGList(spslug, spid, Rpgid) {
 
 //   }
 // })
+
 /* Read Button */
 $(document).ready(function () {
   var speechContent = [];
@@ -637,7 +649,7 @@ $(document).ready(function () {
     }
   }
 });
-/* Copy func */
+/* Copy function */
 $('#copybtn').click(function() {
 
   var copyText = selectedContent

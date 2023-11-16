@@ -43,5 +43,8 @@ func SetupRoutes() *gin.Engine {
 	r.GET("/page", controller.PageView)
 	r.POST("/highlights", controller.UpdateHighlights)
 	r.POST("/notes", controller.UpdateNotes)
+	r.GET("/passwordotp", controller.ChangePassword)
+	r.GET("/passwordchange", controller.AddNewPassword)
+	r.POST("/verify-otppass", controller.OtpVerifypass)
 	return r
 }

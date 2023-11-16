@@ -18,7 +18,7 @@ import (
 
 var flg = false
 
-var Auth auth.Authority
+var Auth auth.Authorization
 
 var mem member.MemberAuth
 
@@ -135,10 +135,21 @@ func ChangeEmail(c *gin.Context) {
 
 	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail"})
 }
+
 func AddNewEmail(c *gin.Context) {
 
 	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail"})
 
+}
+
+func ChangePassword(c *gin.Context) {
+
+	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword"})
+}
+
+func AddNewPassword(c *gin.Context) {
+
+	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword"})
 }
 
 func OtpGenarate(c *gin.Context) {
@@ -147,11 +158,15 @@ func OtpGenarate(c *gin.Context) {
 
 	log.Println("email", eamil)
 
-	mem.Auth = &Auth
+	mem.Auth = &auth1
 
-	memb, _ := mem.GetMemberDetails()
+	memdetail, mailcheck, err := mem.CheckEmailInMember(0, eamil)
 
-	if memb.Email == eamil {
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(mailcheck)
+	if mailcheck {
 
 		rand.Seed(time.Now().UnixNano())
 
@@ -169,9 +184,9 @@ func OtpGenarate(c *gin.Context) {
 
 		password := os.Getenv("MAIL_PASSWORD")
 
-		to := memb.Email
+		to := eamil
 
-		mem.UpdateOtp(randomNumber)
+		mem.UpdateOtp(randomNumber, memdetail.Id)
 
 		message := fmt.Sprintf("Your OTP code is: %s", otp)
 
@@ -214,6 +229,41 @@ func OtpVerify(c *gin.Context) {
 	_, err := mem.ChangeEmailId(otp, newemail)
 
 	if err != nil {
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
+
+	} else {
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
+
+	}
+
+}
+
+// Change Password
+
+func OtpVerifypass(c *gin.Context) {
+
+	num := c.PostForm("otp")
+
+	fmt.Println("otp", num)
+
+	otp, _ := strconv.Atoi(num)
+
+	newpass := c.PostForm("mynewPassword")
+
+	log.Println("newpass", newpass)
+
+	email := c.PostForm("emailid")
+
+	memdetail, mailcheck, err := mem.CheckEmailInMember(0, email)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(mailcheck)
+
+	_, err1 := mem.ChangePassword(otp, memdetail.Id, newpass)
+
+	if err1 != nil {
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
 
 	} else {

@@ -18,7 +18,7 @@ var sp spaces.MemberSpace
 
 var DB *gorm.DB
 
-var auth1 auth.Authority
+var auth1 auth.Authorization
 
 func init() {
 

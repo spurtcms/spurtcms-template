@@ -4,7 +4,7 @@ $(document).ready(function () {
         "pass_validator",
         function (value, element) {
             if (value != "") {
-                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value)) 
+                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value))
                     return true;
                 else return false;
             }
@@ -14,75 +14,43 @@ $(document).ready(function () {
     );
 
 
+    // $.validator.addMethod("otp_validator", function (value) {
+    //     return /(^[0-9]\g){1,6}$/.test(value);
+    // }, ' Please Enter 6 Digit Number ');
+
     $.validator.addMethod("otp_validator", function (value) {
-        return /(^[0-9]\g){1,6}$/.test(value);
-    }, '* Please Enter 6 Digit Number ');
+        return /^\d{6}$/.test(value);
+    }, '* Please Enter 6 Digit Number');
 
-        $("form[name='changepasswordform']").validate({
-            rules: {
-                otp:{
-                required:true,
-                otp_validator :true
-                },
-                mynewPassword: {
-                    required: true,
-                    pass_validator:true                   
-                },
-                confrimPassword: {
-                    required: true,
-                    equalTo: "#mynewPassword"
-                }
+    $("form[name='changepasswordform']").validate({
+        rules: {
+            otp: {
+                required: true,
+                otp_validator: true
             },
-            messages: {
-                otp:{
-                    required:"Please Enter The Otp "
-                },
-                mynewPassword: {
-                    required: " Please Enter Your New Password" ,
-                },
-                confrimPassword: {
-                    required: " Please Re-Enter Your New Password ",
-                    equalTo:" Please Enter The Same New Password"
-                }
-                }
-        });
+            mynewPassword: {
+                required: true,
+                pass_validator: true
+            },
+            confrimPassword: {
+                required: true,
+                equalTo: "#mynewPassword"
+            }
+        },
+        messages: {
+            otp: {
+                required: "Please Enter The Otp "
+            },
+            mynewPassword: {
+                required: " Please Enter Your New Password",
+            },
+            confrimPassword: {
+                required: " Please Re-Enter Your New Password ",
+                equalTo: " Please Enter The Same New Password"
+            }
+        }
+    });
 
-
-
-       
-        // console.log("email", otp, newemail, confirmemail);
-        // if (otp == "" && newemail == "" && confirmemail == "") {
-        //     $("#memotp").show()
-        //     $("#mememail").show()
-        //     $("#mem-co-email").show()
-        //     $("#otp-con").addClass("err")
-        //     $("#email-con").addClass("err")
-        //     $("#confrimemail-con").addClass("err")
-        // } if (otp == "") {
-        //     $("#memotp").show()
-        //     $("#otp-con").addClass("err")
-
-
-        // } if (newemail == "") {
-        //     $("#mememail").show()
-        //     $("#email-con").addClass("err")
-
-
-        // } if (confirmemail == "") {
-
-        //     $("#mem-co-email").show()
-        //     $("#confrimemail-con").addClass("err")
-
-
-        // } else {
-        //     $("#memotp").hide()
-        //     $("#mememail").hide()
-        //     $("#mem-co-email").hide()
-        //     $("#otp-con").removeClass("err")
-        //     $("#email-con").removeClass("err")
-        //     $("#confrimemail-con").removeClass("err")
-
-        // }
 })
 
 $(document).on("click", "#submit", function () {
@@ -94,7 +62,7 @@ $(document).on("click", "#submit", function () {
     var confirmpassword = $("#confrimPassword").val()
     if (formcheck == true) {
         $.ajax({
-            url: "/verify-otp",
+            url: "/verify-otppass",
             method: "POST",
             data: { "otp": otp, "newpassword": newpassword, "confirmpassword": confirmpassword },
             datatype: 'json',
@@ -111,46 +79,87 @@ $(document).on("click", "#submit", function () {
                     $("#otp-error").html(content)
                     $("#otp-error").show()
                 } if (parse_data.verify == "") {
-                    window.location.href = "/myprofile"
+                    window.location.href = "/login"
                 }
-        
+
             }
         })
 
-        
-    }else{
 
-        $(document).on('keyup',".field",function(){
+    } else {
+
+        $(document).on('keyup', ".field", function () {
             Validationcheck()
         })
-       $('.input-container').each(function() {
-        var inputField = $(this).find('input');
-        var inputName = inputField.attr('name');
-        
-        if (!inputField.valid()) {
-          $(this).addClass("err");
-       
-        } else {
-          $(this).removeClass("err")
-        }
-         })
+        $('.input-container').each(function () {
+            var inputField = $(this).find('input');
+            var inputName = inputField.attr('name');
+
+            if (!inputField.valid()) {
+                $(this).addClass("err");
+
+            } else {
+                $(this).removeClass("err")
+            }
+        })
     }
 
 
 })
 
-function Validationcheck(){
+function Validationcheck() {
     let inputGro = document.querySelectorAll('.input-container');
     inputGro.forEach(inputGroup => {
         let inputField = inputGroup.querySelector('input');
         var inputName = inputField.getAttribute('name');
-        console.log("input",inputName)
-      
+
         if (inputField.classList.contains('error')) {
             inputGroup.classList.add('err');
         } else {
             inputGroup.classList.remove('err');
         }
-      
+
     });
 }
+
+// Password Change
+$(document).on('click', '#eye', function () {
+
+    var This = $("#mynewPassword")
+
+    if ($(This).attr('type') === 'password') {
+
+        $(This).attr('type', 'text');
+
+        $(this).addClass('active')
+
+    } else {
+
+        $(This).attr('type', 'password');
+
+        $(this).removeClass('active')
+    }
+})
+
+// Password Change
+$(document).on('click', '#eye1', function () {
+
+    var This = $("#confrimPassword")
+
+    if ($(This).attr('type') === 'password') {
+
+        $(This).attr('type', 'text');
+
+        $(this).addClass('active')
+
+        // $(this).removeClass('fa-eye-slash').addClass('fa-eye')
+
+    } else {
+
+        $(This).attr('type', 'password');
+
+        $(this).removeClass('active')
+        // $(this).removeClass('fa-eye').addClass('fa-eye-slash')
+
+    }
+})
