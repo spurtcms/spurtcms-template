@@ -6,7 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
 	github.com/spurtcms/spurtcms-content v1.0.15-0.20231114140220-648070003049
-	github.com/spurtcms/spurtcms-core v1.0.11-0.20231116125051-4ebff41793e8
+	github.com/spurtcms/spurtcms-core v1.0.11-0.20231116134957-3f0929598899
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 

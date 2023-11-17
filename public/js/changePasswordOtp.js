@@ -48,7 +48,7 @@ $(document).on("click", "#submit", function () {
                 $("#oldemail-error").html(content)
                 $("#oldemail-error").show()
             } if (parse_data.verify == "") {
-                window.location.href = "/passwordchange"
+                window.location.href = "/passwordchange?emailid="+email
             }
 
         }

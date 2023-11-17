@@ -71,58 +71,61 @@ $(document).on('click', '.search-cnl', function () {
   $content.find('.highlight-content').contents().unwrap();
 })
 
+var count 
+
 /* Search and Highlight */
 function search(){
-
 
   var $searchInput = $('#search-data');
   var $mainDiv = $('#centerSection');
   var $count = $("#count");
   var currentIndex = 0;
   $content = $mainDiv.find('h3,p');
-  console.log("result", $content );
-  console.log("result",  $content.prevObject.context.firstElementChild.innerText);
+  // console.log("result", $content );
+  // console.log("result",  $content.prevObject.context.firstElementChild.innerText);
 
   $searchInput.on('input', function () {
     var searchTerm = $searchInput.val().trim();
    $content.find('.highlight-content').contents().unwrap();
-
     if (searchTerm.length === 0) {
-      cont = 0;
+      count = 0;
       currentIndex = 0;
       $count.text("0 of 0");
       return;
     }
 
     var regex = new RegExp('\\b' + escapeRegExp(searchTerm), 'gi');
-    console.log("regex",regex);
-    cont = 0;
+ 
     currentIndex = 0;
 
     $content.each(function () {
       var $this = $(this);
-      console.log("this ",$this);
       if (regex != "") {
-        console.log("($this.text().match(regex))",($this.text().match(regex)));
         if ($this.text().match(regex)) {
           $this.html(function (_, html) {
-            cont++;
+          //  cont++;
             return html.replace(regex, '<span class="highlight-content">$&</span>');
           });
         }
       }
     });
+
+   var text = $content.find('.highlight-content')
+
+ count = text.length
+
     updateCount();
   });
 
+
   function updateCount() {
-    $count.text((currentIndex + 1) + " of " + cont);
+    $count.text((currentIndex + 1) + " of " +  count);
     focusCurrentIndex();
   }
   function focusCurrentIndex() {
     var highlightedWords = $(".highlight-content");
 
-    if (cont > 0) {
+    if (count > 0) {
       highlightedWords.removeClass('focused');
       highlightedWords.css('background-color', '');
 
@@ -159,15 +162,15 @@ function search(){
   }
 
   $("#up-icon").click(function () {
-    if (cont > 0) {
-      currentIndex = (currentIndex - 1 + cont) % cont;
+    if (count > 0) {
+      currentIndex = (currentIndex - 1 + count) % count;
       updateCount();
     }
   });
 
   $("#down-icon").click(function () {
-    if (cont > 0) {
-      currentIndex = (currentIndex + 1) % cont;
+    if (count > 0) {
+      currentIndex = (currentIndex + 1) % count;
       updateCount();
     }
   });
@@ -198,21 +201,42 @@ $(document).on('click', '#save-btn', function () {
 /* Highlights */
 var selection;
 var selectedContent;
-var selectedTag, startoffset, endoffset
+var selectedTag, s_offset, e_offset
 var span
-$(document).on("click", ".content", function () {
+$(document).on("click", ".secton-content", function () {
+  var startOffsetRelativeToP = 0;
+  var endOffsetRelativeToP = 0;
   selection = window.getSelection()
-  console.log("selection",selection);
+  console.log("selection", selection);
   selectedContent = selection.toString();
   var range = selection.getRangeAt(0);
-  console.log("rages",range);
   selectedTag = range.startContainer.parentNode.innerText;
-  var ch = range.startContainer.childNodes.innerText;
-  console.log("ch",ch);
-  console.log("ss", selectedTag);
-  startoffset = range.startOffset
-  endoffset = range.endOffset
-  console.log("range",startoffset,endoffset);
+  var startContainerTagName = range.startContainer.parentNode.tagName.toLowerCase();
+  console.log("selected tag name", startContainerTagName);
+  if(startContainerTagName == "span" && $(".secton-content span").hasClass("clear_clr")){
+    $(".hoverMenu").hide()
+  }
+  var startContainer = range.startContainer;
+  var endContainer = range.endContainer;
+
+  while (startContainer.previousSibling) {
+    startContainer = startContainer.previousSibling;
+    startOffsetRelativeToP += startContainer.textContent.length;
+    console.log("ss", startOffsetRelativeToP);
+
+  }
+
+  while (endContainer.previousSibling) {
+    endContainer = endContainer.previousSibling;
+    endOffsetRelativeToP += endContainer.textContent.length;
+    console.log("sss", endOffsetRelativeToP);
+  }
+  // Adjust the offsets
+  startOffsetRelativeToP += range.startOffset;
+  endOffsetRelativeToP += range.endOffset;
+  s_offset = startOffsetRelativeToP
+  e_offset = endOffsetRelativeToP
+  console.log("start,end", startOffsetRelativeToP, endOffsetRelativeToP);
   span = document.createElement('span');
   range.surroundContents(span);
   /* Selection Clear */
@@ -224,6 +248,15 @@ $(document).on("click", ".clr", function () {
   var htmlContent;
   var con_clr;
   var cl = $(this).attr("color-value")
+  var currentDate = new Date();
+  var day = ('0' + currentDate.getDate()).slice(-2);
+  var monthAbbrev = currentDate.toLocaleString('default', { month: 'short' }).toLowerCase();
+  var year = ('' + currentDate.getFullYear()).slice(-2);
+  var hours = ('0' + currentDate.getHours() % 12).slice(-2);
+  var minutes = ('0' + currentDate.getMinutes()).slice(-2);
+  var ampm = currentDate.getHours() >= 12 ? 'pm' : 'am';
+  var custom_DateTime = day + monthAbbrev + year + ',' + hours + '.' + minutes + ampm;
+
   if (cl == "read") {
     var Speaker = false;
     var content = selectedContent
@@ -246,22 +279,22 @@ $(document).on("click", ".clr", function () {
     span.className = 'selected-yellow';
     con_clr = "rgba(255, 215, 82, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(255, 215, 82, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
   } if (cl == "pink") {
     span.className = 'selected-pink';
     con_clr = "rgba(247, 156, 156, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(247, 156, 156, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
   } if (cl == "green") {
     span.className = 'selected-green';
     con_clr = "rgba(106, 171, 250, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
   } if (cl == "blue") {
     span.className = 'selected-blue';
     con_clr = "rgba(77, 200, 142, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on 27sep23, 06:15pm</span></div>');
+    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
 
   }
   $.ajax({
@@ -272,8 +305,8 @@ $(document).on("click", ".clr", function () {
       pgid: Pageid,
       content: htmlContent,
       selectedtag: selectedTag,
-      startoffset: startoffset,
-      endoffset: endoffset,
+      startoffset: s_offset,
+      endoffset: e_offset,
       con_clr: con_clr
     },
     success: function (result) {
@@ -297,9 +330,9 @@ var overallarray = []
 /**Add pagegroup string */
 function AddGroupString(groupname, gid) {
   return `
-  <div class="groupdiv groupdiv`+ gid + `">
-     <h3 class="gry-txt">` + groupname + `</h3>
-  </div>`
+   <div class="groupdiv groupdiv`+ gid + `">
+      <h3 class="gry-txt">` + groupname + `</h3>
+   </div>`
 }
 /**Add page string */
 function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
@@ -307,22 +340,22 @@ function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
   var html
   if (pgid == Rpgid) {
     html = `<a href="/space/` + space + `/` + pgslug + `?spid=` + spid + `&pageid=` + pgid + `">
-  <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
-  <h2 class="accordion-header" id="headingOne">
-  <button class="accordion-button page" data-id="` + pgid + `" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne` + pgid + `"
-   aria-expanded="true" aria-controls="collapseOne">` + name + `
-   </button>
-   </h2>
-  </div></a>`
+   <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
+   <h2 class="accordion-header" id="headingOne">
+   <button class="accordion-button page" data-id="` + pgid + `" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne` + pgid + `"
+    aria-expanded="true" aria-controls="collapseOne">` + name + `
+    </button>
+    </h2>
+   </div></a>`
   } else {
     html = `<a href="/space/` + space + `/` + pgslug + `?spid=` + spid + `&pageid=` + pgid + `">
-  <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
-  <h2 class="accordion-header" id="headingOne">
-  <button class="accordion-button page collapsed" data-id="` + pgid + `" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne` + pgid + `"
-   aria-expanded="false" aria-controls="collapseOne">` + name + `
-   </button>
-   </h2>
-  </div></a>`
+   <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
+   <h2 class="accordion-header" id="headingOne">
+   <button class="accordion-button page collapsed" data-id="` + pgid + `" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne` + pgid + `"
+    aria-expanded="false" aria-controls="collapseOne">` + name + `
+    </button>
+    </h2>
+   </div></a>`
   }
 
   return html
@@ -332,20 +365,20 @@ function AddSubPageString(value, parentid, id, space, pgslug, subslug, spid, Rpg
   var html;
   if (Rpgid == parentid) {
     html = `<a href="/space/` + space + `/` + pgslug + `/` + subslug + `?spid=` + spid + `&pageid=` + id + `">
-  <div id="collapseOne`+ parentid + `" class="accordion-collapse  collapse show" aria-labelledby="headingOne"
-  data-bs-parent="#accordionExample " data-parent="`+ parentid + `">
-  <div class="accordion-body subpage" data-id="` + id + `">
-  <p>` + value + `</p>
-  </div>
- </div></a>`
+   <div id="collapseOne`+ parentid + `" class="accordion-collapse  collapse show" aria-labelledby="headingOne"
+   data-bs-parent="#accordionExample " data-parent="`+ parentid + `">
+   <div class="accordion-body subpage" data-id="` + id + `">
+   <p>` + value + `</p>
+   </div>
+  </div></a>`
   } else {
     html = `<a href="/space/` + space + `/` + pgslug + `/` + subslug + `?spid=` + spid + `&pageid=` + id + `">
-  <div id="collapseOne`+ parentid + `" class="accordion-collapse  collapse" aria-labelledby="headingOne"
-  data-bs-parent="#accordionExample" data-parent="`+ parentid + `">
-  <div class="accordion-body subpage" data-id="` + id + `">
-  <p>` + value + `</p>
-  </div>
- </div></a>`
+   <div id="collapseOne`+ parentid + `" class="accordion-collapse  collapse" aria-labelledby="headingOne"
+   data-bs-parent="#accordionExample" data-parent="`+ parentid + `">
+   <div class="accordion-body subpage" data-id="` + id + `">
+   <p>` + value + `</p>
+   </div>
+  </div></a>`
   }
   return html
 }
@@ -401,7 +434,6 @@ $(document).ready(function () {
         }
       }
       if (result.highlight != null) {
-        console.log("hights", result.highlight);
         var Highlight = result.highlight
         for (let j of Highlight) {
           $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn + 'pm</span></div>');
@@ -409,63 +441,21 @@ $(document).ready(function () {
           var offset = j.HighlightsConfiguration.offset
           var s_para = j.HighlightsConfiguration.selectedpara
           var c_clr = j.HighlightsConfiguration.color
-          console.log("clr", c_clr);
-          var newVariable = ""
           $(".secton-content p").each(function () {
             var elementText = $(this).text();
-
-            console.log(elementText === s_para);
             if (elementText === s_para) {
-              var originalContent = $(this).html();
-              console.log("ele", elementText);
-              console.log("orginal", originalContent);
-              for (var i = start; i <= offset; i++) {
-                newVariable += originalContent.charAt(i);
-              }
-              var coloredSpan = $("<span>").text(newVariable).css("background-color", c_clr);
-              $(this).html(function (_, oldHtml) {
-                return oldHtml.substring(0, start) + coloredSpan[0].outerHTML + oldHtml.substring(offset + 1);
-              });
+              var originalContent = $(this).text();
+              var html = $(this).html()
+              var content = originalContent.substring(start, offset);
+              var highlightedContent = '<span class="clear_clr" style="background-color:' + c_clr + '">' + content + '</span>';
+              $(this).html(html.replace(content, highlightedContent))
             }
-
 
           });
 
 
         }
-        // var $container = $("#mySidenavRgtHigh>.note-content");
-        // var highlight = []
-        // var high_clr = []
-        // $container.find("h5").each(function (_, element) {
-        //   var h5Value = $(element).text();
-        //   highlight.push(h5Value)
-        //   var h5BackgroundColor = $(element).css("background-color");
-        //   high_clr.push(h5BackgroundColor)
-        // });
-        // var $mainDiv = $('.secton-content');
-        // function highlightTextInContent(text, bgColor) {
-        //   var $content = $mainDiv.find('*');
-        //   var regex = new RegExp('\\b' + escapeRegExp(text), 'gi');
 
-        //   $content.each(function () {
-        //     var $this = $(this);
-
-        //     if ($this.text().match(regex)) {
-        //       $this.html(function (_, html) {
-        //         return html.replace(regex, '<span style="background-color:' + bgColor + '" >$&</span>');
-        //       });
-        //     }
-        //   });
-        // }
-
-        // function escapeRegExp(text) {
-        //   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
-        // }
-
-        // highlight.forEach(function (text, index) {
-        //   var bgColor = high_clr[index] || '';
-        //   highlightTextInContent(text, bgColor);
-        // });
       }
 
     }
@@ -477,6 +467,7 @@ function PGList(spslug, spid, Rpgid) {
 
 
   $('.accordion').html('');
+
   for (let x of overallarray) {
 
     orderindex = x['OrderIndex']
@@ -487,7 +478,9 @@ function PGList(spslug, spid, Rpgid) {
 
       var pa = x['Name']
 
-      var pgslug = pa.toLowerCase().replace(/ /g, '_');
+      var s_remove = pa.toLowerCase().replace(/ /g, '_');
+
+      var pgslug = s_remove.replace('?', '');
 
 
       var AddPage = AddPageString(x['Name'], x['PgId'], spslug, pgslug, spid, Rpgid);
@@ -508,7 +501,9 @@ function PGList(spslug, spid, Rpgid) {
 
           var pa = y['Name']
 
-          var pgslug = pa.toLowerCase().replace(/ /g, '_');
+          var s_remove = pa.toLowerCase().replace(/ /g, '_');
+
+          var pgslug = s_remove.replace('?', '');
 
           var AddPage = AddPageString(y['Name'], y['PgId'], spslug, pgslug, spid)
 
@@ -532,13 +527,17 @@ function PGList(spslug, spid, Rpgid) {
 
         var pa = x['Name']
 
-        var pgslug = pa.toLowerCase().replace(/ /g, '_');
+        var s_remove = pa.toLowerCase().replace(/ /g, '_');
+
+        var pgslug = s_remove.replace('?', '');
 
         suborderindex = j['OrderIndex']
 
         var sp = j['Name']
 
-        var subslug = sp.toLowerCase().replace(/ /g, '_');
+        var Sb_remove = sp.toLowerCase().replace(/ /g, '_');
+
+        var subslug = Sb_remove.replace('?', '')
 
         var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'], spslug, pgslug, subslug, spid, Rpgid)
 
@@ -550,35 +549,6 @@ function PGList(spslug, spid, Rpgid) {
     }
   }
 }
-/* Page Content View */
-// $(document).on('click', '.page', function () {
-//   $("#Title").empty();
-//   $(".secton-content").empty();
-//   var pgid = $(this).attr("data-id")
-//   for (let j of newpages) {
-//     if (j['PgId'] == pgid) {
-//       $("#Title").text(j['Name'])
-//       $(".secton-content").append(j['Content'])
-
-//     }
-
-//   }
-// })
-
-/* Subpage Content View */
-// $(document).on('click', '.subpage', function () {
-//   $(".secton-content").empty();
-//   var pgid = $(this).attr("data-id")
-//   for (let j of Subpage) {
-//     if (j['SpgId'] == pgid) {
-//       $("#Title").text(j['Name'])
-//       $(".secton-content").append(j['Content'])
-
-//     }
-
-//   }
-// })
-
 /* Read Button */
 $(document).ready(function () {
   var speechContent = [];
@@ -650,10 +620,10 @@ $(document).ready(function () {
   }
 });
 /* Copy function */
-$('#copybtn').click(function() {
+$('#copybtn').click(function () {
 
   var copyText = selectedContent
 
-  navigator.clipboard.writeText(copyText);  
-    
+  navigator.clipboard.writeText(copyText);
+
 });

@@ -55,6 +55,10 @@ $(document).ready(function () {
 
 $(document).on("click", "#submit", function () {
 
+    var url = window.location.search;
+    const urlpar = new URLSearchParams(url);
+    id = urlpar.get('emailid');
+
     var formcheck = $("form[name ='changepasswordform']").valid()
 
     var otp = $("#otp").val()
@@ -64,7 +68,7 @@ $(document).on("click", "#submit", function () {
         $.ajax({
             url: "/verify-otppass",
             method: "POST",
-            data: { "otp": otp, "newpassword": newpassword, "confirmpassword": confirmpassword },
+            data: {"id":id ,"otp": otp, "mynewPassword": newpassword, "confrimPassword": confirmpassword },
             datatype: 'json',
             success: function (data) {
                 console.log(data);

@@ -10,23 +10,38 @@
               <form action="" name="changepasswordform"  id="changepasswordform" enctype="multipart/form-data" >
                 <div class="input-container">
                   <input type="text" id="otp" name="otp" maxlength="6" class="mx-400 field" required />
-                  <label for="myInput">Enter 6 digit OTP</label>
+                  <label for="myInput" class="input-label">Enter 6 digit OTP</label>
+                  <label id="otp-error" class="error err-txt" for="otp" style="display: none;">Please Enter The Otp </label>
+
                 </div>
 
                 <div class="input-container passwordEye">
                   <input  type="password" id="mynewPassword" name="mynewPassword" class="mx-400 field" required/>
-                  <label for="myInput">New Password</label>
+                  <label for="myInput" class="input-label">New Password</label>
+
+                  <label id="mynewPassword-error" class="error err-txt" for="mynewPassword" style="display: none;">Please
+                    Enter Your New Password</label>
+                    
+                  <button id="eye" class="eyeimg" type="button"><img src="/public/images/MaskGroup51.svg" alt="">
+                    <img src="/public/images/MaskGroup54.svg" alt="">
+                  </button>
                 </div>
                 <div class="input-container passwordEye signupEye">
                   <input type="password" id="confrimPassword" name="confrimPassword"  class="mx-400 field" required/>
-                  <label for="myInput">Confirm New Password</label>
+                  <label for="myInput" class="input-label">Confirm New Password</label>
+                  <label id="confrimPassword-error" class="error err-txt" for="confrimPassword" style="display: none;"> Please
+                    Re-Enter Your New Password </label>
+                  <button id="eye" class="eyeimg" type="button"><img src="/public/images/MaskGroup51.svg" alt="">
+                    <img src="/public/images/MaskGroup54.svg" alt="">
+                  </button>
+
                 </div>
                 <p class="signUp-Comdition mb-16">
                   Did not receive the OTP?
                   <a href="">Send again</a>
                 </p>
 
-                <button class="cms-btn-dark mx-400">Submit</button>
+                <button class="cms-btn-dark mx-400" id="submit" type="button">Submit</button>
 
                 <!-- <div class="account-forgot">
                   <a href="/" class="">Return to Login</a>
@@ -37,5 +52,5 @@
           </div>
         </div>
 
-        
+        <script src="/public/js/passwordreset.js"></script>
         {{template "authfooter" .}}

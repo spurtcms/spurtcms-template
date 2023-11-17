@@ -87,6 +87,8 @@ github.com/spurtcms/spurtcms-core v1.0.11-0.20231114073926-7185dd8b34b3 h1:rm6q5
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231114073926-7185dd8b34b3/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231116125051-4ebff41793e8 h1:zXapUy9oCAQ8yItSlGHwLnudEm1U/4GIg+VHjdDAWc0=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231116125051-4ebff41793e8/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
+github.com/spurtcms/spurtcms-core v1.0.11-0.20231116134957-3f0929598899 h1:B65cw/0EqrBSlTbjbNuOO/C3toK9XKY091a2G2oJpuw=
+github.com/spurtcms/spurtcms-core v1.0.11-0.20231116134957-3f0929598899/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=

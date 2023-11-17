@@ -14,15 +14,20 @@ $(document).ready(function () {
     );
 
 
+    // $.validator.addMethod("otp_validator", function (value) {
+    //     return /(^[0-9]\g){1,6}$/.test(value);
+    // }, ' Please Enter 6 Digit Number ');
+
+
     $.validator.addMethod("otp_validator", function (value) {
-        return /(^[0-9]\g){1,6}$/.test(value);
-    }, ' Please Enter 6 Digit Number ');
+        return /^\d{6}$/.test(value);
+    }, '* Please Enter 6 Digit Number');
 
         $("form[name='changepasswordform']").validate({
             rules: {
                 otp:{
                 required:true,
-                // otp_validator :true
+                otp_validator :true
                 },
                 mynewPassword: {
                     required: true,
@@ -51,36 +56,39 @@ $(document).ready(function () {
 
 $(document).on("click", "#submit", function () {
 
-    var formcheck = $("form[name ='changepasswordform']").valid()
-
-    var otp = $("#otp").val()
-    var newpassword = $("#mynewPassword").val()
-    var confirmpassword = $("#confrimPassword").val()
-    if (formcheck == true) {
-        $.ajax({
-            url: "/verify-otp",
-            method: "POST",
-            data: { "otp": otp, "newpassword": newpassword, "confirmpassword": confirmpassword },
-            datatype: 'json',
-            success: function (data) {
-                console.log(data);
-                var parse_data = JSON.parse(data)
-                console.log(parse_data.verify);
-                if (parse_data.verify == "invalid otp") {
-                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid otp'
-                    $("#otp-error").html(content)
-                    $("#otp-error").show()
-                } if (parse_data.verify == "otp exipred") {
-                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />otp exipred'
-                    $("#otp-error").html(content)
-                    $("#otp-error").show()
-                } if (parse_data.verify == "") {
-                    window.location.href = "/myprofile"
+    var url = window.location.search;
+    const urlpar = new URLSearchParams(url);
+    id = urlpar.get('emailid');
+    
+        var formcheck = $("form[name ='changepasswordform']").valid()
+    
+        var otp = $("#otp").val()
+        var newpassword = $("#mynewPassword").val()
+        var confirmpassword = $("#confrimPassword").val()
+        if (formcheck == true) {
+            $.ajax({
+                url: "/verify-otppass",
+                method: "POST",
+                data: { "id":id,"otp": otp, "mynewPassword": newpassword, "confrimPassword": confirmpassword  },
+                datatype: 'json',
+                success: function (data) {
+                    console.log(data);
+                    var parse_data = JSON.parse(data)
+                    console.log(parse_data.verify);
+                    if (parse_data.verify == "invalid otp") {
+                        var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid otp'
+                        $("#otp-error").html(content)
+                        $("#otp-error").show()
+                    } if (parse_data.verify == "otp exipred") {
+                        var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />otp exipred'
+                        $("#otp-error").html(content)
+                        $("#otp-error").show()
+                    } if (parse_data.verify == "") {
+                        window.location.href = "/myprofile"
+                    }
+    
                 }
-        
-            }
-        })
-
+            })
         
     }else{
 
@@ -118,7 +126,7 @@ function Validationcheck(){
     });
 }
 
-// // Password Change
+ // Password Change
 // $(document).on('click', '#eye', function () {
 
 //     var This = $("#mynewPassword")
@@ -167,7 +175,7 @@ function Validationcheck(){
 
 // Password change into text
 
-$(".eyeimg").click (function(){
+$("#eye").click (function(){
 
     var This = $("#mynewPassword")
 
@@ -193,7 +201,7 @@ $(".eyeimg").click (function(){
 
 })
 
-$(".eyeimg").click (function(){
+$("#eye1").click (function(){
 
     var This = $("#confrimPassword")
 

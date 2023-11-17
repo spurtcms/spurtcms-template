@@ -110,6 +110,7 @@ func MyProfile(c *gin.Context) {
 
 	mem.Auth = &Auth
 
+	log.Println("mem", mem.Auth)
 	memb, _ := mem.GetMemberDetails()
 
 	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb})
@@ -166,6 +167,7 @@ func OtpGenarate(c *gin.Context) {
 		fmt.Println(err)
 	}
 	fmt.Println(mailcheck)
+
 	if mailcheck {
 
 		rand.Seed(time.Now().UnixNano())
@@ -244,15 +246,11 @@ func OtpVerifypass(c *gin.Context) {
 
 	num := c.PostForm("otp")
 
-	fmt.Println("otp", num)
-
 	otp, _ := strconv.Atoi(num)
 
 	newpass := c.PostForm("mynewPassword")
 
-	log.Println("newpass", newpass)
-
-	email := c.PostForm("emailid")
+	email := c.PostForm("id")
 
 	memdetail, mailcheck, err := mem.CheckEmailInMember(0, email)
 
@@ -264,7 +262,7 @@ func OtpVerifypass(c *gin.Context) {
 	_, err1 := mem.ChangePassword(otp, memdetail.Id, newpass)
 
 	if err1 != nil {
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err1.Error()})
 
 	} else {
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
