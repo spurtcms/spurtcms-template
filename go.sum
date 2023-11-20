@@ -83,6 +83,8 @@ github.com/spurtcms/spurtcms-content v1.0.15-0.20231114140220-648070003049 h1:Pd
 github.com/spurtcms/spurtcms-content v1.0.15-0.20231114140220-648070003049/go.mod h1:z3npbcbJiOG9tPA5Ngw8Xb5WFVTYSARupI76AznVTrk=
 github.com/spurtcms/spurtcms-content v1.0.15-0.20231118042934-4356d0433a15 h1:YGlXPbpZN6triW68Z5T35Vj4L8uEPeB3r0AYCkJNJlg=
 github.com/spurtcms/spurtcms-content v1.0.15-0.20231118042934-4356d0433a15/go.mod h1:SP7iOVtMzJ/0sy0JZwmsc+C+IQJgD1Zs1mB4iPWNgBg=
+github.com/spurtcms/spurtcms-content v1.0.15-0.20231118103827-187374e2daa2 h1:g1LLdKJN4WU+6f0IL979KAVZ/p//O+Le496Nbg7coJg=
+github.com/spurtcms/spurtcms-content v1.0.15-0.20231118103827-187374e2daa2/go.mod h1:SP7iOVtMzJ/0sy0JZwmsc+C+IQJgD1Zs1mB4iPWNgBg=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231108070039-c42ff31726bc h1:wJEUEozzqo6e0yVFlUB2ldd9dhsyOx3FrrC+t+ltU4w=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231108070039-c42ff31726bc/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231114073926-7185dd8b34b3 h1:rm6q5gLi2Bz19vMN28HiD/Xh+bpXjO4IkYchvqpGsnc=

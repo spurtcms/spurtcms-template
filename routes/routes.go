@@ -47,5 +47,6 @@ func SetupRoutes() *gin.Engine {
 	r.GET("/passwordotp", controller.ChangePassword)
 	r.GET("/passwordchange", controller.AddNewPassword)
 	r.POST("/verify-otppass", controller.OtpVerifypass)
+	r.POST("/send-otp-genrate", controller.AgainOtpGenarate)
 	return r
 }

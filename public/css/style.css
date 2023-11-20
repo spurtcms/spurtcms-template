@@ -362,7 +362,7 @@ header {
     background-size: 4px 8px;
     width: 4px;
     height: 8px;
-
+    display: none; 
 }
 
 .lft-sidebar .accordion-body p {
@@ -564,9 +564,11 @@ header {
     display: flex;
     justify-content: space-between;
 }
-.note-content-detail h3 img{
+
+.note-content-detail h3 img {
     margin-right: 0;
 }
+
 .note-content-detail {
     border-bottom: 3px solid #F9F9F9;
     margin-bottom: 12px;
@@ -720,7 +722,7 @@ input:focus-visible {
     border-radius: 5px;
     position: sticky;
     top: 0;
-   
+
     z-index: 5;
 }
 
@@ -1091,6 +1093,7 @@ textarea::-webkit-scrollbar {
     font-weight: normal;
 
 }
+
 /* 
 .input-container label {
     position: absolute;
@@ -1496,7 +1499,7 @@ textarea::-webkit-scrollbar {
 }
 
 .profile-img::after {
-    content:'';
+    content: '';
     background: #000;
     opacity: 0;
     position: absolute;
@@ -1506,11 +1509,11 @@ textarea::-webkit-scrollbar {
     left: 0;
     border-radius: 50%;
     transition: all 0.3s ease-in-out;
-    
+
 
 }
 
-.profile-img:hover::after{
+.profile-img:hover::after {
     opacity: 0.2;
 }
 
@@ -1534,9 +1537,11 @@ textarea::-webkit-scrollbar {
 .selected-blue {
     background-color: rgba(77, 200, 142, 0.2);
 }
-#accordionExample a{
-text-decoration: none;
+
+#accordionExample a {
+    text-decoration: none;
 }
+
 /* -----nov-17------ */
 .login-read {
     display: flex;

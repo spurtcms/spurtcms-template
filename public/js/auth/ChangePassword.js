@@ -165,3 +165,23 @@ $(document).on('click', '#cpswdeye', function () {
 
     }
 })
+/* Resend Otp */
+$(document).on("click", "#againotp", function () {
+
+    var url = window.location.search;
+    const urlpar = new URLSearchParams(url);
+    email = urlpar.get('emailid');
+
+  
+     $.ajax({
+         url: "/send-otp-genrate",
+         method: "POST",
+         data: { "email": email },
+         datatype: 'json',
+         success: function (data) {
+        
+          }
+     })
+ 
+    
+})

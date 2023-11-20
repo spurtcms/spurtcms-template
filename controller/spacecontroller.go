@@ -20,6 +20,8 @@ var DB *gorm.DB
 
 var auth1 auth.Authorization
 
+var profilename string
+
 func init() {
 
 	er := godotenv.Load()
@@ -43,6 +45,12 @@ func IndexView(c *gin.Context) {
 	if flg {
 
 		pl.MemAuth = &Auth
+
+		mem.Auth = &Auth
+
+		member, _ := mem.GetMemberDetails()
+
+		profilename = member.FirstName + " " + member.LastName
 
 	} else {
 
@@ -79,7 +87,9 @@ func IndexView(c *gin.Context) {
 
 		data.SpaceName = space.SpacesName
 
-		data.SpaceDescription = space.SpacesDescription
+		truncatedDescription := truncateDescription(space.SpacesDescription, 88)
+
+		data.SpaceDescription = truncatedDescription
 
 		var allcat []string
 
@@ -97,6 +107,14 @@ func IndexView(c *gin.Context) {
 
 	}
 
-	c.HTML(200, "spaces.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index","myprofile": flg})
+	c.HTML(200, "spaces.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index", "myprofile": flg, "profilename": profilename})
 
+}
+func truncateDescription(description string, limit int) string {
+	if len(description) <= limit {
+		return description
+	}
+
+	truncated := description[:limit] + "..."
+	return truncated
 }

@@ -110,6 +110,7 @@ $(document).on("click", "#submit", function () {
     var otp = $("#otp").val()
     var newemail = $("#emailaddress").val()
     var confirmemail = $("#confirmemail").val()
+    console.log("ss",newemail,confirmemail,otp);
     if (formcheck == true) {
         $.ajax({
             url: "/verify-otp",
@@ -171,3 +172,24 @@ function Validationcheck(){
       
     });
 }
+/* Resend Otp */
+$(document).on("click", "#againotp", function () {
+
+    var url = window.location.search;
+    const urlpar = new URLSearchParams(url);
+    email = urlpar.get('changeemail');
+
+  
+     $.ajax({
+         url: "/send-otp-genrate",
+         method: "POST",
+         data: { "email": email },
+         datatype: 'json',
+         success: function (data) {
+        
+ 
+         }
+     })
+ 
+    
+})

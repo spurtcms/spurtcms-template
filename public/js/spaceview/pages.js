@@ -81,9 +81,6 @@ function search() {
   var $count = $("#count");
   var currentIndex = 0;
   $content = $mainDiv.find('h3,p');
-  // console.log("result", $content );
-  // console.log("result",  $content.prevObject.context.firstElementChild.innerText);
-
   $searchInput.on('input', function () {
     var searchTerm = $searchInput.val().trim();
     $content.find('.highlight-content').contents().unwrap();
@@ -181,15 +178,6 @@ function search() {
 $(document).on('click', '#save-btn', function () {
   var Pageid = $("#pgid").val();
   var text = $("#Textarea").val();
-  // var currentDate = new Date();
-  // var day = ('0' + currentDate.getDate()).slice(-2);
-  // var monthAbbrev = currentDate.toLocaleString('default', { month: 'short' }).toLowerCase();
-  // var year = ('' + currentDate.getFullYear()).slice(-2);
-  // var hours = ('0' + currentDate.getHours() % 12).slice(-2);
-  // var minutes = ('0' + currentDate.getMinutes()).slice(-2);
-  // var ampm = currentDate.getHours() >= 12 ? 'pm' : 'am';
-  // var custom_DateTime = day + monthAbbrev + year + ',' + hours + '.' + minutes + ampm;
-  // $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + text + '</h5><h3>Saved on ' + custom_DateTime + ' <img class="del-btn" data-id="" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   $.ajax({
     type: "post",
     url: "/notes",
@@ -225,8 +213,10 @@ $(document).on("click", ".secton-content", function () {
   var range = selection.getRangeAt(0);
   selectedTag = range.startContainer.parentNode.innerText;
   var startContainerTagName = range.startContainer.parentNode.tagName.toLowerCase();
-  console.log("selected tag name", startContainerTagName);
+  var endContainerTagname = range.endContainer.p
   if (startContainerTagName == "span" && $(".secton-content span").hasClass("clear_clr")) {
+    $(".hoverMenu").hide()
+  } if ($(".secton-content div").hasClass("login-read")) {
     $(".hoverMenu").hide()
   }
   var startContainer = range.startContainer;
@@ -263,14 +253,6 @@ $(document).on("click", ".clr", function () {
   var htmlContent;
   var con_clr;
   var cl = $(this).attr("color-value")
-  // var currentDate = new Date();
-  // var day = ('0' + currentDate.getDate()).slice(-2);
-  // var monthAbbrev = currentDate.toLocaleString('default', { month: 'short' }).toLowerCase();
-  // var year = ('' + currentDate.getFullYear()).slice(-2);
-  // var hours = ('0' + currentDate.getHours() % 12).slice(-2);
-  // var minutes = ('0' + currentDate.getMinutes()).slice(-2);
-  // var ampm = currentDate.getHours() >= 12 ? 'pm' : 'am';
-  // var custom_DateTime = day + monthAbbrev + year + ',' + hours + '.' + minutes + ampm;
   if (cl == "read") {
     var Speaker = false;
     var content = selectedContent
@@ -293,22 +275,18 @@ $(document).on("click", ".clr", function () {
     span.className = 'selected-yellow';
     con_clr = "rgba(255, 215, 82, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(255, 215, 82, 0.2);">' + selectedContent + '</h5>'
-    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   } if (cl == "pink") {
     span.className = 'selected-pink';
     con_clr = "rgba(247, 156, 156, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(247, 156, 156, 0.2);">' + selectedContent + '</h5>'
-    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   } if (cl == "green") {
     span.className = 'selected-green';
     con_clr = "rgba(106, 171, 250, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5>'
-    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   } if (cl == "blue") {
     span.className = 'selected-blue';
     con_clr = "rgba(77, 200, 142, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5>'
-    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   }
   $.ajax({
     type: "post",
@@ -441,25 +419,25 @@ $(document).ready(function () {
             $("#Title").text(j['Name'])
             if (result.error != "") {
 
-      
-               if(result.error == "login required"){
-                var html =`<div class="login-read">
+
+              if (result.error == "login required") {
+                var html = `<div class="login-read">
                 <h3>    
                 Hey, you have logged in as a Guest User
                 </h3>
                 <p>To access the screens of the CMS for which you have the permission, login as a Member User. 
                 .</p>
                 <a href="/login">  <button> Log In</button> </a> </div>`
-                  $(".secton-content").append(html)
-              }else{
-                var html =`<div class="login-read">
+                $(".secton-content").append(html)
+              } else {
+                var html = `<div class="login-read">
                 <h3>
                 Oops !!!
                 </h3>
                 <p>Seems like you do not have member permission to access this screen. You may access only those screens for which you hold granted member permission. </p>
                  </div>`
-                  $(".secton-content").append(html)
-              } 
+                $(".secton-content").append(html)
+              }
             } else {
               $(".secton-content").append(result.content)
               ReadContent = $(".secton-content").html()
@@ -558,6 +536,8 @@ function PGList(spslug, spid, Rpgid) {
 
 
       if (j['ParentId'] == x['PgId']) {
+
+        $('.page[data-id='+ x['PgId']+']').addClass("addnew")
 
         var pa = x['Name']
 
@@ -685,7 +665,6 @@ $(document).on("click", ".del-btn", function () {
         }
       } if (result.highlight.length > 0) {
         $("#mySidenavRgtHigh>.note-content").empty()
-        // $(".secton-content span").hasClass("clear_clr").empty()
         const section1Elements = document.querySelectorAll('.secton-content');
 
         section1Elements.forEach(element => {

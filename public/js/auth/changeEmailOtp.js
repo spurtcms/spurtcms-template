@@ -77,7 +77,8 @@ $(document).on("click", "#submit", function () {
                 $("#oldemail-error").html(content)
                 $("#oldemail-error").show()
             } if (parse_data.verify == "") {
-                window.location.href = "/new-email"
+                window.location.href = "/new-email?changeemail="+email
+
             }
 
         }

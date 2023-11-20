@@ -120,7 +120,7 @@ func MyProfile(c *gin.Context) {
 
 	memb, _ := mem.GetMemberDetails()
 
-	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb})
+	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb,"myprofile": flg,"profilename":profilename})
 }
 func MyprofileUpdate(c *gin.Context) {
 
@@ -150,23 +150,23 @@ func MyprofileUpdate(c *gin.Context) {
 
 func ChangeEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail"})
+	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail","myprofile": flg,"profilename":profilename})
 }
 
 func AddNewEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail"})
+	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail","myprofile": flg,"profilename":profilename})
 
 }
 
 func ChangePassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword"})
+	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword","myprofile": flg,"profilename":profilename})
 }
 
 func AddNewPassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword"})
+	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword","myprofile": flg,"profilename":profilename})
 }
 
 func OtpGenarate(c *gin.Context) {
@@ -310,4 +310,72 @@ func ConvertBase64(imageData string, storagepath string) (imgname string, path s
 	}
 
 	return imageName, storagePath, err
+}
+/* Resend Otp */
+func AgainOtpGenarate(c *gin.Context) {
+
+	eamil := c.PostForm("email")
+
+	mem.Auth = &auth1
+
+	memdetail, mailcheck, err := mem.CheckEmailInMember(0, eamil)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(mailcheck)
+
+	if mailcheck {
+
+		rand.Seed(time.Now().UnixNano())
+
+		min := 100000
+
+		max := 999999
+
+		randomNumber := min + rand.Intn(max-min+1)
+
+		otp := strconv.Itoa(randomNumber)
+
+		subject := "Your OTP Code"
+
+		from := os.Getenv("MAIL_USERNAME")
+
+		password := os.Getenv("MAIL_PASSWORD")
+
+		to := eamil
+
+		mem.UpdateOtp(randomNumber, memdetail.Id)
+
+		message := fmt.Sprintf("Your OTP code is: %s", otp)
+
+		m := gomail.NewMessage()
+
+		m.SetHeader("From", from)
+
+		m.SetHeader("To", to)
+
+		m.SetHeader("Subject", subject)
+
+		m.SetBody("text/plain", message)
+
+		d := gomail.NewDialer("smtp.gmail.com", 587, from, password)
+
+		err := d.DialAndSend(m)
+
+		if err != nil {
+
+			json.NewEncoder(c.Writer).Encode(gin.H{"err": err})
+
+			return
+
+		}
+
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
+
+	} else {
+		json.NewEncoder(c.Writer).Encode(gin.H{"verify": "invalid email"})
+
+	}
+
 }
