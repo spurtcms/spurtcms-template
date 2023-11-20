@@ -10,10 +10,12 @@
       <div class="profile-pic-form">
         <div class="profile-img">
           <img src="/public/images/Ellipse 6.png" alt="" />
-          <input type="file">
+          <input type="file" id="myfile" name="image">
         </div>
         <div class="profile-form">
           <form action="" id="myprofileform" name="myprofileform" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="crop_data" id="crop_data">
+
             <div class="input-container">
               <input type="text" id="firstname" class="w-100 field" name="firstname"  value="{{.member.FirstName}}" required />
               <label for="myInput" class="input-label">First name</label>
@@ -24,7 +26,7 @@
             </div>
 
             <div class="input-container">
-              <input type="text" id="lastname" class="w-100 field" name="lastname" value="{{.member.LastName}}" required />
+              <input type="text" id="lastname" class="w-100 field" name="lastname" value="{{.member.LastName}}" />
               <label for="myInput" class="input-label">Last name</label>
       
                 <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
@@ -57,7 +59,7 @@
               <a href="/change-email">change</a>
             </div>
             <div class="input-container change">
-              <input type="password" id="myPassword " class="w-100 label-style" value="" required readonly />
+              <input type="password" id="myPassword " class="w-100 label-style" value="" />
               <!-- <label for="myInput">Password</label> -->
               <a href="/passwordotp">change</a>
             </div>
@@ -74,9 +76,13 @@
     </div>
   </div>
 </section>
-<script src="/public/js/myprofile.js"></script>
+<script src="/public/js/auth/myprofile.js"></script>
+<script src="/public/js/common.js"></script>
+
 </body>
 
 </html>
+
+{{template "cropmodal" .}}
 
 {{template "footer" .}}

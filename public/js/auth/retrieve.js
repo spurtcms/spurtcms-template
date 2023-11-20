@@ -46,7 +46,7 @@ $(document).on("click", "#submit", function () {
                     $("#email-error").html(content)
                     $("#email-error").show()
                 } if (parse_data.verify == "") {
-                    window.location.href = "/reset/emailid?="+email
+                    window.location.href = "/reset?emailid="+email
                 }
 
             }

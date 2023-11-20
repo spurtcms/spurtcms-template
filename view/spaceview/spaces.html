@@ -18,7 +18,8 @@
         <div class="space-container-crd-btm">
           <span class="crd-badge">{{range .CategoryName}}{{.}} <img src="/public/images/arrow-rgt-svgrepo-com (2).svg"> {{end}}</span>
           <h5>{{.SpaceName}}</h5>
-          <p>
+          <input type="hidden" value="{{.SpaceDescription}}" id="demodescription">
+          <p id="description">
             {{.SpaceDescription}}
           </p>
           <div class="time-n-date">
@@ -31,4 +32,7 @@
    
   </div>
 </div>
+
+<script src="/public/js/auth/index.js"></script>
+
 {{template "footer" .}}

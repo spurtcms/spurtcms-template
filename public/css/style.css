@@ -552,18 +552,21 @@ header {
     word-break: break-word;
 }
 
-.note-content-detail span {
+.note-content-detail h3 {
     text-align: left;
     font-size: 10px;
     font-weight: normal;
     font-style: italic;
     letter-spacing: 0px;
     color: #9F9F9F;
-    display: block;
     margin-block: 8px 12px;
     line-height: 12px;
+    display: flex;
+    justify-content: space-between;
 }
-
+.note-content-detail h3 img{
+    margin-right: 0;
+}
 .note-content-detail {
     border-bottom: 3px solid #F9F9F9;
     margin-bottom: 12px;
@@ -1102,8 +1105,13 @@ textarea::-webkit-scrollbar {
     transition: transform 0.3s, font-size 0.3s, background-color 0.4s;
 } */
 
-.input-container input:focus,
+/* .input-container input:focus,
 .input-container input:valid {
+    border: 1px solid #1F252B;
+    padding: 16px 10px;
+} */
+
+.input-container input:focus {
     border: 1px solid #1F252B;
     padding: 16px 10px;
 }
@@ -1166,7 +1174,7 @@ textarea::-webkit-scrollbar {
     font-weight: normal;
 }
 
-.passwordEye::after {
+/* .passwordEye::after {
     content: '';
     background-image: url('/public/images/MaskGroup51.svg');
     background-size: 19px 19px;
@@ -1177,7 +1185,7 @@ textarea::-webkit-scrollbar {
     right: 16px;
     top: 16px;
 
-}
+} */
 
 .loginFooter {
     font-size: 12px;
@@ -1528,4 +1536,57 @@ textarea::-webkit-scrollbar {
 }
 #accordionExample a{
 text-decoration: none;
+}
+/* -----nov-17------ */
+.login-read {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin: 125px auto;
+    width: 75%;
+}
+
+.login-read h3 {
+    font-size: 24px;
+    color: #000000;
+    font-weight: 500;
+    margin-bottom: 17px;
+    text-align: center;
+}
+
+.login-read p {
+    font-size: 13px;
+    color: #0F0F10;
+    font-weight: 400;
+    margin-bottom: 40px;
+    text-align: center;
+    letter-spacing: 0px;
+    line-height: normal;
+}
+
+.login-read button {
+    color: #FFFFFF;
+    background-color: #1F252B;
+    border: 0;
+    border-radius: 5px;
+    width: 240px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.center-section {
+    width: 100%;
+}
+
+.login-name {
+    font-size: 16px;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: transparent;
+    border: 0;
 }

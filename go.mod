@@ -5,8 +5,8 @@ go 1.20
 require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
-	github.com/spurtcms/spurtcms-content v1.0.15-0.20231114140220-648070003049
-	github.com/spurtcms/spurtcms-core v1.0.11-0.20231116134957-3f0929598899
+	github.com/spurtcms/spurtcms-content v1.0.15-0.20231118042934-4356d0433a15
+	github.com/spurtcms/spurtcms-core v1.0.11-0.20231117144022-de357f64e7d4
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
 )
 

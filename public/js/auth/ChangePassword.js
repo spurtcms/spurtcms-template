@@ -126,56 +126,9 @@ function Validationcheck(){
     });
 }
 
- // Password Change
-// $(document).on('click', '#eye', function () {
+// Password Change
 
-//     var This = $("#mynewPassword")
-
-//     if ($(This).attr('type') === 'password') {
-
-//         $(This).attr('type', 'text');
-
-//         $(this).addClass('active')
-
-//         // $(this).removeClass('passwordEye').addClass('signupEye')
-
-//     } else {
-
-//         $(This).attr('type', 'password');
-
-//         $(this).removeClass('active')
-
-//         // $(this).removeClass('signupEye').addClass('passwordEye')
-
-//     }
-// })
-
-// // Password Change
-// $(document).on('click', '#eye1', function () {
-
-//     var This = $("#confrimPassword")
-
-//     if ($(This).attr('type') === 'password') {
-
-//         $(This).attr('type', 'text');
-
-//         $(this).addClass('active')
-
-//         // $(this).removeClass('fa-eye-slash').addClass('fa-eye')
-
-//     } else {
-
-//         $(This).attr('type', 'password');
-
-//         $(this).removeClass('active')
-
-//         // $(this).removeClass('fa-eye').addClass('fa-eye-slash')
-//     }
-// })
-
-// Password change into text
-
-$("#eye").click (function(){
+$(document).on('click', '#pswdeye', function () {
 
     var This = $("#mynewPassword")
 
@@ -183,25 +136,18 @@ $("#eye").click (function(){
 
         $(This).attr('type', 'text');
 
-        $(this).find("img").attr("src","/public/images/MaskGroup54.svg")
-
-        // $(this).removeClass('passwordEye').addClass('signupEye')
+        $(this).addClass('active')
 
     } else {
 
         $(This).attr('type', 'password');
 
-        $(this).find("img").attr("src","/public/images/MaskGroup51.svg")
-
-        // $(this).removeClass('active')
-
-        // $(this).removeClass('signupEye').addClass('passwordEye')
-
+        $(this).removeClass('active')
     }
-
 })
 
-$("#eye1").click (function(){
+// Password Change
+$(document).on('click', '#cpswdeye', function () {
 
     var This = $("#confrimPassword")
 
@@ -209,20 +155,13 @@ $("#eye1").click (function(){
 
         $(This).attr('type', 'text');
 
-        $(this).find("img").attr("src","/public/images/MaskGroup54.svg")
-
-        // $(this).removeClass('passwordEye').addClass('signupEye')
+        $(this).addClass('active')
 
     } else {
 
         $(This).attr('type', 'password');
 
-        $(this).find("img").attr("src","/public/images/MaskGroup51.svg")
-
-        // $(this).removeClass('active')
-
-        // $(this).removeClass('signupEye').addClass('passwordEye')
+        $(this).removeClass('active')
 
     }
-
 })

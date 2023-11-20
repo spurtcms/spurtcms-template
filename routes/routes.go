@@ -42,6 +42,7 @@ func SetupRoutes() *gin.Engine {
 	r.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
 	r.GET("/page", controller.PageView)
 	r.POST("/highlights", controller.UpdateHighlights)
+	r.POST("deletehighlights",controller.DeleteHighlights)
 	r.POST("/notes", controller.UpdateNotes)
 	r.GET("/passwordotp", controller.ChangePassword)
 	r.GET("/passwordchange", controller.AddNewPassword)

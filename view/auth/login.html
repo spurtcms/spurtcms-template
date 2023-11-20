@@ -13,9 +13,7 @@
           <div class="input-container" id="email-con">
             <input type="text" id="myInput" class="mx-400 field" name="email" required>
             <label for="myInput" class="input-label">Email address</label>
-            <!-- <span class="err-txt" id="mememail" style="display: none;">
-              </span> -->
-              <label id="myInput-error"  class="error err-txt" for="myInput" style="display:none;"> <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your Email Address </label>
+            <label id="myInput-error"  class="error err-txt" for="myInput" style="display:none;"> <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your Email Address </label>
                 
 
           </div>
@@ -23,12 +21,11 @@
           <div class="input-container passwordEye" id="pass-con">
             <input type="password" id="myPassword" class="mx-400 field" name="password" required>
             <label for="myInput" class="input-label">Password</label>
-            <!-- <span class="err-txt" id="mempass" style="display: none;">
-             </span> -->
-
-             <label id="myPassword-error" class="error err-txt" for="myPassword" style="display: none;"> 
-              
+            <label id="myPassword-error" class="error err-txt" for="myPassword" style="display: none;">            
               Please Enter Your Password </label>
+              <button id="lpswdeye" class="" type="button"><img src="/public/images/MaskGroup51.svg" alt="">
+                <img src="/public/images/MaskGroup54.svg" alt="">
+              </button>
            
           </div>
 
@@ -44,6 +41,6 @@
     </div>
   </div>
 
-<script src="/public/js/login.js"></script>
+<script src="/public/js/auth/login.js"></script>
 
   {{template "authfooter" .}}

@@ -63,27 +63,7 @@ $(document).ready(function () {
     })
 
     
-      
-    //     console.log("myprofile data", fname, lname, mobile);
-    //     if (fname == "" && mobile == "") {
-    //         $("#memfname").show()
-    //         $("#fname-con").addClass("err")
-    //         $("#memnumber").show()
-    //         $("#mobile-con").addClass("err")
-    //     } if (fname == "") {
-    //         $("#memfname").show()
-    //         $("#fname-con").addClass("err")
-    //     } if (mobile == "") {
-    //         $("#memnumber").show()
-    //         $("#mobile-con").addClass("err")
-    //     } else {
-    //         $("#memfname").hide()
-    //         $("#memnumber").hide()
-    //         $("#fname-con").addClass("err")
-    //         $("#mobile-con").addClass("err")
-            
-    //     }
-    // })
+   
 })
 
 
@@ -94,13 +74,14 @@ $(document).on("click", "#update-btn", function () {
     var fname = $("#firstname").val()
     var lname = $("#lastname").val()
     var mobile = $("#mobileNumber").val()
+    var crop_data =$("#crop_data").val()
 
     if ( formcheck == true){
 
         $.ajax({
             url: "/myprofileupdate",
             method: "POST",
-            data: { "fname": fname, "lname": lname, "mobile": mobile },
+            data: { "fname": fname, "lname": lname, "mobile": mobile ,"crop_data":crop_data},
             datatype: 'json',
             success: function (data) {
                 console.log("data", data);
@@ -155,4 +136,9 @@ function Validationcheck(){
 
 $(document).on("click", "#cancel-btn", function () {
     window.location.href = "/"
+})
+
+$(document).on('click','.btn-close',function(){
+    console.log("check")
+    $("#changepicModal").modal('hide');
 })

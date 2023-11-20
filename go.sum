@@ -81,6 +81,8 @@ github.com/spurtcms/spurtcms-content v1.0.15-0.20231110140117-2a24323e9387 h1:0Y
 github.com/spurtcms/spurtcms-content v1.0.15-0.20231110140117-2a24323e9387/go.mod h1:wM8UEKiW/0jGQTgt6AW8DKtCSNavFVovxUZzf0NUu3o=
 github.com/spurtcms/spurtcms-content v1.0.15-0.20231114140220-648070003049 h1:PdL7ahSZPx98KrgBMQ4/3LoVvO5LffK7iYn2S2okQPk=
 github.com/spurtcms/spurtcms-content v1.0.15-0.20231114140220-648070003049/go.mod h1:z3npbcbJiOG9tPA5Ngw8Xb5WFVTYSARupI76AznVTrk=
+github.com/spurtcms/spurtcms-content v1.0.15-0.20231118042934-4356d0433a15 h1:YGlXPbpZN6triW68Z5T35Vj4L8uEPeB3r0AYCkJNJlg=
+github.com/spurtcms/spurtcms-content v1.0.15-0.20231118042934-4356d0433a15/go.mod h1:SP7iOVtMzJ/0sy0JZwmsc+C+IQJgD1Zs1mB4iPWNgBg=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231108070039-c42ff31726bc h1:wJEUEozzqo6e0yVFlUB2ldd9dhsyOx3FrrC+t+ltU4w=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231108070039-c42ff31726bc/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231114073926-7185dd8b34b3 h1:rm6q5gLi2Bz19vMN28HiD/Xh+bpXjO4IkYchvqpGsnc=
@@ -89,6 +91,8 @@ github.com/spurtcms/spurtcms-core v1.0.11-0.20231116125051-4ebff41793e8 h1:zXapU
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231116125051-4ebff41793e8/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231116134957-3f0929598899 h1:B65cw/0EqrBSlTbjbNuOO/C3toK9XKY091a2G2oJpuw=
 github.com/spurtcms/spurtcms-core v1.0.11-0.20231116134957-3f0929598899/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
+github.com/spurtcms/spurtcms-core v1.0.11-0.20231117144022-de357f64e7d4 h1:/HNAtDWZBVO9TCumG9172DRrs9YPPResYXDHVAiQhtI=
+github.com/spurtcms/spurtcms-core v1.0.11-0.20231117144022-de357f64e7d4/go.mod h1:clHDL7GukdyMl20qMtx9nY+QFkx/jsVjiwWULNhqt2c=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/objx v0.4.0/go.mod h1:YvHI0jy2hoMjB+UWwv71VJQ9isScKT/TqJzVSSt89Yw=
 github.com/stretchr/objx v0.5.0/go.mod h1:Yh+to48EsGEfYuaHDzXPcE3xhTkx73EhmCGUpEOglKo=

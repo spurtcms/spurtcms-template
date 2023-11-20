@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -31,11 +33,14 @@ func GetAuth(token string) {
 }
 
 func MemberLogin(c *gin.Context) {
+
 	c.HTML(200, "login.html", gin.H{"title": "Login"})
 
 }
 func MemberLogout(c *gin.Context) {
+
 	flg = false
+
 	c.Redirect(301, "/")
 
 }
@@ -52,10 +57,13 @@ func CheckMemberLogin(c *gin.Context) {
 	sp.MemAuth = &Auth
 
 	if err != nil {
+
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
 
 	} else {
+
 		flg = true
+
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
 
 	}
@@ -110,7 +118,6 @@ func MyProfile(c *gin.Context) {
 
 	mem.Auth = &Auth
 
-	log.Println("mem", mem.Auth)
 	memb, _ := mem.GetMemberDetails()
 
 	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb})
@@ -124,10 +131,19 @@ func MyprofileUpdate(c *gin.Context) {
 	lname := c.PostForm("lname")
 
 	mobile := c.PostForm("mobile")
+	
+	imageData := c.PostForm("crop_data")
+
+	if imageData != "" {
+
+		imageName, storagePath, _ := ConvertBase64(imageData, "storage/users")
+
+		fmt.Println("imgname", imageName, storagePath)
+	}
 
 	upt, _ := mem.MemberUpdate(member.MemberCreation{FirstName: fname, LastName: lname, MobileNo: mobile})
 
-	log.Println("ok", upt)
+	log.Println("update", upt)
 
 	json.NewEncoder(c.Writer).Encode(true)
 }
@@ -156,8 +172,6 @@ func AddNewPassword(c *gin.Context) {
 func OtpGenarate(c *gin.Context) {
 
 	eamil := c.PostForm("email")
-
-	log.Println("email", eamil)
 
 	mem.Auth = &auth1
 
@@ -224,16 +238,16 @@ func OtpVerify(c *gin.Context) {
 
 	newemail := c.PostForm("newemail")
 
-	log.Println("newemail", newemail)
-
 	// confirmemail := c.PostForm("confirmemail")
 
 	_, err := mem.ChangeEmailId(otp, newemail)
 
 	if err != nil {
+
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
 
 	} else {
+
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
 
 	}
@@ -255,18 +269,45 @@ func OtpVerifypass(c *gin.Context) {
 	memdetail, mailcheck, err := mem.CheckEmailInMember(0, email)
 
 	if err != nil {
+
 		fmt.Println(err)
 	}
+
 	fmt.Println(mailcheck)
 
 	_, err1 := mem.ChangePassword(otp, memdetail.Id, newpass)
 
 	if err1 != nil {
+
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err1.Error()})
 
 	} else {
+
 		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
 
 	}
 
+}
+func ConvertBase64(imageData string, storagepath string) (imgname string, path string, err error) {
+	extEndIndex := strings.Index(imageData, ";base64,")
+	base64data := imageData[strings.IndexByte(imageData, ',')+1:]
+	var ext = imageData[11:extEndIndex]
+	rand_num := strconv.Itoa(int(time.Now().Unix()))
+	imageName := "IMG-" + rand_num + "." + ext
+	os.MkdirAll(storagepath, 0755)
+	storagePath := storagepath + "/IMG-" + rand_num + "." + ext
+	decode, err := base64.StdEncoding.DecodeString(base64data)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	file, err := os.Create(storagePath)
+	if err != nil {
+		fmt.Println(err)
+	}
+	if _, err := file.Write(decode); err != nil {
+		fmt.Println(err)
+	}
+
+	return imageName, storagePath, err
 }

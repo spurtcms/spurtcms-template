@@ -71,10 +71,10 @@ $(document).on('click', '.search-cnl', function () {
   $content.find('.highlight-content').contents().unwrap();
 })
 
-var count 
+var count
 
 /* Search and Highlight */
-function search(){
+function search() {
 
   var $searchInput = $('#search-data');
   var $mainDiv = $('#centerSection');
@@ -86,7 +86,7 @@ function search(){
 
   $searchInput.on('input', function () {
     var searchTerm = $searchInput.val().trim();
-   $content.find('.highlight-content').contents().unwrap();
+    $content.find('.highlight-content').contents().unwrap();
     if (searchTerm.length === 0) {
       count = 0;
       currentIndex = 0;
@@ -95,7 +95,7 @@ function search(){
     }
 
     var regex = new RegExp('\\b' + escapeRegExp(searchTerm), 'gi');
- 
+
     currentIndex = 0;
 
     $content.each(function () {
@@ -103,23 +103,23 @@ function search(){
       if (regex != "") {
         if ($this.text().match(regex)) {
           $this.html(function (_, html) {
-          //  cont++;
+            //  cont++;
             return html.replace(regex, '<span class="highlight-content">$&</span>');
           });
         }
       }
     });
 
-   var text = $content.find('.highlight-content')
+    var text = $content.find('.highlight-content')
 
- count = text.length
+    count = text.length
 
     updateCount();
   });
 
 
   function updateCount() {
-    $count.text((currentIndex + 1) + " of " +  count);
+    $count.text((currentIndex + 1) + " of " + count);
     focusCurrentIndex();
   }
   function focusCurrentIndex() {
@@ -181,7 +181,15 @@ function search(){
 $(document).on('click', '#save-btn', function () {
   var Pageid = $("#pgid").val();
   var text = $("#Textarea").val();
-  $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + text + '</h5><span>Saved on 27sep23, 06:15pm</span></div>');
+  // var currentDate = new Date();
+  // var day = ('0' + currentDate.getDate()).slice(-2);
+  // var monthAbbrev = currentDate.toLocaleString('default', { month: 'short' }).toLowerCase();
+  // var year = ('' + currentDate.getFullYear()).slice(-2);
+  // var hours = ('0' + currentDate.getHours() % 12).slice(-2);
+  // var minutes = ('0' + currentDate.getMinutes()).slice(-2);
+  // var ampm = currentDate.getHours() >= 12 ? 'pm' : 'am';
+  // var custom_DateTime = day + monthAbbrev + year + ',' + hours + '.' + minutes + ampm;
+  // $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + text + '</h5><h3>Saved on ' + custom_DateTime + ' <img class="del-btn" data-id="" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   $.ajax({
     type: "post",
     url: "/notes",
@@ -191,8 +199,13 @@ $(document).on('click', '#save-btn', function () {
       content: text
     },
     success: function (result) {
+      if (result.note.length > 0) {
+        $("#mySidenavRgt>.note-content").empty()
+        for (let j of result.note) {
+          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + ' <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
 
-
+        }
+      }
     }
   })
   $("#Textarea").val("");
@@ -213,7 +226,7 @@ $(document).on("click", ".secton-content", function () {
   selectedTag = range.startContainer.parentNode.innerText;
   var startContainerTagName = range.startContainer.parentNode.tagName.toLowerCase();
   console.log("selected tag name", startContainerTagName);
-  if(startContainerTagName == "span" && $(".secton-content span").hasClass("clear_clr")){
+  if (startContainerTagName == "span" && $(".secton-content span").hasClass("clear_clr")) {
     $(".hoverMenu").hide()
   }
   var startContainer = range.startContainer;
@@ -238,25 +251,26 @@ $(document).on("click", ".secton-content", function () {
   e_offset = endOffsetRelativeToP
   console.log("start,end", startOffsetRelativeToP, endOffsetRelativeToP);
   span = document.createElement('span');
+  span.classList.add('clear_clr')
   range.surroundContents(span);
   /* Selection Clear */
   selection.removeAllRanges();
 });
+
 /* Colour select for Highlights */
 $(document).on("click", ".clr", function () {
   var Pageid = $("#pgid").val();
   var htmlContent;
   var con_clr;
   var cl = $(this).attr("color-value")
-  var currentDate = new Date();
-  var day = ('0' + currentDate.getDate()).slice(-2);
-  var monthAbbrev = currentDate.toLocaleString('default', { month: 'short' }).toLowerCase();
-  var year = ('' + currentDate.getFullYear()).slice(-2);
-  var hours = ('0' + currentDate.getHours() % 12).slice(-2);
-  var minutes = ('0' + currentDate.getMinutes()).slice(-2);
-  var ampm = currentDate.getHours() >= 12 ? 'pm' : 'am';
-  var custom_DateTime = day + monthAbbrev + year + ',' + hours + '.' + minutes + ampm;
-
+  // var currentDate = new Date();
+  // var day = ('0' + currentDate.getDate()).slice(-2);
+  // var monthAbbrev = currentDate.toLocaleString('default', { month: 'short' }).toLowerCase();
+  // var year = ('' + currentDate.getFullYear()).slice(-2);
+  // var hours = ('0' + currentDate.getHours() % 12).slice(-2);
+  // var minutes = ('0' + currentDate.getMinutes()).slice(-2);
+  // var ampm = currentDate.getHours() >= 12 ? 'pm' : 'am';
+  // var custom_DateTime = day + monthAbbrev + year + ',' + hours + '.' + minutes + ampm;
   if (cl == "read") {
     var Speaker = false;
     var content = selectedContent
@@ -279,23 +293,22 @@ $(document).on("click", ".clr", function () {
     span.className = 'selected-yellow';
     con_clr = "rgba(255, 215, 82, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(255, 215, 82, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
+    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   } if (cl == "pink") {
     span.className = 'selected-pink';
     con_clr = "rgba(247, 156, 156, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(247, 156, 156, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
+    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   } if (cl == "green") {
     span.className = 'selected-green';
     con_clr = "rgba(106, 171, 250, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
+    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   } if (cl == "blue") {
     span.className = 'selected-blue';
     con_clr = "rgba(77, 200, 142, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5>'
-    $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<span>Saved on ' + custom_DateTime + '</span></div>');
-
+    // $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + htmlContent + '<h3>Saved on ' + custom_DateTime + '<img class="del-btn" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
   }
   $.ajax({
     type: "post",
@@ -310,8 +323,12 @@ $(document).on("click", ".clr", function () {
       con_clr: con_clr
     },
     success: function (result) {
-
-
+      if (result.highlight.length > 0) {
+        $("#mySidenavRgtHigh>.note-content").empty()
+        for (let j of result.highlight) {
+          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<h3>Saved on ' + j.CreatedOn + 'pm <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
+        }
+      }
     }
   })
 
@@ -412,7 +429,7 @@ $(document).ready(function () {
       if (result.note != null) {
         for (let j of result.note) {
 
-          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><span>Saved on ' + j.CreatedOn + 'pm</span></div>');
+          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + 'pm <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
         }
       }
 
@@ -423,8 +440,26 @@ $(document).ready(function () {
           if (j['OrderIndex'] == 1) {
             $("#Title").text(j['Name'])
             if (result.error != "") {
-              $(".secton-content").append(result.error)
-              result.h
+
+      
+               if(result.error == "login required"){
+                var html =`<div class="login-read">
+                <h3>    
+                Hey, you have logged in as a Guest User
+                </h3>
+                <p>To access the screens of the CMS for which you have the permission, login as a Member User. 
+                .</p>
+                <a href="/login">  <button> Log In</button> </a> </div>`
+                  $(".secton-content").append(html)
+              }else{
+                var html =`<div class="login-read">
+                <h3>
+                Oops !!!
+                </h3>
+                <p>Seems like you do not have member permission to access this screen. You may access only those screens for which you hold granted member permission. </p>
+                 </div>`
+                  $(".secton-content").append(html)
+              } 
             } else {
               $(".secton-content").append(result.content)
               ReadContent = $(".secton-content").html()
@@ -436,7 +471,7 @@ $(document).ready(function () {
       if (result.highlight != null) {
         var Highlight = result.highlight
         for (let j of Highlight) {
-          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<span>Saved on ' + j.CreatedOn + 'pm</span></div>');
+          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<h3>Saved on ' + j.CreatedOn + 'pm <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
           var start = j.HighlightsConfiguration.start
           var offset = j.HighlightsConfiguration.offset
           var s_para = j.HighlightsConfiguration.selectedpara
@@ -474,7 +509,6 @@ function PGList(spslug, spid, Rpgid) {
 
     /**this page */
     if (x['PgId'] !== undefined && x['Pgroupid'] == 0) {
-
 
       var pa = x['Name']
 
@@ -619,11 +653,69 @@ $(document).ready(function () {
     }
   }
 });
+
 /* Copy function */
 $('#copybtn').click(function () {
 
   var copyText = selectedContent
 
   navigator.clipboard.writeText(copyText);
+
+});
+
+/* Delete highlight */
+$(document).on("click", ".del-btn", function () {
+  var Pageid = $("#pgid").val();
+  var del_id = $(this).attr('data-id')
+  console.log(del_id);
+  $.ajax({
+    type: "post",
+    url: "/deletehighlights",
+    dataType: 'json',
+    data: {
+      id: del_id,
+      pgid: Pageid
+    },
+    success: function (result) {
+      if (result.note.length > 0) {
+        $("#mySidenavRgt>.note-content").empty()
+        for (let j of result.note) {
+          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + ' <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
+
+        }
+      } if (result.highlight.length > 0) {
+        $("#mySidenavRgtHigh>.note-content").empty()
+        // $(".secton-content span").hasClass("clear_clr").empty()
+        const section1Elements = document.querySelectorAll('.secton-content');
+
+        section1Elements.forEach(element => {
+          const spanElements = element.querySelectorAll('span');
+
+          spanElements.forEach(spanElement => {
+            spanElement.parentNode.replaceChild(spanElement.firstChild, spanElement);
+          });
+        });
+        for (let j of result.highlight) {
+          $("#mySidenavRgtHigh>.note-content").append('<div class="note-content-detail">' + j.NotesHighlightsContent + '<h3>Saved on ' + j.CreatedOn + 'pm <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
+
+          var start = j.HighlightsConfiguration.start
+          var offset = j.HighlightsConfiguration.offset
+          var s_para = j.HighlightsConfiguration.selectedpara
+          var c_clr = j.HighlightsConfiguration.color
+          $(".secton-content p").each(function () {
+            var elementText = $(this).text();
+            if (elementText === s_para) {
+              var originalContent = $(this).text();
+              var html = $(this).html()
+              var content = originalContent.substring(start, offset);
+              var highlightedContent = '<span class="clear_clr" style="background-color:' + c_clr + '">' + content + '</span>';
+              $(this).html(html.replace(content, highlightedContent))
+            }
+
+          });
+        }
+      }
+    }
+  })
 
 });

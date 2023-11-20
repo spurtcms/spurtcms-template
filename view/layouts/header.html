@@ -28,6 +28,11 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
     integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
+    <!-- croppiee -->
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.js"></script>
+
 </head>
 
 <body>
@@ -40,7 +45,7 @@
       aria-expanded="false">
       <div class="usr-profile">
         <img src="/public/images/Ellipse 1.png" class="usr-profile-img" alt="" />
-        <span class="usr-name">{{.member.FirstName}}</span>
+        <span class="usr-name">{{.member.FirstName}}</span> {{.member.LastName}}
       </div>
     </button>
     <ul class="dropdown-menu">
@@ -48,7 +53,7 @@
       <li><a class="dropdown-item" href="/logout">Logout</a></li>
     </ul>
     {{else}}
-    <a href="/login">Login</a>
+    <a href="/login"><button class="login-name">Login </button></a>
     {{end}}
   </header>
   {{end}}
