@@ -193,6 +193,8 @@ $(document).on('click', '#save-btn', function () {
           $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + ' <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
 
         }
+      }else{
+        $("#mySidenavRgt>.note-content").empty()
       }
     }
   })
@@ -213,8 +215,8 @@ $(document).on("click", ".secton-content", function () {
   var range = selection.getRangeAt(0);
   selectedTag = range.startContainer.parentNode.innerText;
   var startContainerTagName = range.startContainer.parentNode.tagName.toLowerCase();
-  var endContainerTagname = range.endContainer.p
-  if (startContainerTagName == "span" && $(".secton-content span").hasClass("clear_clr")) {
+  var endContainerTagname = range.endContainer.parentNode.tagName.toLowerCase()
+  if ((startContainerTagName == "span" && $(".secton-content span").hasClass("clear_clr")) || (endContainerTagname == "span" && $(".secton-content span").hasClass("clear_clr"))) {
     $(".hoverMenu").hide()
   } if ($(".secton-content div").hasClass("login-read")) {
     $(".hoverMenu").hide()
@@ -333,6 +335,7 @@ function AddGroupString(groupname, gid) {
 function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
 
   var html
+  console.log(pgid == Rpgid);
   if (pgid == Rpgid) {
     html = `<a href="/space/` + space + `/` + pgslug + `?spid=` + spid + `&pageid=` + pgid + `">
    <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
@@ -358,7 +361,7 @@ function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
 /*addsub page string */
 function AddSubPageString(value, parentid, id, space, pgslug, subslug, spid, Rpgid) {
   var html;
-  if (Rpgid == parentid) {
+  if (Rpgid == parentid || id == Rpgid) {
     html = `<a href="/space/` + space + `/` + pgslug + `/` + subslug + `?spid=` + spid + `&pageid=` + id + `">
    <div id="collapseOne`+ parentid + `" class="accordion-collapse  collapse show" aria-labelledby="headingOne"
    data-bs-parent="#accordionExample " data-parent="`+ parentid + `">
@@ -517,7 +520,7 @@ function PGList(spslug, spid, Rpgid) {
 
           var pgslug = s_remove.replace('?', '');
 
-          var AddPage = AddPageString(y['Name'], y['PgId'], spslug, pgslug, spid)
+          var AddPage = AddPageString(y['Name'], y['PgId'], spslug, pgslug, spid, Rpgid)
 
           $('.groupdiv' + x['GroupId']).append(AddPage)
 
@@ -537,7 +540,7 @@ function PGList(spslug, spid, Rpgid) {
 
       if (j['ParentId'] == x['PgId']) {
 
-        $('.page[data-id='+ x['PgId']+']').addClass("addnew")
+        $('.page[data-id=' + x['PgId'] + ']').addClass("addnew")
 
         var pa = x['Name']
 
@@ -578,7 +581,7 @@ $(document).ready(function () {
     Speaking = true;
     var content = $(".content").text();
     var words = content.split(/\s+/);
-    var ContentSize = 30;
+    var ContentSize = 20;
     var NewContent = [];
     for (var i = 0; i < words.length; i += ContentSize) {
       NewContent.push(words.slice(i, i + ContentSize).join(' '));
@@ -606,6 +609,13 @@ $(document).ready(function () {
     }
   });
 
+  $('#read-cnl').click(function () {
+    if (Speaking) {
+      window.speechSynthesis.cancel();
+      Paused = false;
+    }
+  });
+
 
   window.speechSynthesis.onend = function (event) {
     if (speechContent.length > 0) {
@@ -620,6 +630,8 @@ $(document).ready(function () {
       var chunk = speechContent.shift();
       var utterance = new SpeechSynthesisUtterance(chunk);
       currentSpeech = utterance;
+      console.log("chuk",chunk);
+      $('#liveToast .toast-header h2').text(chunk);
       window.speechSynthesis.speak(utterance);
 
 
@@ -663,6 +675,8 @@ $(document).on("click", ".del-btn", function () {
           $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + ' <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
 
         }
+      } if (result.note.length ==0){
+        $("#mySidenavRgt>.note-content").empty()
       } if (result.highlight.length > 0) {
         $("#mySidenavRgtHigh>.note-content").empty()
         const section1Elements = document.querySelectorAll('.secton-content');
@@ -693,6 +707,17 @@ $(document).on("click", ".del-btn", function () {
 
           });
         }
+      }if ((result.highlight.length == 0) ){
+        $("#mySidenavRgtHigh>.note-content").empty()
+        const section1Elements = document.querySelectorAll('.secton-content');
+
+        section1Elements.forEach(element => {
+          const spanElements = element.querySelectorAll('span');
+
+          spanElements.forEach(spanElement => {
+            spanElement.parentNode.replaceChild(spanElement.firstChild, spanElement);
+          });
+        });
       }
     }
   })

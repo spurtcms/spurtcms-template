@@ -99,7 +99,7 @@
           </div>
           <div class="tst-cpy">
             <img src="/public/images/Mask Group 44.svg" class="clr" color-value="read" alt="" />
-         <button id="copybtn"><img src="/public/images/copy-svgrepo-com (2).svg" alt="" /></button>
+            <button id="copybtn"><img src="/public/images/copy-svgrepo-com (2).svg" alt="" /></button>
           </div>
         </div>
       </div>
@@ -111,16 +111,16 @@
         </div>
 
         <div class="note-content">
-          <div class="save-note">
-            <div class="type-content">
-              <textarea id="Textarea"></textarea>
-            </div>
-            <div class="save-content-div" id="save-btn">
-              <button class="save-btn">
-                <img src="/public/images/save-svgrepo-com (1).svg" alt="" />
-                <span>Save</span>
-              </button>
-            </div>
+        </div>
+        <div class="save-note">
+          <div class="type-content">
+            <textarea id="Textarea"></textarea>
+          </div>
+          <div class="save-content-div" id="save-btn">
+            <button class="save-btn">
+              <img src="/public/images/save-svgrepo-com (1).svg" alt="" />
+              <span>Save</span>
+            </button>
           </div>
         </div>
       </div>
@@ -133,39 +133,6 @@
         </div>
 
         <div class="note-content">
-          <!-- <div class="note-content-detail">
-            <h5 class="highlight-yellow select-cpy">
-              Users can create and edit content easily using a user-friendly
-              interface, often with WYSIWYG (What You See Is What You Get)
-              editors.
-            </h5>
-            <span class="dd-mm-yy"> Saved on 27sep23, 06:15pm</span>
-          </div>
-
-          <div class="note-content-detail">
-            <h5 class="highlight-pink select-cpy">
-              Users can create and edit content easily using a user-friendly
-              interface, often with WYSIWYG (What You See Is What You Get)
-              editors.
-            </h5>
-            <span>Saved on 27sep23, 06:15pm</span>
-          </div>
-secton-content
-          <div class="note-content-detail">
-            <h5 class="highlight-blue select-cpy">
-              Content is stored in a structured database, making it
-              organized and searchable.
-            </h5>
-            <span>Saved on 27sep23, 06:15pm</span>
-          </div>
-
-          <div class="note-content-detail">
-            <h5 class="highlight-green select-cpy">
-              CMSs offer role-based access control, permitting multiple
-              users with different levels of access and editing rights.
-            </h5>
-            <span>Saved on 27sep23, 06:15pm</span>
-          </div> -->
         </div>
       </div>
     </div>
@@ -175,9 +142,9 @@ secton-content
 <!--toast-->
 
 <div class="toast-btm toast-container position-fixed bottom-0 end-0">
-  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+  <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
     <button type="button" data-bs-dismiss="toast" class="toast-close" aria-label="Close">
-      <img src="/public/images/close-svgrepo-com (3).svg" alt="" />
+      <img src="/public/images/close-svgrepo-com (3).svg" id="read-cnl" alt="" />
     </button>
     <div class="toast-header">
       <h2>
@@ -318,115 +285,6 @@ secton-content
     });
   });
 </script>
-
-<!--select-->
-
-<!--select show rgt-->
-
-<!-- <script>
-      // Attach a mouseup event handler to the #centerSection
-      document
-        .querySelector("#centerSection")
-        .addEventListener("mouseup", function () {
-          // Get the selected text
-          const selectedText = getSelectedText();
-
-          // Wrap the selected text within a <span> element to apply background color
-          const highlightedText = `<span class="highlighted">${selectedText}</span>`;
-
-          // Add the highlighted text to the "selected-text" element
-          document.querySelector(".select-cpy").innerHTML += highlightedText;
-
-          // Get the parent paragraph of the selected text
-          const paragraph = getParentParagraph();
-
-          // Replace the selected text with the highlighted text within the paragraph
-          replaceSelectedText(paragraph, highlightedText);
-
-          // Display the formatted date and time
-          const formattedDatetime = formatDatetime(new Date());
-          document.querySelector(
-            ".dd-mm-yy"
-          ).textContent = `Saved on ${formattedDatetime}`;
-        });
-
-      // Function to get the selected text
-      function getSelectedText() {
-        const selection = window.getSelection();
-        return selection.toString();
-      }
-
-      // Function to get the parent paragraph of the selected text
-      function getParentParagraph() {
-        const selection = window.getSelection();
-        const anchorNode = selection.anchorNode;
-        return anchorNode.nodeType === Node.ELEMENT_NODE
-          ? anchorNode
-          : anchorNode.parentElement;
-      }
-
-      // Function to replace the selected text with the highlighted text within the paragraph
-      function replaceSelectedText(paragraph, highlightedText) {
-        const selection = window.getSelection();
-        const range = selection.getRangeAt(0);
-        range.deleteContents();
-        range.insertNode(
-          document.createRange().createContextualFragment(highlightedText)
-        );
-      }
-
-      // Function to format the date and time
-      function formatDatetime(date) {
-        const day = date.getDate();
-        const month = date.toLocaleString("default", { month: "short" });
-        const year = date.getFullYear();
-        const hours = date.getHours();
-        const minutes = date.getMinutes();
-        const ampm = hours >= 12 ? "pm" : "am";
-
-        // Adjust hours to 12-hour format
-        const formattedHours = hours % 12 || 12;
-
-        // Format the date and time
-        return `${day}${month}${year.toString().slice(-2)}, ${formattedHours}:${
-          (minutes < 10 ? "0" : "") + minutes
-        }${ampm}`;
-      }
-
-      // Add event listeners to the color change buttons
-      document
-        .querySelector(".clr-yellow")
-        .addEventListener("click", function () {
-          document.querySelectorAll(".highlighted").forEach(function (element) {
-            element.style.backgroundColor = "rgba(255, 215, 82, 0.2)";
-          });
-        });
-
-      document
-        .querySelector(".clr-green")
-        .addEventListener("click", function () {
-          document.querySelectorAll(".highlighted").forEach(function (element) {
-            element.style.backgroundColor = "rgba(77, 200, 142, 0.2)";
-          });
-        });
-
-      document
-        .querySelector(".clr-pink")
-        .addEventListener("click", function () {
-          document.querySelectorAll(".highlighted").forEach(function (element) {
-            element.style.backgroundColor = "rgb(247, 156, 156, 0.2)";
-          });
-        });
-
-      document
-        .querySelector(".clr-blue")
-        .addEventListener("click", function () {
-          document.querySelectorAll(".highlighted").forEach(function (element) {
-            element.style.backgroundColor = " rgba(106, 171, 250, 0.2)";
-          });
-        });
-    </script>
-   -->
 <script src="/public/js/spaceview/pages.js"></script>
 </body>
 

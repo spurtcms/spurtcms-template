@@ -120,7 +120,7 @@ func MyProfile(c *gin.Context) {
 
 	memb, _ := mem.GetMemberDetails()
 
-	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb,"myprofile": flg,"profilename":profilename})
+	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb, "myprofile": flg, "profilename": profilename})
 }
 func MyprofileUpdate(c *gin.Context) {
 
@@ -131,7 +131,7 @@ func MyprofileUpdate(c *gin.Context) {
 	lname := c.PostForm("lname")
 
 	mobile := c.PostForm("mobile")
-	
+
 	imageData := c.PostForm("crop_data")
 
 	if imageData != "" {
@@ -150,23 +150,23 @@ func MyprofileUpdate(c *gin.Context) {
 
 func ChangeEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail","myprofile": flg,"profilename":profilename})
+	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail", "myprofile": flg, "profilename": profilename})
 }
 
 func AddNewEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail","myprofile": flg,"profilename":profilename})
+	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail", "myprofile": flg, "profilename": profilename})
 
 }
 
 func ChangePassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword","myprofile": flg,"profilename":profilename})
+	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword", "myprofile": flg, "profilename": profilename})
 }
 
 func AddNewPassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword","myprofile": flg,"profilename":profilename})
+	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword", "myprofile": flg, "profilename": profilename})
 }
 
 func OtpGenarate(c *gin.Context) {
@@ -240,7 +240,16 @@ func OtpVerify(c *gin.Context) {
 
 	// confirmemail := c.PostForm("confirmemail")
 
-	_, err := mem.ChangeEmailId(otp, newemail)
+	email := c.PostForm("oldemailid")
+
+	memdetail, _, err := mem.CheckEmailInMember(0, email)
+
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	mem.ChangeEmailId(otp, memdetail.Id, newemail)
 
 	if err != nil {
 
@@ -311,6 +320,7 @@ func ConvertBase64(imageData string, storagepath string) (imgname string, path s
 
 	return imageName, storagePath, err
 }
+
 /* Resend Otp */
 func AgainOtpGenarate(c *gin.Context) {
 
