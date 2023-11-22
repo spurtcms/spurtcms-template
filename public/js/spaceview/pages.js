@@ -2,7 +2,7 @@
 $("input[name='sname']").keyup(function () {
   $(".srch-arrow").addClass("div-show");
   $(".reset-inpt").attr("type", "reset");
-  search();
+  search()
 });
 $(document).ready(function () {
   var Id = $("#spid").val()
@@ -34,7 +34,7 @@ document.querySelector("#centerSection").addEventListener("mouseup", () => {
     // Calculate posX while keeping .color-picker within the viewport
     let posX = rect.left + window.scrollX + rect.width / 2;
     let colorPickerWidth = colorPicker.offsetWidth;
-    let posXAdjusted = posX - colorPickerWidth / 2;
+    let posXAdjusted = posX - 600;
 
     // Ensure that posXAdjusted is within the viewport
     if (posXAdjusted < 0) {
@@ -53,7 +53,7 @@ document.querySelector("#centerSection").addEventListener("mouseup", () => {
   }
 });
 
-var $content;
+var content;
 var cont = 0;
 
 /* Search Input */
@@ -68,55 +68,62 @@ $(document).on('click', '.search-cnl', function () {
   $("#search1").show()
   $('#search-data').val('')
   $(".srch-arrow").removeClass("div-show");
-  $content.find('.highlight-content').contents().unwrap();
+  content.find('.highlight-content').contents().unwrap();
 })
 
 var count
 
 /* Search and Highlight */
 function search() {
-
-  var $searchInput = $('#search-data');
-  var $mainDiv = $('#centerSection');
-  var $count = $("#count");
+  var searchInput = $('#search-data');
+  console.log("searchInput", searchInput);
+  var mainDiv = $('#centerSection');
+  var countVal = $("#count");
   var currentIndex = 0;
-  $content = $mainDiv.find('h3,p');
-  $searchInput.on('input', function () {
-    var searchTerm = $searchInput.val().trim();
-    $content.find('.highlight-content').contents().unwrap();
-    if (searchTerm.length === 0) {
-      count = 0;
-      currentIndex = 0;
-      $count.text("0 of 0");
-      return;
-    }
-
-    var regex = new RegExp('\\b' + escapeRegExp(searchTerm), 'gi');
-
+  content = mainDiv.find('h3,p,span');
+  console.log("content", content);
+  var searchTerm = searchInput.val().trim();
+  console.log("searchTerm", searchTerm);
+  content.find('.highlight-content').contents().unwrap();
+  if (searchTerm.length === 0) {
+    count = 0;
     currentIndex = 0;
+    countVal.text("0 of 0");
+    return;
+  }
+  var regex = new RegExp('\\b' + escapeRegExp(searchTerm), 'gi');
+  console.log("regex", regex);
+  currentIndex = 0;
+  content.each(function () {
+    var $this = $(this);
+    if (regex.test($this.text())) {
+        $this.html(function (_, html) {
+          if($this.find('span').length > 0){
 
-    $content.each(function () {
-      var $this = $(this);
-      if (regex != "") {
-        if ($this.text().match(regex)) {
-          $this.html(function (_, html) {
-            //  cont++;
+            if (regex.test($this.find('span').text())){
+              return $this.find('span').html().replace(regex, '<span class="highlight-content">$&</span>');
+
+            }
+
+
+          
+          }else{
             return html.replace(regex, '<span class="highlight-content">$&</span>');
-          });
-        }
-      }
-    });
 
-    var text = $content.find('.highlight-content')
-
-    count = text.length
-
-    updateCount();
-  });
+          }
+        });
+    }
+});
 
 
+
+  var text = content.find('.highlight-content')
+
+  count = text.length
+
+  updateCount();
   function updateCount() {
-    $count.text((currentIndex + 1) + " of " + count);
+    countVal.text((currentIndex + 1) + " of " + count);
     focusCurrentIndex();
   }
   function focusCurrentIndex() {
@@ -172,35 +179,34 @@ function search() {
     }
   });
 
-}
 
-/* Notes and save */
-$(document).on('click', '#save-btn', function () {
-  var Pageid = $("#pgid").val();
-  var text = $("#Textarea").val();
-  $.ajax({
-    type: "post",
-    url: "/notes",
-    dataType: 'json',
-    data: {
-      pgid: Pageid,
-      content: text
-    },
-    success: function (result) {
-      if (result.note.length > 0) {
-        $("#mySidenavRgt>.note-content").empty()
-        for (let j of result.note) {
-          $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + ' <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
+  /* Notes and save */
+  $(document).on('click', '#save-btn', function () {
+    var Pageid = $("#pgid").val();
+    var text = $("#Textarea").val();
+    $.ajax({
+      type: "post",
+      url: "/notes",
+      dataType: 'json',
+      data: {
+        pgid: Pageid,
+        content: text
+      },
+      success: function (result) {
+        if (result.note.length > 0) {
+          $("#mySidenavRgt>.note-content").empty()
+          for (let j of result.note) {
+            $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + ' <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
 
+          }
+        } else {
+          $("#mySidenavRgt>.note-content").empty()
         }
-      }else{
-        $("#mySidenavRgt>.note-content").empty()
       }
-    }
-  })
-  $("#Textarea").val("");
-});
-
+    })
+    $("#Textarea").val("");
+  });
+}
 /* Highlights */
 var selection;
 var selectedContent;
@@ -210,7 +216,6 @@ $(document).on("click", ".secton-content", function () {
   var startOffsetRelativeToP = 0;
   var endOffsetRelativeToP = 0;
   selection = window.getSelection()
-  console.log("selection", selection);
   selectedContent = selection.toString();
   var range = selection.getRangeAt(0);
   selectedTag = range.startContainer.parentNode.innerText;
@@ -227,21 +232,18 @@ $(document).on("click", ".secton-content", function () {
   while (startContainer.previousSibling) {
     startContainer = startContainer.previousSibling;
     startOffsetRelativeToP += startContainer.textContent.length;
-    console.log("ss", startOffsetRelativeToP);
 
   }
 
   while (endContainer.previousSibling) {
     endContainer = endContainer.previousSibling;
     endOffsetRelativeToP += endContainer.textContent.length;
-    console.log("sss", endOffsetRelativeToP);
   }
   // Adjust the offsets
   startOffsetRelativeToP += range.startOffset;
   endOffsetRelativeToP += range.endOffset;
   s_offset = startOffsetRelativeToP
   e_offset = endOffsetRelativeToP
-  console.log("start,end", startOffsetRelativeToP, endOffsetRelativeToP);
   span = document.createElement('span');
   span.classList.add('clear_clr')
   range.surroundContents(span);
@@ -258,7 +260,6 @@ $(document).on("click", ".clr", function () {
   if (cl == "read") {
     var Speaker = false;
     var content = selectedContent
-    console.log("selec", selectedContent);
     if (Speaker) {
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
@@ -335,7 +336,6 @@ function AddGroupString(groupname, gid) {
 function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
 
   var html
-  console.log(pgid == Rpgid);
   if (pgid == Rpgid) {
     html = `<a href="/space/` + space + `/` + pgslug + `?spid=` + spid + `&pageid=` + pgid + `">
    <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
@@ -630,7 +630,6 @@ $(document).ready(function () {
       var chunk = speechContent.shift();
       var utterance = new SpeechSynthesisUtterance(chunk);
       currentSpeech = utterance;
-      console.log("chuk",chunk);
       $('#liveToast .toast-header h2').text(chunk);
       window.speechSynthesis.speak(utterance);
 
@@ -659,7 +658,6 @@ $('#copybtn').click(function () {
 $(document).on("click", ".del-btn", function () {
   var Pageid = $("#pgid").val();
   var del_id = $(this).attr('data-id')
-  console.log(del_id);
   $.ajax({
     type: "post",
     url: "/deletehighlights",
@@ -675,7 +673,7 @@ $(document).on("click", ".del-btn", function () {
           $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + ' <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
 
         }
-      } if (result.note.length ==0){
+      } if (result.note.length == 0) {
         $("#mySidenavRgt>.note-content").empty()
       } if (result.highlight.length > 0) {
         $("#mySidenavRgtHigh>.note-content").empty()
@@ -707,7 +705,7 @@ $(document).on("click", ".del-btn", function () {
 
           });
         }
-      }if ((result.highlight.length == 0) ){
+      } if ((result.highlight.length == 0)) {
         $("#mySidenavRgtHigh>.note-content").empty()
         const section1Elements = document.querySelectorAll('.secton-content');
 
