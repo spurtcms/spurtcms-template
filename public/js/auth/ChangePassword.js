@@ -4,7 +4,7 @@ $(document).ready(function () {
         "pass_validator",
         function (value, element) {
             if (value != "") {
-                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value)) 
+                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value))
                     return true;
                 else return false;
             }
@@ -23,34 +23,34 @@ $(document).ready(function () {
         return /^\d{6}$/.test(value);
     }, '* Please Enter 6 Digit Number');
 
-        $("form[name='changepasswordform']").validate({
-            rules: {
-                otp:{
-                required:true,
-                otp_validator :true
-                },
-                mynewPassword: {
-                    required: true,
-                    pass_validator:true                   
-                },
-                confrimPassword: {
-                    required: true,
-                    equalTo: "#mynewPassword"
-                }
+    $("form[name='changepasswordform']").validate({
+        rules: {
+            otp: {
+                required: true,
+                otp_validator: true
             },
-            messages: {
-                otp:{
-                    required:"Please Enter The Otp "
-                },
-                mynewPassword: {
-                    required: " Please Enter Your New Password" ,
-                },
-                confrimPassword: {
-                    required: " Please Re-Enter Your New Password ",
-                    equalTo:" Please Enter The Same New Password"
-                }
+            mynewPassword: {
+                required: true,
+                pass_validator: true
+            },
+            confrimPassword: {
+                required: true,
+                equalTo: "#mynewPassword"
             }
-        });
+        },
+        messages: {
+            otp: {
+                required: "Please Enter The Otp "
+            },
+            mynewPassword: {
+                required: " Please Enter Your New Password",
+            },
+            confrimPassword: {
+                required: " Please Re-Enter Your New Password ",
+                equalTo: " Please Enter The Same New Password"
+            }
+        }
+    });
 
 })
 
@@ -59,70 +59,76 @@ $(document).on("click", "#submit", function () {
     var url = window.location.search;
     const urlpar = new URLSearchParams(url);
     id = urlpar.get('emailid');
-    
-        var formcheck = $("form[name ='changepasswordform']").valid()
-    
-        var otp = $("#otp").val()
-        var newpassword = $("#mynewPassword").val()
-        var confirmpassword = $("#confrimPassword").val()
-        if (formcheck == true) {
-            $.ajax({
-                url: "/verify-otppass",
-                method: "POST",
-                data: { "id":id,"otp": otp, "mynewPassword": newpassword, "confrimPassword": confirmpassword  },
-                datatype: 'json',
-                success: function (data) {
-                    console.log(data);
-                    var parse_data = JSON.parse(data)
-                    console.log(parse_data.verify);
-                    if (parse_data.verify == "invalid otp") {
-                        var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid otp'
-                        $("#otp-error").html(content)
-                        $("#otp-error").show()
-                    } if (parse_data.verify == "otp exipred") {
-                        var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />otp exipred'
-                        $("#otp-error").html(content)
-                        $("#otp-error").show()
-                    } if (parse_data.verify == "") {
-                        window.location.href = "/myprofile"
-                    }
-    
-                }
-            })
-        
-    }else{
 
-        $(document).on('keyup',".field",function(){
+    var formcheck = $("form[name ='changepasswordform']").valid()
+
+    var otp = $("#otp").val()
+    var newpassword = $("#mynewPassword").val()
+    var confirmpassword = $("#confrimPassword").val()
+    if (formcheck == true) {
+        $.ajax({
+            url: "/verify-otppass",
+            method: "POST",
+            data: { "id": id, "otp": otp, "mynewPassword": newpassword, "confrimPassword": confirmpassword },
+            datatype: 'json',
+            success: function (data) {
+                console.log(data.verify);
+                if (data.verify == "Otp Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Otp Required'
+                    $("#otp-error").html(content)
+                    $("#otp-error").show()
+                } if (data.verify == "Password Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Password Required'
+                    $("#mynewPassword-error").html(content)
+                    $("#mynewPassword-error").show()
+                } if (data.verify == "invalid otp") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid otp'
+                    $("#otp-error").html(content)
+                    $("#otp-error").show()
+                } if (data.verify == "otp exipred") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />otp exipred'
+                    $("#otp-error").html(content)
+                    $("#otp-error").show()
+                } if (data.verify == "") {
+                    window.location.href = "/myprofile"
+                }
+
+            }
+        })
+
+    } else {
+
+        $(document).on('keyup', ".field", function () {
             Validationcheck()
         })
-       $('.input-container').each(function() {
-        var inputField = $(this).find('input');
-        var inputName = inputField.attr('name');
-        
-        if (!inputField.valid()) {
-          $(this).addClass("err");
-       
-        } else {
-          $(this).removeClass("err")
-        }
-         })
+        $('.input-container').each(function () {
+            var inputField = $(this).find('input');
+            var inputName = inputField.attr('name');
+
+            if (!inputField.valid()) {
+                $(this).addClass("err");
+
+            } else {
+                $(this).removeClass("err")
+            }
+        })
     }
 
 
 })
 
-function Validationcheck(){
+function Validationcheck() {
     let inputGro = document.querySelectorAll('.input-container');
     inputGro.forEach(inputGroup => {
         let inputField = inputGroup.querySelector('input');
         var inputName = inputField.getAttribute('name');
-      
+
         if (inputField.classList.contains('error')) {
             inputGroup.classList.add('err');
         } else {
             inputGroup.classList.remove('err');
         }
-      
+
     });
 }
 
@@ -172,16 +178,16 @@ $(document).on("click", "#againotp", function () {
     const urlpar = new URLSearchParams(url);
     email = urlpar.get('emailid');
 
-  
-     $.ajax({
-         url: "/send-otp-genrate",
-         method: "POST",
-         data: { "email": email },
-         datatype: 'json',
-         success: function (data) {
-        
-          }
-     })
- 
-    
+
+    $.ajax({
+        url: "/send-otp-genrate",
+        method: "POST",
+        data: { "email": email },
+        datatype: 'json',
+        success: function (data) {
+
+        }
+    })
+
+
 })

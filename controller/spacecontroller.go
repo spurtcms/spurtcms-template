@@ -74,8 +74,6 @@ func IndexView(c *gin.Context) {
 
 			if val.OrderIndex == 1 {
 
-				log.Println(val)
-
 				data.PageSlug = strings.ReplaceAll(regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(strings.ToLower(val.Name), " "), " ", "_")
 
 				data.PageId = val.PgId

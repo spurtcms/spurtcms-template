@@ -3,9 +3,9 @@ package controller
 import (
 	"encoding/base64"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"strconv"
 	"strings"
@@ -15,7 +15,6 @@ import (
 	spurtcore "github.com/spurtcms/spurtcms-core"
 	"github.com/spurtcms/spurtcms-core/auth"
 	"github.com/spurtcms/spurtcms-core/member"
-	"gopkg.in/gomail.v2"
 )
 
 var flg = false
@@ -46,6 +45,26 @@ func MemberLogout(c *gin.Context) {
 }
 func CheckMemberLogin(c *gin.Context) {
 
+	if c.PostForm("email") == "" || c.PostForm("password") == "" {
+
+		var errorz error
+
+		if c.PostForm("email") == "" {
+
+			errorz = errors.New("Email Required")
+
+		} else if c.PostForm("password") == "" {
+
+			errorz = errors.New("Password Required")
+
+		}
+
+		c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		return
+
+	}
+
 	name := c.PostForm("email")
 
 	password := c.PostForm("password")
@@ -54,23 +73,50 @@ func CheckMemberLogin(c *gin.Context) {
 
 	GetAuth(token)
 
+	// logErr = err.Error()
+
 	sp.MemAuth = &Auth
 
 	if err != nil {
 
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
+		c.JSON(200, gin.H{"verify": err.Error()})
 
 	} else {
 
 		flg = true
 
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
-
+		c.JSON(200, gin.H{"verify": ""})
 	}
 
 }
 
 func MemberRegister(c *gin.Context) {
+
+	if c.PostForm("fname") == "" || c.PostForm("mobile") == "" || c.PostForm("email") == "" || c.PostForm("password") == "" {
+
+		var errorz error
+
+		if c.PostForm("fname") == "" {
+
+			errorz = errors.New("First Name Required")
+
+		} else if c.PostForm("mobile") == "" {
+
+			errorz = errors.New("Mobile Required")
+
+		} else if c.PostForm("email") == "" {
+
+			errorz = errors.New("Email Required")
+
+		} else if c.PostForm("password") == "" {
+
+			errorz = errors.New("password Required")
+
+		}
+		c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		return
+	}
 
 	GetAuth("")
 
@@ -86,13 +132,9 @@ func MemberRegister(c *gin.Context) {
 
 	password := c.PostForm("password")
 
-	reg, err := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
+	mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
 
-	log.Println("register", reg)
-
-	log.Println("error", err)
-
-	json.NewEncoder(c.Writer).Encode(true)
+	c.JSON(200, gin.H{"verify": ""})
 
 }
 
@@ -171,74 +213,43 @@ func AddNewPassword(c *gin.Context) {
 
 func OtpGenarate(c *gin.Context) {
 
-	eamil := c.PostForm("email")
+	email := c.PostForm("email")
 
-	mem.Auth = &auth1
-
-	memdetail, mailcheck, err := mem.CheckEmailInMember(0, eamil)
+	_, err := GenarateOtp(email)
 
 	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(mailcheck)
-
-	if mailcheck {
-
-		rand.Seed(time.Now().UnixNano())
-
-		min := 100000
-
-		max := 999999
-
-		randomNumber := min + rand.Intn(max-min+1)
-
-		otp := strconv.Itoa(randomNumber)
-
-		subject := "Your OTP Code"
-
-		from := os.Getenv("MAIL_USERNAME")
-
-		password := os.Getenv("MAIL_PASSWORD")
-
-		to := eamil
-
-		mem.UpdateOtp(randomNumber, memdetail.Id)
-
-		message := fmt.Sprintf("Your OTP code is: %s", otp)
-
-		m := gomail.NewMessage()
-
-		m.SetHeader("From", from)
-
-		m.SetHeader("To", to)
-
-		m.SetHeader("Subject", subject)
-
-		m.SetBody("text/plain", message)
-
-		d := gomail.NewDialer("smtp.gmail.com", 587, from, password)
-
-		err := d.DialAndSend(m)
-
-		log.Println("error", err)
-
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
-
+		c.JSON(200, gin.H{"verify": err.Error()})
 	} else {
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": "invalid email"})
-
+		c.JSON(200, gin.H{"verify": ""})
 	}
 
 }
-func OtpVerify(c *gin.Context) {
+func OtpVerifyemail(c *gin.Context) {
 
+	var errorz error
+
+	if c.PostForm("otp") == "" || c.PostForm("newemail") == "" {
+
+		if c.PostForm("otp") == "" {
+
+			errorz = errors.New("Otp Required")
+
+		} else if c.PostForm("newemail") == "" {
+
+			errorz = errors.New("Email Required")
+
+		}
+
+		c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		return
+
+	}
 	num := c.PostForm("otp")
 
 	otp, _ := strconv.Atoi(num)
 
 	newemail := c.PostForm("newemail")
-
-	// confirmemail := c.PostForm("confirmemail")
 
 	email := c.PostForm("oldemailid")
 
@@ -253,11 +264,11 @@ func OtpVerify(c *gin.Context) {
 
 	if err != nil {
 
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err.Error()})
+		c.JSON(200, gin.H{"verify": err.Error()})
 
 	} else {
 
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
+		c.JSON(200, gin.H{"verify": ""})
 
 	}
 
@@ -267,6 +278,25 @@ func OtpVerify(c *gin.Context) {
 
 func OtpVerifypass(c *gin.Context) {
 
+	var errorz error
+
+	if c.PostForm("otp") == "" || c.PostForm("mynewPassword") == "" {
+
+		if c.PostForm("otp") == "" {
+
+			errorz = errors.New("Otp Required")
+
+		} else if c.PostForm("mynewPassword") == "" {
+
+			errorz = errors.New("Password Required")
+
+		}
+
+		c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		return
+
+	}
 	num := c.PostForm("otp")
 
 	otp, _ := strconv.Atoi(num)
@@ -288,33 +318,49 @@ func OtpVerifypass(c *gin.Context) {
 
 	if err1 != nil {
 
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": err1.Error()})
+		c.JSON(200, gin.H{"verify": err1.Error()})
 
 	} else {
 
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
+		c.JSON(200, gin.H{"verify": ""})
 
 	}
 
 }
+
 func ConvertBase64(imageData string, storagepath string) (imgname string, path string, err error) {
+
 	extEndIndex := strings.Index(imageData, ";base64,")
+
 	base64data := imageData[strings.IndexByte(imageData, ',')+1:]
+
 	var ext = imageData[11:extEndIndex]
+
 	rand_num := strconv.Itoa(int(time.Now().Unix()))
+
 	imageName := "IMG-" + rand_num + "." + ext
+
 	os.MkdirAll(storagepath, 0755)
+
 	storagePath := storagepath + "/IMG-" + rand_num + "." + ext
+
 	decode, err := base64.StdEncoding.DecodeString(base64data)
 
 	if err != nil {
+
 		fmt.Println(err)
+
 	}
+
 	file, err := os.Create(storagePath)
+
 	if err != nil {
+
 		fmt.Println(err)
+
 	}
 	if _, err := file.Write(decode); err != nil {
+
 		fmt.Println(err)
 	}
 
@@ -324,68 +370,14 @@ func ConvertBase64(imageData string, storagepath string) (imgname string, path s
 /* Resend Otp */
 func AgainOtpGenarate(c *gin.Context) {
 
-	eamil := c.PostForm("email")
+	email := c.PostForm("email")
 
-	mem.Auth = &auth1
-
-	memdetail, mailcheck, err := mem.CheckEmailInMember(0, eamil)
+	verify, err := GenarateOtp(email)
 
 	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(mailcheck)
-
-	if mailcheck {
-
-		rand.Seed(time.Now().UnixNano())
-
-		min := 100000
-
-		max := 999999
-
-		randomNumber := min + rand.Intn(max-min+1)
-
-		otp := strconv.Itoa(randomNumber)
-
-		subject := "Your OTP Code"
-
-		from := os.Getenv("MAIL_USERNAME")
-
-		password := os.Getenv("MAIL_PASSWORD")
-
-		to := eamil
-
-		mem.UpdateOtp(randomNumber, memdetail.Id)
-
-		message := fmt.Sprintf("Your OTP code is: %s", otp)
-
-		m := gomail.NewMessage()
-
-		m.SetHeader("From", from)
-
-		m.SetHeader("To", to)
-
-		m.SetHeader("Subject", subject)
-
-		m.SetBody("text/plain", message)
-
-		d := gomail.NewDialer("smtp.gmail.com", 587, from, password)
-
-		err := d.DialAndSend(m)
-
-		if err != nil {
-
-			json.NewEncoder(c.Writer).Encode(gin.H{"err": err})
-
-			return
-
-		}
-
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": ""})
-
+		c.JSON(200, gin.H{"verify": err.Error()})
 	} else {
-		json.NewEncoder(c.Writer).Encode(gin.H{"verify": "invalid email"})
-
+		c.JSON(200, gin.H{"verify": verify})
 	}
 
 }

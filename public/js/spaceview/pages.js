@@ -348,10 +348,10 @@ function AddGroupString(groupname, gid) {
    </div>`
 }
 /**Add page string */
-function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
+function AddPageString(name, pgid, space, pgslug, spid, Rpgid, Srpid) {
 
   var html
-  if (pgid == Rpgid) {
+  if (pgid == Rpgid || pgid == Srpid) {
     html = `<a href="/space/` + space + `/` + pgslug + `?spid=` + spid + `&pageid=` + pgid + `">
    <div class="accordion-item accordion-item`+ pgid + `" data-id="` + pgid + `">
    <h2 class="accordion-header" id="headingOne">
@@ -374,9 +374,10 @@ function AddPageString(name, pgid, space, pgslug, spid, Rpgid) {
   return html
 }
 /*addsub page string */
-function AddSubPageString(value, parentid, id, space, pgslug, subslug, spid, Rpgid) {
+function AddSubPageString(value, parentid, id, space, pgslug, subslug, spid, Rpgid, Srpid) {
   var html;
-  if (Rpgid == parentid || id == Rpgid) {
+  console.log("fgh", (Rpgid == parentid || Srpid == parentid), Srpid);
+  if (Rpgid == parentid || Srpid == parentid) {
     html = `<a href="/space/` + space + `/` + pgslug + `/` + subslug + `?spid=` + spid + `&pageid=` + id + `">
    <div id="collapseOne`+ parentid + `" class="accordion-collapse  collapse show" aria-labelledby="headingOne"
    data-bs-parent="#accordionExample " data-parent="`+ parentid + `">
@@ -403,12 +404,13 @@ $(document).ready(function () {
   var spsulg = $("#spSulg").val()
   var spid = $("#spid").val();
   var Rpgid = $("#pgid").val();
+  var Srpid;
   $.ajax({
     type: "get",
     url: "/page",
     dataType: 'json',
     data: {
-      sid: $("#spid").val(),
+      sid: spid,
       pid: Rpgid,
     },
     cache: false,
@@ -428,10 +430,19 @@ $(document).ready(function () {
           $("#mySidenavRgt>.note-content").append('<div class="note-content-detail"><h5>' + j.NotesHighlightsContent + '</h5><h3>Saved on ' + j.CreatedOn + 'pm <img class="del-btn" data-id="' + j.Id + '" src="/public/images/delete-highlights.svg" alt=""/></h3></div>');
         }
       }
+      for (let j of Subpage) {
+        if (j['SpgId'] == Rpgid) {
+
+          Srpid = j['ParentId']
+
+        }
+        console.log("Srpid", Srpid);
+      }
 
       if (newpages.length > 0 || newGroup.length > 0) {
         overallarray = overallarray.concat(newpages, newGroup)
-        PGList(spsulg, spid, Rpgid)
+        console.log("overallarry", overallarray);
+        PGList(spsulg, spid, Rpgid, Srpid)
         for (let j of newpages) {
           if (j['OrderIndex'] == 1) {
             $("#Title").text(j['Name'])
@@ -494,7 +505,7 @@ $(document).ready(function () {
   $('.togglebtn').trigger('click');
 });
 
-function PGList(spslug, spid, Rpgid) {
+function PGList(spslug, spid, Rpgid, Srpid) {
 
 
   $('.accordion').html('');
@@ -513,7 +524,7 @@ function PGList(spslug, spid, Rpgid) {
       var pgslug = s_remove.replace('?', '');
 
 
-      var AddPage = AddPageString(x['Name'], x['PgId'], spslug, pgslug, spid, Rpgid);
+      var AddPage = AddPageString(x['Name'], x['PgId'], spslug, pgslug, spid, Rpgid, Srpid);
 
       $('.accordion').append(AddPage);
     }
@@ -535,7 +546,7 @@ function PGList(spslug, spid, Rpgid) {
 
           var pgslug = s_remove.replace('?', '');
 
-          var AddPage = AddPageString(y['Name'], y['PgId'], spslug, pgslug, spid, Rpgid)
+          var AddPage = AddPageString(y['Name'], y['PgId'], spslug, pgslug, spid, Rpgid, Srpid)
 
           $('.groupdiv' + x['GroupId']).append(AddPage)
 
@@ -571,7 +582,7 @@ function PGList(spslug, spid, Rpgid) {
 
         var subslug = Sb_remove.replace('?', '')
 
-        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'], spslug, pgslug, subslug, spid, Rpgid)
+        var AddSubPage = AddSubPageString(j['Name'], j['ParentId'], j['SpgId'], spslug, pgslug, subslug, spid, Rpgid, Srpid)
 
         $('.accordion-item' + j['ParentId']).append(AddSubPage)
 

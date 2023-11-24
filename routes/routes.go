@@ -36,7 +36,7 @@ func SetupRoutes() *gin.Engine {
 	r.POST("/memberregister", controller.MemberRegister)
 	r.POST("/myprofileupdate", controller.MyprofileUpdate)
 	r.POST("/otp-genrate", controller.OtpGenarate)
-	r.POST("/verify-otp", controller.OtpVerify)
+	r.POST("/verify-email-otp", controller.OtpVerifyemail)
 	r.GET("/", controller.IndexView)
 	r.GET("/space/:stitle/:pgtitle/", controller.SpaceDetail)
 	r.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)

@@ -1,12 +1,12 @@
 
-/* Login validation */
+// /* Login validation */
 $(document).ready(function () {
-        
+
     jQuery.validator.addMethod(
         "pass_validator",
         function (value, element) {
             if (value != "") {
-                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value)) 
+                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value))
                     return true;
                 else return false;
             }
@@ -20,109 +20,117 @@ $(document).ready(function () {
         return /(^[a-zA-Z_0-9\.-]+)@([a-z]+)\.([a-z]+)(\.[a-z]+)?$/.test(value);
     }, '* Please Enter The Valid Email Address ');
 
-        $("form[name='loginform']").validate({
-            rules: {
-                email: {
-                    required: true,
-                    email_validator:true
-                   
-                },
-                password: {
-                    required: true,
-                    pass_validator: true
+    $("form[name='loginform']").validate({
+        rules: {
+            email: {
+                required: true,
+                email_validator: true
 
-                }
             },
-            messages: {
-                email: {
-                    required: " Please Enter Your Email Address" ,
-                },
-                password: {
-                    required: " Please Enter Your Password ",
+            password: {
+                required: true,
+                pass_validator: true
 
-                }
-    
             }
-        });
-   
-          
+        },
+        messages: {
+            email: {
+                required: " Please Enter Your Email Address",
+            },
+            password: {
+                required: " Please Enter Your Password ",
+
+            }
+
+        }
+    });
+
+
 })
 
 
 
 
-function Validationcheck(){
+function Validationcheck() {
     let inputGro = document.querySelectorAll('.input-container');
     inputGro.forEach(inputGroup => {
         let inputField = inputGroup.querySelector('input');
         var inputName = inputField.getAttribute('name');
-        console.log("input",inputName)
-      
+        console.log("input", inputName)
+
         if (inputField.classList.contains('error')) {
             inputGroup.classList.add('err');
         } else {
             inputGroup.classList.remove('err');
         }
-      
+
     });
 }
 
 
 
- 
+
 $(document).on("click", "#submit", function () {
 
-var formcheck = $("form[name ='loginform']").valid()
+    var formcheck = $("form[name ='loginform']").valid()
 
-       var email = $("#myInput").val()
-        var password = $("#myPassword").val()
+    var email = $("#myInput").val()
+    var password = $("#myPassword").val()
 
-        if (formcheck == true) {
-            $.ajax({
-                url: "/checkmemberlogin",
-                method: "POST",
-                data: { "email": email, "password": password },
-                datatype: 'json',
-                success: function (data) {
-                    console.log(data);
-                    var parse_data = JSON.parse(data)
-                    console.log(parse_data.verify);
-                    if (parse_data.verify == "your email not registered") {
-                        var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />your email not registered'
-                        $("#myInput-error").html(content)
-                        $("#myInput-error").show()
-                    } if (parse_data.verify == "invalid password") {
-                        var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid password'
-                        $("#myPassword-error").html(content)
-                        $("#myPassword-error").show()
-                    }
-                    
-                    if (parse_data.verify == "") {
-                        window.location.href = "/"
-                    }
-        
+    if (formcheck == true) {
+        $.ajax({
+            url: "/checkmemberlogin",
+            method: "POST",
+            data: { "email": email, "password": password },
+            datatype: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.verify == "Email Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Email Required'
+                    $("#myInput-error").html(content)
+                    $("#myInput-error").show()
                 }
-            })
+                if (data.verify == "password Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />password Required'
+                    $("#myPassword-error").html(content)
+                    $("#myPassword-error").show()
+                }
+                if (data.verify == "your email not registered") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />your email not registered'
+                    $("#myInput-error").html(content)
+                    $("#myInput-error").show()
+                } if (data.verify == "invalid password") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid password'
+                    $("#myPassword-error").html(content)
+                    $("#myPassword-error").show()
+                }
 
-        }else{
+                if (data.verify == "") {
+                    window.location.href = "/"
+                }
 
-            $(document).on('keyup',".field",function(){
-                Validationcheck()
-            })
-           $('.input-container').each(function() {
+            }
+        })
+
+    } else {
+
+        $(document).on('keyup', ".field", function () {
+            Validationcheck()
+        })
+        $('.input-container').each(function () {
             var inputField = $(this).find('input');
             var inputName = inputField.attr('name');
-            
-            if (!inputField.valid()) {
-              $(this).addClass("err");
-           
-            } else {
-              $(this).removeClass("err")
-            }
-             })
-        }
 
-     
+            if (!inputField.valid()) {
+                $(this).addClass("err");
+
+            } else {
+                $(this).removeClass("err")
+            }
+        })
+    }
+
+
 })
 
 // Password Change

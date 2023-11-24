@@ -40,14 +40,12 @@ $(document).on("click", "#submit", function () {
         data: { "email": email },
         datatype: 'json',
         success: function (data) {
-            console.log(data);
-            var parse_data = JSON.parse(data)
-            console.log(parse_data.verify);
-            if (parse_data.verify == "invalid email") {
+            console.log("ok",data.verify);
+            if (data.verify == "invalid email") {
                 var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid email'
                 $("#oldemail-error").html(content)
                 $("#oldemail-error").show()
-            } if (parse_data.verify == "") {
+            } if (data.verify == "") {
                 window.location.href = "/passwordchange?emailid="+email
             }
 

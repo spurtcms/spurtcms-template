@@ -5,7 +5,7 @@ $(document).ready(function () {
         "pass_validator",
         function (value, element) {
             if (value != "") {
-                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value)) 
+                if (/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_]).{8,}$/.test(value))
                     return true;
                 else return false;
             }
@@ -16,18 +16,18 @@ $(document).ready(function () {
 
     $.validator.addMethod("email_validator", function (value) {
         return /(^[a-zA-Z_0-9\.-]+)@([a-z]+)\.([a-z]+)(\.[a-z]+)?$/.test(value);
-     }, '* Please Enter The Valid Email Address ');
+    }, '* Please Enter The Valid Email Address ');
 
-    jQuery.validator.addMethod("mob_validator",function (value, element) {
-            return /^([0|\+[0-9]{1,5})?([7-9]{1}[0-9]{9})$/.test(value)
-        },"Started With Country code");
-    
+    jQuery.validator.addMethod("mob_validator", function (value, element) {
+        return /^([0|\+[0-9]{1,5})?([7-9]{1}[0-9]{9})$/.test(value)
+    }, "Started With Country code");
+
 
     $.validator.addMethod("space", function (value) {
         return /^[^-\s]/.test(value);
     });
 
-         
+
     // jQuery.validator.addMethod("duplicateemail", function (value) {
 
     //     var result;
@@ -63,9 +63,9 @@ $(document).ready(function () {
     //     })
     //     return result.trim()!="true"
     // })
-    
+
     // jQuery.validator.addMethod("duplicatenumber", function (value) {
-    
+
     //     var result;
     //     user_id = $("#userid").val()
     //     $.ajax({
@@ -83,80 +83,80 @@ $(document).ready(function () {
     // })
 
     // Password Change
-$(document).on('click', '#pass-con', function () {
+    $(document).on('click', '#pass-con', function () {
 
-    var This = $("#password")
+        var This = $("#password")
 
-    if ($(This).attr('type') === 'password') {
+        if ($(This).attr('type') === 'password') {
 
-        $(This).attr('type', 'text');
+            $(This).attr('type', 'text');
 
-        $(this).removeClass('fa-eye-slash').addClass('fa-eye')
+            $(this).removeClass('fa-eye-slash').addClass('fa-eye')
 
-    } else {
+        } else {
 
-        $(This).attr('type', 'password');
+            $(This).attr('type', 'password');
 
-        $(this).removeClass('fa-eye').addClass('fa-eye-slash')
-    }
-})
-
-$("form[name='signupform']").validate({
-   
-    ignore:[],
-    rules: {
-       
-        firstname: {
-            required: true,
-            // fname_validator: true,
-            space: true,
-        },
-        lastname: {
-            required: true,
-            // lname_validator: true,
-            space: true,
-        },
-        email: {
-            required: true,
-            email_validator: true,
-            // duplicateemail:true
-        },
-     
-        myNumber: {
-            required: true,
-            mob_validator: true,
-            // duplicatenumber:true
-        },
-        myPassword: {
-            required: true,
-            pass_validator:true
-            
+            $(this).removeClass('fa-eye').addClass('fa-eye-slash')
         }
-    },
-    messages: {
-        firstname: {
-            required: "Please Enter The First Name ",
-            space: "No Prefix Space " 
+    })
+
+    $("form[name='signupform']").validate({
+
+        ignore: [],
+        rules: {
+
+            firstname: {
+                required: true,
+                // fname_validator: true,
+                space: true,
+            },
+            lastname: {
+                required: true,
+                // lname_validator: true,
+                space: true,
+            },
+            email: {
+                required: true,
+                email_validator: true,
+                // duplicateemail:true
+            },
+
+            myNumber: {
+                required: true,
+                mob_validator: true,
+                // duplicatenumber:true
+            },
+            myPassword: {
+                required: true,
+                pass_validator: true
+
+            }
         },
-        lastname: {
-            required: "Please Enter Your Last Name ",
-            space: "No Prefix Space " 
-        },
-        email: {
-            required: "Please Enter The Email Address",
-            // duplicateemail:" "
-        },
-        myNumber: {
-            required: " Please Enter The Mobile NUmber "
-        },
-        myPassword: {
-            required: "Please Enter The Password " ,
-        },
-          
-      
-    }
-})
-    
+        messages: {
+            firstname: {
+                required: "Please Enter The First Name ",
+                space: "No Prefix Space "
+            },
+            lastname: {
+                required: "Please Enter Your Last Name ",
+                space: "No Prefix Space "
+            },
+            email: {
+                required: "Please Enter The Email Address",
+                // duplicateemail:" "
+            },
+            myNumber: {
+                required: " Please Enter The Mobile Number "
+            },
+            myPassword: {
+                required: "Please Enter The Password ",
+            },
+
+
+        }
+    })
+
 })
 
 
@@ -170,42 +170,6 @@ $(document).on("click", "#create-btn", function () {
     var mobile = $("#myInput").val()
     var email = $("#email").val()
     var password = $("#myPassword").val()
-
-    // console.log("pass", password);
-    // console.log(fname == "" && lname == "" && mobile == "" && email == "" && password == "");
-    // if (fname == "" && mobile == "" && email == "" && password == "") {
-    //     $("#memfname").show()
-    //     $("#fname-con").addClass("err")
-    //     $("#memnumber").show()
-    //     $("#mobile-con").addClass("err")
-    //     $("#mememail").show()
-    //     $("#email-con").addClass("err")
-    //     $("#mempass").show()
-    //     $("#pass-con").addClass("err")
-
-    // } if (fname == "") {
-    //     $("#memfname").show()
-    //     $("#fname-con").addClass("err")
-    // } if (mobile == "") {
-    //     $("#memnumber").show()
-    //     $("#mobile-con").addClass("err")
-    // } if (email == "") {
-    //     $("#mememail").show()
-    //     $("#email-con").addClass("err")
-
-    // } if (password == "") {
-    //     $("#mempass").show()
-    //     $("#pass-con").addClass("err")
-    // } else {
-    //     $("#memfname").hide()
-    //     $("#memnumber").hide()
-    //     $("#mememail").hide()
-    //     $("#mempass").hide()
-    //     $("#fname-con").addClass("err")
-    //     $("#mobile-con").addClass("err")
-    //     $("#email-con").addClass("err")
-    //     $("#pass-con").removeClass("err")
-
     if (formcheck == true) {
 
         $.ajax({
@@ -214,45 +178,61 @@ $(document).on("click", "#create-btn", function () {
             data: { "fname": fname, "lname": lname, "mobile": mobile, "email": email, "password": password },
             datatype: 'json',
             success: function (data) {
-                console.log("data", data);
-                if (data) {
+                if (data.verify == "First Name Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />First Name Required'
+                    $("#firstname-error").html(content)
+                    $("#firstname-error").show()
+                } if (data.verify == "Mobile Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Moblie Required'
+                    $("#myNumber-error").html(content)
+                    $("#myNumber-error").show()
+                } if (data.verify == "Email Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Email Required'
+                    $("#email-error").html(content)
+                    $("#email-error").show()
+                } if (data.verify == "Password Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Password Required'
+                    $("#myPassword-error").html(content)
+                    $("#myPassword-error").show()
+                }
+                if (data.verify == "") {
                     window.location.href = "/"
                 }
 
             }
         })
-        
-    }else{
 
-        $(document).on('keyup',".field",function(){
+    } else {
+
+        $(document).on('keyup', ".field", function () {
             Validationcheck()
         })
-       $('.input-container').each(function() {
-        var inputField = $(this).find('input');
-        var inputName = inputField.attr('name');
-        
-        if (!inputField.valid()) {
-          $(this).addClass("err");
-       
-        } else {
-          $(this).removeClass("err")
-        }
-         })
+        $('.input-container').each(function () {
+            var inputField = $(this).find('input');
+            var inputName = inputField.attr('name');
+
+            if (!inputField.valid()) {
+                $(this).addClass("err");
+
+            } else {
+                $(this).removeClass("err")
+            }
+        })
     }
-        
+
 })
 
-function Validationcheck(){
+function Validationcheck() {
     let inputGro = document.querySelectorAll('.input-container');
     inputGro.forEach(inputGroup => {
         let inputField = inputGroup.querySelector('input');
         var inputName = inputField.getAttribute('name');
-      
+
         if (inputField.classList.contains('error')) {
             inputGroup.classList.add('err');
         } else {
             inputGroup.classList.remove('err');
         }
-      
+
     });
 }

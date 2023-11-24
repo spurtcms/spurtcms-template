@@ -116,23 +116,30 @@ $(document).on("click", "#submit", function () {
     console.log("ss", newemail, confirmemail, otp);
     if (formcheck == true) {
         $.ajax({
-            url: "/verify-otp",
+            url: "/verify-email-otp",
             method: "POST",
             data: { "otp": otp, "newemail": newemail, "confirmemail": confirmemail ,"oldemailid":oldemailid },
             datatype: 'json',
             success: function (data) {
                 console.log(data);
-                var parse_data = JSON.parse(data)
-                console.log(parse_data.verify);
-                if (parse_data.verify == "invalid otp") {
+                console.log(data.verify);
+                if (data.verify == "Otp Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Otp Required'
+                    $("#otp-error").html(content)
+                    $("#otp-error").show()
+                }   if (data.verify == "Email Required") {
+                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Email Required'
+                    $("#emailaddress-error").html(content)
+                    $("#emailaddress-error").show()
+                } if (data.verify == "invalid otp") {
                     var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid otp'
                     $("#otp-error").html(content)
                     $("#otp-error").show()
-                } if (parse_data.verify == "otp exipred") {
+                } if (data.verify == "otp exipred") {
                     var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />otp exipred'
                     $("#otp-error").html(content)
                     $("#otp-error").show()
-                } if (parse_data.verify == "") {
+                } if (data.verify == "") {
                     window.location.href = "/myprofile"
                 }
 
