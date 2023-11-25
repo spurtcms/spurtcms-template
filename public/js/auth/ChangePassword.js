@@ -72,7 +72,6 @@ $(document).on("click", "#submit", function () {
             data: { "id": id, "otp": otp, "mynewPassword": newpassword, "confrimPassword": confirmpassword },
             datatype: 'json',
             success: function (data) {
-                console.log(data.verify);
                 if (data.verify == "Otp Required") {
                     var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Otp Required'
                     $("#otp-error").html(content)

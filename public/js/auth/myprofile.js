@@ -84,8 +84,8 @@ $(document).on("click", "#update-btn", function () {
             data: { "fname": fname, "lname": lname, "mobile": mobile ,"crop_data":crop_data},
             datatype: 'json',
             success: function (data) {
-                console.log("data", data);
-                if (data) {
+                
+                if (data.verify == "") {
                     window.location.href = "/myprofile"
                 }
     

@@ -2,7 +2,6 @@ package controller
 
 import (
 	"encoding/base64"
-	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -162,10 +161,29 @@ func MyProfile(c *gin.Context) {
 
 	memb, _ := mem.GetMemberDetails()
 
-	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb, "myprofile": flg, "profilename": profilename})
+	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb, "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
 }
 func MyprofileUpdate(c *gin.Context) {
 
+	var errorz error
+
+	if c.PostForm("fname") == "" || c.PostForm("mobile") == "" {
+
+		if c.PostForm("fname") == "" {
+
+			errorz = errors.New("First Name Required")
+
+		} else if c.PostForm("mobile") == "" {
+
+			errorz = errors.New("Mobile Number Required")
+
+		}
+
+		c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		return
+
+	}
 	mem.Auth = &Auth
 
 	fname := c.PostForm("fname")
@@ -187,28 +205,28 @@ func MyprofileUpdate(c *gin.Context) {
 
 	log.Println("update", upt)
 
-	json.NewEncoder(c.Writer).Encode(true)
+	c.JSON(200, gin.H{"verify": ""})
 }
 
 func ChangeEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail", "myprofile": flg, "profilename": profilename})
+	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail", "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
 }
 
 func AddNewEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail", "myprofile": flg, "profilename": profilename})
+	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail", "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
 
 }
 
 func ChangePassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword", "myprofile": flg, "profilename": profilename})
+	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword", "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
 }
 
 func AddNewPassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword", "myprofile": flg, "profilename": profilename})
+	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword", "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
 }
 
 func OtpGenarate(c *gin.Context) {
@@ -253,14 +271,14 @@ func OtpVerifyemail(c *gin.Context) {
 
 	email := c.PostForm("oldemailid")
 
-	memdetail, _, err := mem.CheckEmailInMember(0, email)
+	_, _, err := mem.CheckEmailInMember(0, email)
 
 	if err != nil {
 
 		fmt.Println(err)
 	}
 
-	mem.ChangeEmailId(otp, memdetail.Id, newemail)
+	mem.ChangeEmailId(otp, newemail)
 
 	if err != nil {
 

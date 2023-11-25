@@ -9,7 +9,7 @@
       <h3>Basic Profile</h3>
       <div class="profile-pic-form">
         <div class="profile-img">
-          <img src="/public/images/Ellipse 6.png" alt="" />
+          <img src="/{{.member.ProfileImagePath}}" alt="" id="profpic" />
           <input type="file" id="myfile" name="image">
         </div>
         <div class="profile-form">
@@ -17,29 +17,33 @@
             <input type="hidden" name="crop_data" id="crop_data">
 
             <div class="input-container">
-              <input type="text" id="firstname" class="w-100 field" name="firstname"  value="{{.member.FirstName}}" required />
+              <input type="text" id="firstname" class="w-100 field" name="firstname" value="{{.member.FirstName}}"
+                required />
               <label for="myInput" class="input-label">First name</label>
-          
-                <label id="firstname-error" class="error err-txt" for="firstname" style="display: none;">
-                  <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your The First Name </label>
+
+              <label id="firstname-error" class="error err-txt" for="firstname" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter Your The
+                First Name </label>
 
             </div>
 
             <div class="input-container">
               <input type="text" id="lastname" class="w-100 field" name="lastname" value="{{.member.LastName}}" />
               <label for="myInput" class="input-label">Last name</label>
-      
-                <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
-                  <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your The First Name </label>
+
+              <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
+                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter Your The
+                First Name </label>
 
 
             </div>
 
             <div class="input-container">
-              <input type="text" id="mobileNumber" class="w-100 field" name="mobileNumber" maxlength="10" value="{{.member.MobileNo}}" required />
+              <input type="text" id="mobileNumber" class="w-100 field" name="mobileNumber" maxlength="10"
+                value="{{.member.MobileNo}}" required />
               <label for="myInput" class="input-label">Mobile number</label>
-       
-             <label id="mobileNumber-error" class="error err-txt" for="mobileNumber" style="display: none;">
+
+              <label id="mobileNumber-error" class="error err-txt" for="mobileNumber" style="display: none;">
                 Please Enter Your Mobile Number</label>
             </div>
           </form>
@@ -76,11 +80,10 @@
     </div>
   </div>
 </section>
-<script src="/public/js/auth/myprofile.js"></script>
-<script src="/public/js/common.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.js"></script>
+
+{{template "cropmodal" .}}
 
 </body>
 
 </html>
-
-{{template "cropmodal" .}}

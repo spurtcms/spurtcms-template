@@ -24,6 +24,7 @@ func SetupRoutes() *gin.Engine {
 	r.LoadHTMLFiles(htmlfiles...)
 
 	r.Static("/public", "./public")
+	r.Static("/storage","./storage")
 	r.GET("/login", controller.MemberLogin)
 	r.GET("/logout",controller.MemberLogout)
 	r.GET("/signup", controller.SignUp)

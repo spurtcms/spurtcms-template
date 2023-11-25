@@ -1,7 +1,5 @@
 $(document).ready(function () {
     
-  
-
     let cropper = $('#crop-container').croppie({
         enableExif: true,
         enableResize: false,
@@ -51,7 +49,7 @@ $(document).ready(function () {
         cropper.croppie('bind', {
             url: imgurl
         }).then(function () {
-            cropper.croppie('setZoom',0.2)
+            cropper.croppie('setZoom', 0.2)
             console.log("cropper initialized!");
         })
     });
@@ -60,9 +58,9 @@ $(document).ready(function () {
         var rotationValue = parseInt($(this).val());
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.save()
-        ctx.translate(canvas.width / 2 , canvas.height / 2 );
+        ctx.translate(canvas.width / 2, canvas.height / 2);
         ctx.rotate((rotationValue * Math.PI) / 180);
-        ctx.drawImage(img, -canvas.width / 2  , -canvas.height / 2 );
+        ctx.drawImage(img, -canvas.width / 2, -canvas.height / 2);
         ctx.restore()
     });
 
@@ -76,10 +74,10 @@ $(document).ready(function () {
     });
 
     $('#close,#crop-cancel').click(function () {
-       
+
         $("#changepicModal").modal('hide');
         $('canvas[class=cr-image]').css('opacity', '0')
-        
+
     });
 
     $('#changepicModal').on('hide.bs.modal', function (event) {

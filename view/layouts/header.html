@@ -28,12 +28,18 @@
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
     integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
 
-    <!-- croppiee -->
+  <!-- croppiee -->
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.css" />
+  <!-- search -->
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js
   "></script>
+
+  <!-- js validation cdn -->
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
+  <script src="/public/js/common.js"></script>
+  <script src="/public/js/auth/myprofile.js"></script>
 </head>
 
 <body>
@@ -46,7 +52,7 @@
       aria-expanded="false">
       <div class="usr-profile">
         <img src="/public/images/Ellipse 1.png" class="usr-profile-img" alt="" />
-        <span class="usr-name">{{.profilename}}</span> 
+        <span class="usr-name">{{.profilename}}</span>
       </div>
     </button>
     <ul class="dropdown-menu">

@@ -22,6 +22,8 @@ var auth1 auth.Authorization
 
 var profilename string
 
+var profileimg string
+
 func init() {
 
 	er := godotenv.Load()
@@ -51,6 +53,8 @@ func IndexView(c *gin.Context) {
 		member, _ := mem.GetMemberDetails()
 
 		profilename = member.FirstName + " " + member.LastName
+
+		profileimg = member.ProfileImagePath
 
 	} else {
 
@@ -105,7 +109,7 @@ func IndexView(c *gin.Context) {
 
 	}
 
-	c.HTML(200, "spaces.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index", "myprofile": flg, "profilename": profilename})
+	c.HTML(200, "spaces.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index", "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
 
 }
 func truncateDescription(description string, limit int) string {
