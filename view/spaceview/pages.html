@@ -38,10 +38,10 @@
       </div>
 
       <div class="edit-div-rgt">
-        <button class="grey-bg smText" onclick="fontReduce()" data-tab-id="#demo-tab-active1">
+        <button class="grey-bg smText">
           <img src="/public/images/Mask Group 47.svg" alt="" />
         </button>
-        <button class="grey-bg lgText" data-tab-id="#demo-tab-active2">
+        <button class="grey-bg lgText">
           <img src="/public/images/Mask Group 46.svg" alt="" />
         </button>
         <button class="grey-bg" type="btn" id="liveToastBtn" data-tab-id="#demo-tab-active3">
@@ -249,25 +249,6 @@
     });
   }
 </script>
-
-<!---font-->
-
-<script>
-  document.querySelector(".lgText").addEventListener("click", function () {
-    var font = document.querySelector(".center-section");
-    font.classList.remove("smFont");
-    font.classList.toggle("lgFont");
-  });
-</script>
-
-<script>
-  document.querySelector(".smText").addEventListener("click", function () {
-    var font = document.querySelector(".center-section");
-    font.classList.remove("lgFont");
-    font.classList.toggle("smFont");
-  });
-</script>
-
 <!-- <script src="js/bootstrap.js" type="text/javascript"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.23/jquery-ui.min.js"></script>

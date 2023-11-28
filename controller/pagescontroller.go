@@ -91,7 +91,7 @@ func SpaceDetail(c *gin.Context) {
 		spaces = append(spaces, data)
 	}
 
-	c.HTML(200, "pages.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Spaces", "pageid": c.Query("pageid"), "member": memb, "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
+	c.HTML(200, "pages.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Pages", "pageid": c.Query("pageid"), "member": memb, "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
 }
 
 func PageView(c *gin.Context) {
@@ -124,7 +124,7 @@ func PageView(c *gin.Context) {
 
 	var note, _ = pl.GetNotes(pid)
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "pages", "content": Content, "error": Error, "myprofile": flg, "profilename": profilename})
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "Pages", "content": Content, "error": Error, "myprofile": flg, "profilename": profilename})
 }
 
 /* Update Highlights */

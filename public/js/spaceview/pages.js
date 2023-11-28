@@ -445,7 +445,7 @@ $(document).ready(function () {
         PGList(spsulg, spid, Rpgid, Srpid)
         for (let j of newpages) {
           if (j['OrderIndex'] == 1) {
-            $("#Title").text(j['Name'])
+            $("#Title").text(result.content.PageTitle)
             if (result.error != "") {
 
 
@@ -468,7 +468,7 @@ $(document).ready(function () {
                 $(".secton-content").append(html)
               }
             } else {
-              $(".secton-content").append(result.content)
+              $(".secton-content").append(result.content.PageDescription)
               ReadContent = $(".secton-content").html()
             }
           }
@@ -747,4 +747,19 @@ $(document).on("click", ".del-btn", function () {
     }
   })
 
+});
+
+/* Font Style */
+$(document).ready(function () {
+  $(".smText").click(function () {
+    $(".secton-content").find('*').removeClass("lgfont").addClass("smfont");
+    // $(".section1").find('h1, h2, h3, h4, h5, h6,strong').removeClass("lgfont-h").addClass("smfont-h");
+
+  });
+
+  $(".lgText").click(function () {
+    $(".secton-content").find('*').removeClass("smfont").addClass("lgfont");
+    // $(".section1").find('h1, h2, h3, h4, h5, h6,strong').removeClass("smfont-h").addClass("lgfont-h");
+
+  });
 });

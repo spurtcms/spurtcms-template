@@ -109,7 +109,7 @@ func IndexView(c *gin.Context) {
 
 	}
 
-	c.HTML(200, "spaces.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Index", "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
+	c.HTML(200, "spaces.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Spaces", "myprofile": flg, "profilename": profilename,"profileimg":profileimg})
 
 }
 func truncateDescription(description string, limit int) string {
