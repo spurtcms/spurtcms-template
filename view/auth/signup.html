@@ -1,69 +1,59 @@
-{{template "authheader" .}}
-<section class="login-section p-md-25">
-  <div class="cmsLogin mx-400">
-    <div class="login-top">
-      <h1 class="loginHeading">Sign up Into SpurtCMS</h1>
-    </div>
-    <div class="login-content">
-
-      <div class="mail-signIn mx-400">
-        <form id="signupform" name="signupform" enctype="multipart/form-data" method="post" action="" >
-          <div class="input-grp">
-            <div class="input-container" id="fname-con">
-              <input type="text" id="firstname" name="firstname" class="mx-400 field" required />
-              <label for="myInput" class="input-label">First name</label>
-    
-                <label id="firstname-error" class="error err-txt" for="firstname" style="display: none;">
-                  <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter The First Name </label>
-            </div>
-            <div class="input-container" id="lname-con">
-              <input type="text" id="lastname" name="lastname" class="mx-400 field" required />
-              <label for="myInput" class="input-label">Last name</label>
-     
-                <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
-                  <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter Your Last Name </label>
-            </div>
-          </div>
-          <div class="input-container" id="mobile-con">
-            <input type="text" id="myNumber" name="myNumber" maxlength="14" class="mx-400 field" required />
-            <label for="myInput" class="input-label">Mobile number (with country code)</label>
-       
-              <label id="myNumber-error" class="error err-txt" for="myNumber"  style="display: none;">
-                   Please Enter The Mobile NUmber </label>
-          </div>
-
-          <div class="input-container" id="email-con">
-            <input type="text" id="email" name="email" class="mx-400 field" required />
-            <label for="myInput" class="input-label">Email address</label>
-     
-
-              <label id="email-error" class="error err-txt" for="email" style="display: none;">
-                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter The Email Address</label>
-          </div>
-
-          <div class="input-container passwordEye signupEye" id="pass-con">
-            <input type="password" id="myPassword" name="myPassword" class="mx-400 field" required />
-            <label for="myInput" class="input-label">Password</label>
-        
-              <label id="myPassword-error" class="error err-txt" for="myPassword" style="display: none;">
-                <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />  Please Enter The Password </label>
-          </div>
-
-          <p class="signUp-Comdition txt-center">
-            By signing up you agree to our
-            <a href="">Terms of Service </a>and
-            <a href="">Privacy Policy</a>
-          </p>
-
-          <button class="cms-btn-dark mx-400" type="button" id="create-btn">Create Account</button>
-
-          <div class="account-forgot flex-center">
-            <a href="/" class="">Already have an account? Log in here</a>
-          </div>
-        </form>
+{{template "newauthheader" .}}
+  <div class="new-siginup-details">
+    <h3>Sign up Into SpurtCMS</h3>
+    <form id="signupform" name="signupform" enctype="multipart/form-data" method="post" action="">
+      <div class="ig-input">
+        <div class="ig-row" id="fname-con">
+          <p>First name</p>
+          <input type="text" id="firstname" name="firstname" placeholder="First name" class="mx-400 field" required />
+          <label id="firstname-error" class="error err-txt" for="firstname" style="display: none;">
+            <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter The First Name
+          </label>
+        </div>
+        <div class="ig-row" id="lname-con">
+          <p>Last name</p>
+          <input type="text" id="lastname" name="lastname" placeholder="Last name" class="mx-400 field" required />
+          <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
+            <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter Your Last Name
+          </label>
+        </div>
       </div>
-    </div>
+      <div class="ig-row" id="mobile-con">
+        <p>Mobile number</p>
+        <input type="text" id="myNumber" name="myNumber" maxlength="14" class="mx-400 field" placeholder="Mobile number (with country code)" required />
+        <label id="myNumber-error" class="error err-txt" for="myNumber" style="display: none;">
+          Please Enter The Mobile NUmber </label>
+      </div>
+      <div class="ig-row " id="email-con">
+        <p>Email address</p>
+        <input type="text" id="email" name="email" placeholder="Email" class="mx-400 field" required />
+            <label id="email-error" class="error err-txt" for="email" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter The Email
+              Address</label>
+      </div>
+      <div class="ig-row password passwordEye signupEye" id="pass-con">
+        <p>Password</p>
+        <input type="password" id="myPassword" name="myPassword" placeholder="Password" class="mx-400 field" required />
+            <label id="myPassword-error" class="error err-txt" for="myPassword" style="display: none;">
+              <img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter The Password
+            </label>
+        <button><img src="/public/images/eye-close.png" alt=""></button>
+      </div>
+      <div class="terms">
+        <p>By signing up you agree to our <a href="">Terms of Service </a> and <a href=""> Privacy Policy
+          </a></p>
+      </div>
+      <div class="sigin-btn">
+        <button  type="button" id="create-btn">Create Account</button>
+        <p>Already have an account?
+          <a href="/login">Log in here</a>
+        </p>
+      </div>
+    </form>
   </div>
+  </div>
+
+
   <script src="/public/js/auth/signup.js"></script>
 
-  {{template "authfooter" .}}
+  {{template "newauthfooter" .}}

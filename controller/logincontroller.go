@@ -37,8 +37,10 @@ func MemberLogin(c *gin.Context) {
 }
 func MemberLogout(c *gin.Context) {
 
-	flg = false
+	log.Println("cc", c)
 
+	flg = false
+	log.Println("logoutflg", flg)
 	c.Redirect(301, "/")
 
 }
@@ -94,7 +96,8 @@ func MemberRegister(c *gin.Context) {
 	if c.PostForm("fname") == "" || c.PostForm("mobile") == "" || c.PostForm("email") == "" || c.PostForm("password") == "" {
 
 		var errorz error
-
+		log.Println("c",c.PostForm("fname"))
+		log.Println("c",c.PostForm("mobile"))
 		if c.PostForm("fname") == "" {
 
 			errorz = errors.New("First Name Required")
@@ -148,10 +151,9 @@ func Retrieve(c *gin.Context) {
 	c.HTML(200, "retrieve.html", gin.H{"title": "Retrieve"})
 
 }
+func PassReset(c *gin.Context) {
 
-func Reset(c *gin.Context) {
-
-	c.HTML(200, "reset.html", gin.H{"title": "Reset"})
+	c.HTML(200, "passwordreset.html", gin.H{"title": "Reset"})
 
 }
 

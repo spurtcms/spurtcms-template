@@ -29,7 +29,7 @@ func SetupRoutes() *gin.Engine {
 	r.GET("/logout",controller.MemberLogout)
 	r.GET("/signup", controller.SignUp)
 	r.GET("/retrieve", controller.Retrieve)
-	r.GET("/reset", controller.Reset)
+	r.GET("/reset", controller.PassReset)
 	r.GET("/myprofile", controller.MyProfile)
 	r.GET("/change-email", controller.ChangeEmail)
 	r.GET("/new-email", controller.AddNewEmail)

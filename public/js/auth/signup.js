@@ -167,7 +167,8 @@ $(document).on("click", "#create-btn", function () {
 
     var fname = $("#firstname").val()
     var lname = $("#lastname").val()
-    var mobile = $("#myInput").val()
+    var mobile = $("#myNumber").val()
+    console.log("mobile",mobile);
     var email = $("#email").val()
     var password = $("#myPassword").val()
     if (formcheck == true) {
@@ -196,7 +197,7 @@ $(document).on("click", "#create-btn", function () {
                     $("#myPassword-error").show()
                 }
                 if (data.verify == "") {
-                    window.location.href = "/"
+                    window.location.href = "/login"
                 }
 
             }
