@@ -16,14 +16,16 @@
 /*err-before*/
 .error::before {
   content: '';
-  background-image: url("/public/images/Iconionic-ios-close-circle.svg");
+  background-image: url(/public/images/Iconionic-ios-close-circle.svg);
   width: 10px;
   height: 10px;
   display: inline-block;
+  background-repeat: no-repeat;
+  padding: 5px;
 }
 
 /* password eye img */
-.passwordEye button {
+/* .passwordEye button {
   background-color: transparent;
   width: 19px;
   height: 19px;
@@ -31,7 +33,7 @@
   position: absolute;
   right: 16px;
   top: 16px;
-}
+} */
 
 .passwordEye button.active img:first-of-type {
   display: none;

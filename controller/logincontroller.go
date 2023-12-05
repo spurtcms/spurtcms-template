@@ -96,8 +96,7 @@ func MemberRegister(c *gin.Context) {
 	if c.PostForm("fname") == "" || c.PostForm("mobile") == "" || c.PostForm("email") == "" || c.PostForm("password") == "" {
 
 		var errorz error
-		log.Println("c",c.PostForm("fname"))
-		log.Println("c",c.PostForm("mobile"))
+
 		if c.PostForm("fname") == "" {
 
 			errorz = errors.New("First Name Required")
@@ -134,7 +133,12 @@ func MemberRegister(c *gin.Context) {
 
 	password := c.PostForm("password")
 
-	mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
+	chk,err5:=mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
+
+	log.Println("chk",chk)
+
+	log.Println("chk",err5)
+
 
 	c.JSON(200, gin.H{"verify": ""})
 

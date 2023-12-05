@@ -12,7 +12,7 @@ $(document).ready(function () {
             }
             else return true;
         },
-        "* Please Enter at Least 1 Uppercase, 1 Lowercase, 1 Number,1 Special Character($,@),and 8 characters long"
+        "Please Enter at Least 1 Uppercase, 1 Lowercase, 1 Number,1 Special Character($,@),and 8 characters long"
     );
 
 
@@ -52,7 +52,7 @@ $(document).ready(function () {
 
 
 function Validationcheck() {
-    let inputGro = document.querySelectorAll('.input-container');
+    let inputGro = document.querySelectorAll('.ig-row');
     inputGro.forEach(inputGroup => {
         let inputField = inputGroup.querySelector('input');
         var inputName = inputField.getAttribute('name');
@@ -117,7 +117,7 @@ $(document).on("click", "#submit", function () {
         $(document).on('keyup', ".field", function () {
             Validationcheck()
         })
-        $('.input-container').each(function () {
+        $('.ig-row').each(function () {
             var inputField = $(this).find('input');
             var inputName = inputField.attr('name');
 

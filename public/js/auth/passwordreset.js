@@ -101,7 +101,7 @@ $(document).on("click", "#submit", function () {
         $(document).on('keyup', ".field", function () {
             Validationcheck()
         })
-        $('.input-container').each(function () {
+        $('.ig-row').each(function () {
             var inputField = $(this).find('input');
             var inputName = inputField.attr('name');
 
@@ -118,7 +118,7 @@ $(document).on("click", "#submit", function () {
 })
 
 function Validationcheck() {
-    let inputGro = document.querySelectorAll('.input-container');
+    let inputGro = document.querySelectorAll('.ig-row');
     inputGro.forEach(inputGroup => {
         let inputField = inputGroup.querySelector('input');
         var inputName = inputField.getAttribute('name');

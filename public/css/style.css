@@ -1239,7 +1239,7 @@ textarea::-webkit-scrollbar {
 }
 
 .err input {
-    border: 1px solid #FA3333;
+    border: 1px solid #FA3333 !important;
     border-radius: 5px;
     padding: 19px 10px 13px 10px;
 }
