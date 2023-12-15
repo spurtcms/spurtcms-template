@@ -96,11 +96,11 @@ $(document).on("click", "#submit", function () {
                     $("#myPassword-error").show()
                 }
                 if (data.verify == "your email not registered") {
-                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />your email not registered'
+                    var content = 'your email not registered'
                     $("#myInput-error").html(content)
                     $("#myInput-error").show()
                 } if (data.verify == "invalid password") {
-                    var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid password'
+                    var content = 'invalid password'
                     $("#myPassword-error").html(content)
                     $("#myPassword-error").show()
                 }

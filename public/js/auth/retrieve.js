@@ -39,13 +39,11 @@ $(document).on("click", "#submit", function () {
             datatype: 'json',
             success: function (data) {
                 console.log(data);
-                var parse_data = JSON.parse(data)
-                console.log(parse_data.verify);
-                if (parse_data.verify == "invalid email") {
+                if (data.verify == "invalid email") {
                     var content = '<img src="/public/images/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid email'
                     $("#email-error").html(content)
                     $("#email-error").show()
-                } if (parse_data.verify == "") {
+                } if (data.verify == "") {
                     window.location.href = "/reset?emailid="+email
                 }
 

@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -133,12 +134,28 @@ func MemberRegister(c *gin.Context) {
 
 	password := c.PostForm("password")
 
-	chk,err5:=mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
+	chk, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
 
-	log.Println("chk",chk)
+	log.Println("chk", chk)
 
-	log.Println("chk",err5)
+	log.Println("chk", err5)
 
+	data := map[string]interface{}{
+
+		"fname": fname,
+		"memid": email,
+		"Pass":  password,
+	}
+
+	var wg sync.WaitGroup
+
+	wg.Add(1)
+
+	Chan := make(chan string, 1)
+
+	go MemberCreateEmail(Chan, &wg, data, email, "createmember")
+
+	close(Chan)
 
 	c.JSON(200, gin.H{"verify": ""})
 
