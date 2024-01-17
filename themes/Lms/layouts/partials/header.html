@@ -1,0 +1,22 @@
+{{- define "header"}}
+<header>
+  <div class="ourLogo">
+    <a href="index.html"><img src="/static/icons/MaskGroup39.svg" alt="" /></a>
+  </div>
+  {{if eq .myprofile true}}
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
+    aria-expanded="false">
+    <div class="usr-profile">
+      <img src="/{{.profileimg}}" class="usr-profile-img" alt="" />
+      <span class="usr-name">{{.profilename}}</span>
+    </div>
+  </button>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" href="/myprofile">My Profile</a></li>
+    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+  </ul>
+  {{else}}
+  <a href="/login"><button class="login-name">Login </button></a>
+  {{end}}
+</header>
+{{end}}

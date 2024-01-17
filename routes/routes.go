@@ -1,11 +1,14 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
+	"errors"
+	"log"
 	"os"
 	"path/filepath"
 	"spurt-page-view/controller"
 	"strings"
+
+	"github.com/gin-gonic/gin"
 )
 
 func SetupRoutes() *gin.Engine {
@@ -23,31 +26,109 @@ func SetupRoutes() *gin.Engine {
 
 	r.LoadHTMLFiles(htmlfiles...)
 
-	r.Static("/public", "./public")
-	r.Static("/storage","./storage")
-	r.GET("/login", controller.MemberLogin)
-	r.GET("/logout",controller.MemberLogout)
-	r.GET("/signup", controller.SignUp)
-	r.GET("/retrieve", controller.Retrieve)
-	r.GET("/reset", controller.PassReset)
-	r.GET("/myprofile", controller.MyProfile)
+	log.Println("themes/" + controller.Template + "/assets")
+
+	r.Static("/asset", "themes/"+controller.Template+"/assets")
+
+	r.Static("/static", "themes/"+controller.Template+"/static")
+
+	r.Static("/storage", "./storage")
+
+	r.NoRoute(func(c *gin.Context) {
+
+		c.JSON(200, gin.H{"Message": "this route related html file not found"})
+
+	})
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/login.html"); err == nil {
+
+		r.GET("/login", controller.MemberLogin)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/auth/login.html no such file found")
+	}
+
+	r.GET("/logout", controller.MemberLogout)
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/signup.html"); err == nil {
+
+		r.GET("/signup", controller.SignUp)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/auth/signup.html no such file found")
+	}
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/forgot-email.html"); err == nil {
+
+		r.GET("/retrieve", controller.Retrieve)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/auth/forgot-email.html no such file found")
+	}
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/password-reset.html"); err == nil {
+
+		r.GET("/reset", controller.PassReset)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/auth/password-reset.html no such file found")
+	}
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/myprofile.html"); err == nil {
+
+		r.GET("/myprofile", controller.MyProfile)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/auth/myprofile.html no such file found")
+	}
+
 	r.GET("/change-email", controller.ChangeEmail)
+
 	r.GET("/new-email", controller.AddNewEmail)
+
 	r.POST("/checkmemberlogin", controller.CheckMemberLogin)
+
 	r.POST("/memberregister", controller.MemberRegister)
+
 	r.POST("/myprofileupdate", controller.MyprofileUpdate)
+
 	r.POST("/otp-genrate", controller.OtpGenarate)
+
 	r.POST("/verify-email-otp", controller.OtpVerifyemail)
-	r.GET("/", controller.IndexView)
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html"); err == nil {
+
+		r.GET("/", controller.IndexView)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html no such file found")
+	}
+
 	r.GET("/space/:stitle/:pgtitle/", controller.SpaceDetail)
+
 	r.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
+
 	r.GET("/page", controller.PageView)
+
 	r.POST("/highlights", controller.UpdateHighlights)
-	r.POST("deletehighlights",controller.DeleteHighlights)
+
+	r.POST("deletehighlights", controller.DeleteHighlights)
+
 	r.POST("/notes", controller.UpdateNotes)
+
 	r.GET("/passwordotp", controller.ChangePassword)
+
 	r.GET("/passwordchange", controller.AddNewPassword)
+
 	r.POST("/verify-otppass", controller.OtpVerifypass)
+
 	r.POST("/send-otp-genrate", controller.AgainOtpGenarate)
+
 	return r
 }

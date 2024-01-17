@@ -5,12 +5,13 @@ import (
 	"os"
 	"regexp"
 	"strings"
+	"text/template"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
-	"github.com/spurtcms/spurtcms-content/spaces"
-	spurtcore "github.com/spurtcms/spurtcms-core"
-	"github.com/spurtcms/spurtcms-core/auth"
+	spaces "github.com/spurtcms/pkgcontent/lms"
+	spurtcore "github.com/spurtcms/pkgcore"
+	"github.com/spurtcms/pkgcore/auth"
 	"gorm.io/gorm"
 )
 
@@ -88,7 +89,7 @@ func IndexView(c *gin.Context) {
 
 		}
 
-		data.SpaceName = space.SpacesName
+		data.SpaceTitle = space.SpacesName
 
 		truncatedDescription := truncateDescription(space.SpacesDescription, 88)
 
@@ -110,7 +111,15 @@ func IndexView(c *gin.Context) {
 
 	}
 
-	c.HTML(200, "spaces.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "title": "Spaces", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/list.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/spaces/spaces.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "Title": "Spaces", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 func truncateDescription(description string, limit int) string {

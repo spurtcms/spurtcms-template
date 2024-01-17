@@ -3,14 +3,17 @@ package controller
 import (
 	"fmt"
 	"math/rand"
+	"net/http"
 	"net/smtp"
 	"os"
 	"spurt-page-view/models"
 	"strconv"
 	"strings"
 	"sync"
+	"text/template"
 	"time"
 
+	"github.com/gin-gonic/gin"
 )
 
 func GenarateOtp(email string) (em bool, err error) {
@@ -36,19 +39,17 @@ func GenarateOtp(email string) (em bool, err error) {
 		data := map[string]interface{}{
 
 			"otp": otp,
-
 		}
-	
+
 		var wg sync.WaitGroup
-	
+
 		wg.Add(1)
-	
+
 		Chan := make(chan string, 1)
-	
+
 		go OtpGenarateEmail(Chan, &wg, data, email, "otpgenarate")
-	
+
 		close(Chan)
-	
 
 	}
 	return em, err
@@ -103,7 +104,7 @@ func OtpGenarateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]in
 
 	var templates models.TblEmailTemplate
 
-	models.GetTemplates(&templates, "otpgenarate")
+	models.GetTemplates(&templates, "OTPgenerate")
 
 	sub := templates.TemplateSubject
 
@@ -112,11 +113,20 @@ func OtpGenarateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]in
 	replacer := strings.NewReplacer(
 
 		"{OTP}", data["otp"].(string),
-		
 	)
 	fmt.Println("repla", replacer, data["fname"])
 
 	msg = replacer.Replace(msg)
 
 	GenerateEmail(email, sub, msg, wg)
+}
+
+func RenderTemplate(c *gin.Context, tmpl *template.Template, templateName string, data interface{}) {
+
+	err := tmpl.ExecuteTemplate(c.Writer, templateName, data)
+
+	if err != nil {
+
+		c.String(http.StatusInternalServerError, err.Error())
+	}
 }

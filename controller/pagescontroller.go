@@ -5,25 +5,64 @@ import (
 
 	"encoding/json"
 	"log"
+	"sort"
 	"strconv"
 	"strings"
+	"text/template"
 
 	"github.com/gin-gonic/gin"
-	"github.com/spurtcms/spurtcms-content/pages"
-	"github.com/spurtcms/spurtcms-content/spaces"
-	"github.com/spurtcms/spurtcms-core/member"
+	pages "github.com/spurtcms/pkgcontent/lms"
+	"github.com/spurtcms/pkgcore/member"
 )
 
 var pl pages.MemberPage
 
 type SpaceData struct {
 	Id               int
-	SpaceName        string
+	SpaceTitle       string
 	SpaceDescription string
 	SpaceSlug        string
 	PageSlug         string
 	PageId           int
 	CategoryName     []string
+}
+
+type GroupData struct {
+	Id       int
+	Title    string
+	PageData []PageData
+}
+
+type SubData struct {
+	Id      int
+	Title   string
+	Content string
+	Route   string
+}
+
+type PageData struct {
+	Id          int
+	Title       string
+	Content     string
+	Route       string
+	SubPageData []SubData
+}
+
+type PageDetails struct {
+	Pages PageData
+	Group GroupData
+}
+
+type Notes struct {
+	Id         int
+	Content    string
+	CreateDate string
+}
+
+type Highlights struct {
+	Id         int
+	Content    string
+	CreateDate string
 }
 
 func SpaceDetail(c *gin.Context) {
@@ -37,7 +76,7 @@ func SpaceDetail(c *gin.Context) {
 		sp.MemAuth = &auth1
 
 	}
-	spacelist, _, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
+	spacelist, _, _ := sp.MemberSpaceList(100, 0, pages.Filter{})
 
 	var memb member.TblMember
 
@@ -54,6 +93,8 @@ func SpaceDetail(c *gin.Context) {
 	var spaces []SpaceData
 
 	var data SpaceData
+
+	var PageTitle string
 
 	for _, space := range spacelist {
 
@@ -72,7 +113,7 @@ func SpaceDetail(c *gin.Context) {
 				break
 			}
 		}
-		data.SpaceName = space.SpacesName
+		data.SpaceTitle = space.SpacesName
 
 		data.SpaceDescription = space.SpacesDescription
 
@@ -91,7 +132,376 @@ func SpaceDetail(c *gin.Context) {
 		spaces = append(spaces, data)
 	}
 
-	c.HTML(200, "pages.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "title": "Pages", "pageid": c.Query("pageid"), "member": memb, "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	Spaceid, _ := strconv.Atoi(c.Query("spid"))
+
+	var spacename string
+
+	for _, space := range spacelist {
+
+		if space.Id == Spaceid {
+
+			spacename = space.SpacesName
+
+			break
+
+		}
+	}
+
+	// Pageid, _ := strconv.Atoi(c.Query("pageid"))
+
+	pagegroups, pages, subpages, _ := pl.MemberPageList(Spaceid)
+
+	sort.Slice(pages, func(i, j int) bool {
+		return pages[i].OrderIndex < pages[j].OrderIndex
+	})
+
+	sort.Slice(pagegroups, func(i, j int) bool {
+		return pagegroups[i].OrderIndex < pagegroups[j].OrderIndex
+	})
+
+	sort.Slice(subpages, func(i, j int) bool {
+		return subpages[i].OrderIndex < subpages[j].OrderIndex
+	})
+
+	// log.Println("--------------")
+
+	// for _, val := range pages {
+
+	// 	log.Println(val)
+	// }
+
+	// log.Println("--------------")
+
+	// for _, val := range subpages {
+
+	// 	log.Println(val, val.ParentId)
+	// }
+
+	var PageDetailss []PageDetails
+
+	var grpflg bool
+
+	var pageflg bool
+
+	for _, val := range pagegroups {
+
+		if val.OrderIndex == 1 {
+
+			grpflg = true
+			break
+		}
+	}
+
+	for _, val := range pages {
+
+		if val.OrderIndex == 1 {
+
+			pageflg = true
+			break
+		}
+	}
+
+	if pageflg {
+
+		var orderindex int
+
+		for _, val := range pages {
+
+			orderindex = val.OrderIndex
+
+			if val.Pgroupid == 0 {
+
+				var singlepage PageDetails
+
+				singlepage.Pages.Id = val.PgId
+
+				singlepage.Pages.Title = val.Name
+
+				singlepage.Pages.Route = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(val.Name, " ", "_")) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
+
+				PageDetailss = append(PageDetailss, singlepage)
+			}
+
+			for _, grp := range pagegroups {
+
+				if orderindex+1 == grp.OrderIndex {
+
+					var singlepage PageDetails
+
+					singlepage.Group.Id = grp.GroupId
+
+					singlepage.Group.Title = grp.Name
+
+					PageDetailss = append(PageDetailss, singlepage)
+
+					break
+
+				}
+			}
+
+		}
+
+	}
+
+	if grpflg {
+
+		var orderindex int
+
+		for _, grp := range pagegroups {
+
+			orderindex = grp.OrderIndex
+
+			var singlepage PageDetails
+
+			singlepage.Group.Id = grp.GroupId
+
+			singlepage.Group.Title = grp.Name
+
+			PageDetailss = append(PageDetailss, singlepage)
+
+			for _, val := range pages {
+
+				if orderindex+1 == val.OrderIndex {
+
+					var singlepage PageDetails
+
+					singlepage.Pages.Id = val.PgId
+
+					singlepage.Pages.Title = val.Name
+
+					singlepage.Pages.Route = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(val.Name, " ", "_")) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
+
+					PageDetailss = append(PageDetailss, singlepage)
+
+					break
+
+				}
+			}
+
+		}
+
+	}
+
+	var Final []PageDetails
+
+	for _, val := range PageDetailss {
+
+		var PG []PageData
+
+		var Sub []SubData
+
+		for _, page := range pages {
+
+			if page.Pgroupid != 0 {
+
+				if page.Pgroupid == val.Group.Id {
+
+					var singlepage PageData
+
+					singlepage.Id = page.PgId
+
+					singlepage.Title = page.Name
+
+					singlepage.Route = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(page.Name, " ", "_")) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(page.PgId)
+
+					PG = append(PG, singlepage)
+
+				}
+			}
+
+		}
+
+		for _, sub := range subpages {
+
+			if sub.ParentId == val.Pages.Id {
+
+				var singlepage SubData
+
+				singlepage.Id = sub.SpgId
+
+				singlepage.Title = sub.Name
+
+				Sub = append(Sub, singlepage)
+
+			}
+
+		}
+
+		val.Pages.SubPageData = Sub
+
+		val.Group.PageData = PG
+
+		Final = append(Final, val)
+
+	}
+
+	var LastFinal []PageDetails
+
+	var LastFinal1 []PageDetails
+
+	pageid, _ := strconv.Atoi(c.Query("pageid"))
+
+	for _, val := range Final {
+
+		var pagedet []PageData
+
+		for _, grppagesub := range val.Group.PageData {
+
+			var pagedeta PageData
+
+			var Sub []SubData
+
+			for _, sub := range subpages {
+
+				if grppagesub.Id == sub.ParentId {
+
+					var singlepage SubData
+
+					singlepage.Id = sub.SpgId
+
+					singlepage.Title = sub.Name
+
+					singlepage.Route = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(grppagesub.Title, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_")) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
+
+					Sub = append(Sub, singlepage)
+				}
+
+			}
+
+			pagedeta = grppagesub
+
+			pagedeta.SubPageData = Sub
+
+			pagedet = append(pagedet, pagedeta)
+
+		}
+
+		val.Group.PageData = pagedet
+
+		LastFinal = append(LastFinal, val)
+
+	}
+
+	for _, val := range LastFinal {
+
+		var Sub []SubData
+
+		for _, sub := range subpages {
+
+			if val.Pages.Id == sub.ParentId {
+
+				var singlepage SubData
+
+				singlepage.Id = sub.SpgId
+
+				singlepage.Title = sub.Name
+
+				singlepage.Route = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(val.Pages.Title, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_")) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
+
+				Sub = append(Sub, singlepage)
+			}
+
+		}
+
+		if val.Pages.Id == pageid {
+
+			PageTitle = val.Pages.Title
+
+		} else {
+
+			for _, new := range val.Group.PageData {
+
+				if new.Id == pageid {
+
+					PageTitle = new.Title
+
+					break
+				}
+
+			}
+
+			for _, new := range val.Pages.SubPageData {
+
+				if new.Id == pageid {
+
+					PageTitle = new.Title
+
+					break
+				}
+			}
+
+			for _, sub := range subpages {
+
+				if sub.SpgId == pageid {
+
+					PageTitle = sub.Name
+
+					break
+				}
+			}
+
+		}
+
+		val.Pages.SubPageData = Sub
+
+		LastFinal1 = append(LastFinal1, val)
+
+	}
+
+	Content, err := pl.GetPageContent(pageid)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	var highlight, _ = pl.GetHighlights(pageid)
+
+	var note, _ = pl.GetNotes(pageid)
+
+	var NOTE []Notes
+
+	for _, val := range note {
+
+		var nt Notes
+
+		nt.Id = val.Id
+
+		nt.Content = val.NotesHighlightsContent
+
+		nt.CreateDate = val.CreatedOn.Format("02 Jan 2006 03:04 PM")
+
+		NOTE = append(NOTE, nt)
+
+	}
+
+	var HIGH []Highlights
+
+	for _, val := range highlight {
+
+		var nt Highlights
+
+		nt.Id = val.Id
+
+		nt.Content = val.NotesHighlightsContent
+
+		nt.CreateDate = val.CreatedOn.Format("02 Jan 2006 03:04 PM")
+
+		HIGH = append(HIGH, nt)
+
+	}
+
+	log.Println(NOTE)
+
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/spaces/pages.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": "Pages", "pageid": pageid, "member": memb, "myprofile": flg, "profilename": profilename, "profileimg": profileimg, "PagesDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH})
+
 }
 
 func PageView(c *gin.Context) {
@@ -124,7 +534,7 @@ func PageView(c *gin.Context) {
 
 	var note, _ = pl.GetNotes(pid)
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "title": "Pages", "content": Content, "error": Error, "myprofile": flg, "profilename": profilename})
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "Title": "Pages", "content": Content, "error": Error, "myprofile": flg, "profilename": profilename})
 }
 
 /* Update Highlights */

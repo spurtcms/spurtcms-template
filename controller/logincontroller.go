@@ -9,15 +9,14 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"text/template"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	spurtcore "github.com/spurtcms/spurtcms-core"
-	"github.com/spurtcms/spurtcms-core/auth"
-	"github.com/spurtcms/spurtcms-core/member"
+	spurtcore "github.com/spurtcms/pkgcore"
+	"github.com/spurtcms/pkgcore/auth"
+	"github.com/spurtcms/pkgcore/member"
 )
-
-var flg = false
 
 var Auth auth.Authorization
 
@@ -33,7 +32,15 @@ func GetAuth(token string) {
 
 func MemberLogin(c *gin.Context) {
 
-	c.HTML(200, "login.html", gin.H{"title": "Login"})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/login.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "Login"})
 
 }
 func MemberLogout(c *gin.Context) {
@@ -41,8 +48,10 @@ func MemberLogout(c *gin.Context) {
 	log.Println("cc", c)
 
 	flg = false
+
 	log.Println("logoutflg", flg)
-	c.Redirect(301, "/")
+
+	c.Redirect(302, "/")
 
 }
 func CheckMemberLogin(c *gin.Context) {
@@ -163,18 +172,43 @@ func MemberRegister(c *gin.Context) {
 
 func SignUp(c *gin.Context) {
 
-	c.HTML(200, "signup.html", gin.H{"title": "SignUp"})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/signup.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "SignUp"})
 
 }
 
 func Retrieve(c *gin.Context) {
 
-	c.HTML(200, "retrieve.html", gin.H{"title": "Retrieve"})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/forgot-email.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "Retrieve"})
 
 }
 func PassReset(c *gin.Context) {
 
-	c.HTML(200, "passwordreset.html", gin.H{"title": "Reset"})
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/password-reset.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "Reset"})
+
+	// c.HTML(200, "passwordreset.html", gin.H{"title": "Reset"})
 
 }
 
@@ -184,8 +218,23 @@ func MyProfile(c *gin.Context) {
 
 	memb, _ := mem.GetMemberDetails()
 
-	c.HTML(200, "myprofile.html", gin.H{"title": "My Profile", "member": memb, "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	if !flg {
+
+		c.Redirect(302, "/login")
+	}
+
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/myprofile.html", "themes/"+Template+"/layouts/partials/crop-modal.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "member": memb, "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+
 }
+
 func MyprofileUpdate(c *gin.Context) {
 
 	var errorz error
@@ -237,23 +286,58 @@ func MyprofileUpdate(c *gin.Context) {
 
 func ChangeEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmailOtp.html", gin.H{"title": "ChangeEmail", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/auth/change-emailOTP.html", "themes/"+Template+"/layouts/partials/auth/changesection.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangeEmail", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+
 }
 
 func AddNewEmail(c *gin.Context) {
 
-	c.HTML(200, "changeEmail.html", gin.H{"title": "NewEmail", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/auth/change-email.html", "themes/"+Template+"/layouts/partials/auth/changesection.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewEmail", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
 func ChangePassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePasswordOtp.html", gin.H{"title": "ChangePassword", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/auth/change-passwordOTP.html", "themes/"+Template+"/layouts/partials/auth/changesection.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangePassword", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+
 }
 
 func AddNewPassword(c *gin.Context) {
 
-	c.HTML(200, "ChangePassword.html", gin.H{"title": "NewPassword", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/auth/change-password.html", "themes/"+Template+"/layouts/partials/auth/changesection.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+
 }
 
 func OtpGenarate(c *gin.Context) {
@@ -305,7 +389,7 @@ func OtpVerifyemail(c *gin.Context) {
 		fmt.Println(err)
 	}
 
-	mem.ChangeEmailId(otp, newemail)
+	_, err = mem.ChangeEmailId(otp, newemail)
 
 	if err != nil {
 

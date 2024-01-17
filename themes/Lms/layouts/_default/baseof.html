@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {{template "head" .}}
+</head>
+
+<body>
+    
+    {{- block "header" .}}{{end}}
+  
+    {{- block "main" . }}{{end}}
+
+</body>
+
+{{template "script" .}}
+
+</html>
