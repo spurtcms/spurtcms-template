@@ -133,7 +133,7 @@ function Validationcheck() {
 }
 
 // Password Change
-$(document).on('click', '#eye', function () {
+$(document).on('click', '#eye1', function () {
 
     var This = $("#mynewPassword")
 

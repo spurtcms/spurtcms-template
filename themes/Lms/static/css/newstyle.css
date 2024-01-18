@@ -544,3 +544,19 @@ input[type=range]::-ms-thumb {
   top: 4.0625rem;
   right: .3125rem;
 }
+
+.passwordEye button{
+  position: absolute;
+  top: 15px;
+  /* right: 10px; */
+  background: transparent;
+  border: 0;
+  right: .9375rem;
+}
+.passwordEye.err button{
+  top: 20px;
+}
+
+.del-btn{
+  cursor: pointer;
+}

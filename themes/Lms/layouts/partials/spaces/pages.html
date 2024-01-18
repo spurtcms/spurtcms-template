@@ -2,7 +2,7 @@
 <div class="space-detail">
     <div class="tab space-tab">
         <input type="hidden" value="{{.Spaceid}}" id="spid">
-        <input type="hidden" value="{{.pageid}}" id="pgid">
+        <input type="hidden" value="{{.PageId}}" id="pgid">
         {{range .Spaces}}
         <input type="hidden" value="{{.SpaceSlug}}" id="spSulg">
         <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/?spid={{.Id}}&&pageid={{.PageId}}">
@@ -13,7 +13,7 @@
         {{end}}
     </div>
 
-    {{$PageId := .pageid}}
+    {{$pageId := .PageId}}
 
     <!--tab-content-->
     <div id="AccountsInDailyLife" class="tabcontent" style="display: block">
@@ -48,7 +48,7 @@
                 <button class="grey-bg search-btn" data-tab-id="#demo-tab-active4">
                     <img src="/static/icons/Mask Group 42.svg" alt="" />
                 </button>
-                {{if .myprofile}}
+                    {{if .Logged}}
                 <button class="grey-bg" onclick="toggleNavRgt() " data-tab-id="#demo-tab-active5">
                     <img src="/static/icons/notes-svgrepo-com.svg" alt="" />
                 </button>
@@ -80,12 +80,12 @@
                 <!-- <div class="lft-sidebar"> -->
                 <div class="accordion" id="accordionExample">
 
-                    {{range $index,$value := .PagesDetails}}
+                    {{range $index,$value := .SpaceDetails}}
                     {{if ne .Pages.Id 0}}
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{$index}}">
                             <div class="titlediv">
-                                <a class="titlebtn" href="{{.Pages.Route}}">{{.Pages.Title}}</a>
+                                <a class="titlebtn" href="{{.Pages.Permalink}}">{{.Pages.Title}}</a>
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse{{$index}}" aria-controls="collapse{{$index}}">
                                     {{if .Pages.SubPageData}}
@@ -96,11 +96,11 @@
                         </h2>
                         {{range .Pages.SubPageData}}
                         <div id="collapse{{$index}}"
-                            class="accordion-collapse   {{if eq $PageId .Id}} collapsed show {{else}} collapse{{end}}"
+                            class="accordion-collapse   {{if eq $pageId .Id}} collapsed show {{else}} collapse{{end}}"
                             aria-labelledby="heading{{$index}}" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
 
-                                <a href="{{.Route}}">
+                                <a href="{{.Permalink}}">
                                     <p>{{.Title}}</p>
                                 </a>
 
@@ -117,7 +117,7 @@
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading{{$index}}{{$index1}}">
                                 <div class="titlediv">
-                                    <a class="titlebtn" href="{{.Route}}">{{.Title}}</a>
+                                    <a class="titlebtn" href="{{.Permalink}}">{{.Title}}</a>
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapse{{$index}}{{$index1}}" aria-controls="collapse{{$index}}{{$index1}}">
                                         {{if .SubPageData}}
@@ -127,11 +127,11 @@
                                 </div>
                             </h2>
                             <div id="collapse{{$index}}{{$index1}}"
-                                class="accordion-collapse  {{range .SubPageData}} {{if eq $PageId .Id}} collapsed show {{else}} collapse {{end}} {{end}}"
+                                class="accordion-collapse  {{range .SubPageData}} {{if eq $pageId .Id}} collapsed show {{else}} collapse {{end}} {{end}}"
                                 aria-labelledby="heading{{$index}}{{$index1}}" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     {{range .SubPageData}}
-                                    <a href="{{.Route}}">
+                                    <a href="{{.Permalink}}">
                                         <p>{{.Title}}</p>
                                     </a>
                                     {{end}}

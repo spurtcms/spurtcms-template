@@ -6,7 +6,7 @@ require (
 	github.com/gin-gonic/gin v1.9.1
 	github.com/joho/godotenv v1.5.1
 	github.com/spurtcms/pkgcontent v1.0.37
-	github.com/spurtcms/pkgcore v1.0.33
+	github.com/spurtcms/pkgcore v1.0.34
 	gorm.io/driver/postgres v1.5.4
 )
 

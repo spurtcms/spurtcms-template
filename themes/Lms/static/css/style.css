@@ -1760,7 +1760,7 @@ textarea::-webkit-scrollbar {
     background-color: transparent;
     border: 0;
     position: absolute;
-    top: 2.1875rem;
+    top: 2.1875rem !important;
     right: .9375rem;
     width: 1.1875rem;
     height: 1.1875rem;

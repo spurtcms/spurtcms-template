@@ -41,10 +41,11 @@ $(document).on("click", "#changepasssotpsubmit", function () {
         datatype: 'json',
         success: function (data) {
             console.log("ok",data.verify);
-            if (data.verify == "invalid email") {
-                var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid email'
+            if (data.verify != "") {
+                var content = 'invalid email'
                 $("#oldemail-error").html(content)
                 $("#oldemail-error").show()
+                $('#oldemail-error').parents('.input-container').addClass("err");
             } if (data.verify == "") {
                 window.location.href = "/passwordchange?emailid="+email
             }

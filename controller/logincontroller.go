@@ -231,7 +231,7 @@ func MyProfile(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "member": memb, "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "member": memb, "Logged": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -294,7 +294,7 @@ func ChangeEmail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangeEmail", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangeEmail", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -308,7 +308,7 @@ func AddNewEmail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewEmail", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewEmail", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -322,7 +322,7 @@ func ChangePassword(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangePassword", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangePassword", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -336,7 +336,7 @@ func AddNewPassword(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 

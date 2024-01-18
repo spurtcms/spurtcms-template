@@ -103,7 +103,7 @@ func IndexView(c *gin.Context) {
 
 		}
 
-		data.CategoryName = allcat
+		data.Categories = allcat
 
 		data.SpaceSlug = strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_")
 
@@ -119,7 +119,7 @@ func IndexView(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "Title": "Spaces", "myprofile": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "Title": "Spaces", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 func truncateDescription(description string, limit int) string {
