@@ -231,7 +231,7 @@ func MyProfile(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "member": memb, "Logged": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "Member": memb, "Logged": flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
