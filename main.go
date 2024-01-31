@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"spurt-page-view/config"
 	"spurt-page-view/controller"
 	"spurt-page-view/routes"
 )
@@ -38,6 +39,8 @@ func main() {
 	result := Readjson()
 
 	controller.GetTheme(result["theme"].(string))
+
+	controller.DBIns = config.SetupDB()
 
 	r := routes.SetupRoutes()
 

@@ -24,7 +24,7 @@ var mem member.MemberAuth
 
 func GetAuth(token string) {
 
-	auth := spurtcore.NewInstance(&auth.Option{DB: DB, Token: token, Secret: os.Getenv("JWT_SECRET")})
+	auth := spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: token, Secret: os.Getenv("JWT_SECRET")})
 
 	Auth = auth
 
@@ -47,9 +47,25 @@ func MemberLogout(c *gin.Context) {
 
 	log.Println("cc", c)
 
-	flg = false
+	Flg = false
 
-	log.Println("logoutflg", flg)
+	log.Println("logoutflg", Flg)
+
+	session, err := Store.Get(c.Request, os.Getenv("SESSION_KEY"))
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	session.Values["token"] = ""
+
+	session.Options.MaxAge = -1
+
+	er := session.Save(c.Request, c.Writer)
+	if er != nil {
+		fmt.Println(er)
+	}
+
+	c.Writer.Header().Set("Pragma", "no-cache")
 
 	c.Redirect(302, "/")
 
@@ -70,9 +86,13 @@ func CheckMemberLogin(c *gin.Context) {
 
 		}
 
-		c.JSON(200, gin.H{"verify": errorz.Error()})
+		c.SetCookie("Alert", errorz.Error(), 3600, "", "", false, false)
 
-		return
+		c.Redirect(301, "/login")
+
+		// c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		// return
 
 	}
 
@@ -80,24 +100,44 @@ func CheckMemberLogin(c *gin.Context) {
 
 	password := c.PostForm("password")
 
-	token, err := mem.CheckMemberLogin(member.MemberLogin{Emailid: name, Password: password}, DB, os.Getenv("JWT_SECRET"))
+	mem.Auth = &Auth1
 
-	GetAuth(token)
+	token, err := mem.CheckMemberLogin(member.MemberLogin{Emailid: name, Password: password}, DBIns, os.Getenv("JWT_SECRET"))
 
-	// logErr = err.Error()
-
-	sp.MemAuth = &Auth
+	log.Println("-------", err)
 
 	if err != nil {
 
-		c.JSON(200, gin.H{"verify": err.Error()})
+		log.Println("if")
 
-	} else {
+		// c.JSON(200, gin.H{"verify": err.Error()})
 
-		flg = true
+		c.SetCookie("success", err.Error(), 3600, "", "", false, false)
 
-		c.JSON(200, gin.H{"verify": ""})
+		c.Redirect(301, "/login")
+
+		return
+
 	}
+
+	Flg = true
+
+	// c.JSON(200, gin.H{"verify": ""})
+	GetAuth(token)
+
+	log.Println(token)
+
+	Session, _ := Store.Get(c.Request, os.Getenv("SESSION_KEY"))
+
+	Session.Values["token"] = token
+
+	Session.Save(c.Request, c.Writer)
+
+	sp.MemAuth = &Auth
+
+	c.SetCookie("success", "login successfully", 3600, "", "", false, false)
+
+	c.Redirect(301, "/")
 
 }
 
@@ -218,7 +258,7 @@ func MyProfile(c *gin.Context) {
 
 	memb, _ := mem.GetMemberDetails()
 
-	if !flg {
+	if !Flg {
 
 		c.Redirect(302, "/login")
 	}
@@ -231,7 +271,7 @@ func MyProfile(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "Member": memb, "Logged": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "Member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -294,7 +334,7 @@ func ChangeEmail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangeEmail", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangeEmail", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -308,7 +348,7 @@ func AddNewEmail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewEmail", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewEmail", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -322,7 +362,7 @@ func ChangePassword(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangePassword", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangePassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 
@@ -336,7 +376,7 @@ func AddNewPassword(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 

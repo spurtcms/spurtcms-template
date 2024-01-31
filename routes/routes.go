@@ -34,11 +34,13 @@ func SetupRoutes() *gin.Engine {
 
 	r.Static("/storage", "./storage")
 
-	r.NoRoute(func(c *gin.Context) {
+	// r.Use(controller.DashBoardAuth())
 
-		c.JSON(200, gin.H{"Message": "this route related html file not found"})
+	r.NoRoute(controller.FileNotFoundPage)
 
-	})
+	D := r.Group("")
+
+	D.Use(controller.JWTAuth())
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/login.html"); err == nil {
 
@@ -103,7 +105,7 @@ func SetupRoutes() *gin.Engine {
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html"); err == nil {
 
-		r.GET("/", controller.IndexView)
+		D.GET("/", controller.IndexView)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 

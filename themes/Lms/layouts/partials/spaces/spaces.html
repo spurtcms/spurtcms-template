@@ -12,7 +12,12 @@
         <div class="space-container-crd">
             <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/?spid={{.Id}}&&pageid={{.PageId}}">
                 <div class="space-container-crd-top">
+
+                    {{if eq .ImagePath ""}}
                     <img src="/static/icons/Rectangle 2979.png" alt="" />
+                    {{else}}
+                    <img src="{{.ImagePath}}" alt="" />
+                    {{end}}
                 </div>
 
                 <div class="space-container-crd-btm">

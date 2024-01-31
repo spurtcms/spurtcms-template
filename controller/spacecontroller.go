@@ -4,13 +4,12 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"text/template"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	spaces "github.com/spurtcms/pkgcontent/lms"
-	spurtcore "github.com/spurtcms/pkgcore"
 	"github.com/spurtcms/pkgcore/auth"
 	"gorm.io/gorm"
 )
@@ -19,34 +18,34 @@ var sp spaces.MemberSpace
 
 var DB *gorm.DB
 
-var auth1 auth.Authorization
+var Auth1 auth.Authorization
 
 var profilename string
 
 var profileimg string
 
-func init() {
+// func init() {
 
-	er := godotenv.Load()
+// 	er := godotenv.Load()
 
-	if er != nil {
+// 	if er != nil {
 
-		log.Fatalf("Error loading .env file")
+// 		log.Fatalf("Error loading .env file")
 
-	}
+// 	}
 
-	DB = spurtcore.DBInstance(os.Getenv("DB_HOST"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
+// 	DB = spurtcore.DBInstance(os.Getenv("DB_HOST"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
 
-	auth1 = spurtcore.NewInstance(&auth.Option{DB: DB, Token: "", Secret: ""})
+// 	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DB, Token: "", Secret: ""})
 
-}
+// }
 
 func IndexView(c *gin.Context) {
 
-	sp.MemAuth = &auth1
-	log.Println("loginflg", flg)
-
-	if flg {
+	sp.MemAuth = &Auth1
+	log.Println("loginflg", Flg)
+	log.Println("--", &Auth1)
+	if Flg {
 
 		pl.MemAuth = &Auth
 
@@ -60,7 +59,7 @@ func IndexView(c *gin.Context) {
 
 	} else {
 
-		pl.MemAuth = &auth1
+		pl.MemAuth = &Auth1
 
 	}
 
@@ -74,6 +73,8 @@ func IndexView(c *gin.Context) {
 
 		data.Id = space.SpacesId
 
+		data.SpaceSlug = strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_")
+
 		_, pages, _, _ := pl.MemberPageList(space.SpacesId)
 
 		for _, val := range pages {
@@ -84,9 +85,26 @@ func IndexView(c *gin.Context) {
 
 				data.PageId = val.PgId
 
+				data.Permalink = "/space/" + clearString(data.SpaceSlug) + "/" + clearString(data.PageSlug) + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
+
 				break
 			}
 
+		}
+
+		if space.ImagePath != "" {
+
+			if os.Getenv("DOMAIN_URL") == "" {
+
+				data.ImagePath = os.Getenv("LOCAL_URL") + space.ImagePath
+
+			} else {
+
+				data.ImagePath = os.Getenv("DOMAIN_URL") + space.ImagePath
+			}
+		} else {
+
+			data.ImagePath = ""
 		}
 
 		data.SpaceTitle = space.SpacesName
@@ -105,8 +123,6 @@ func IndexView(c *gin.Context) {
 
 		data.Categories = allcat
 
-		data.SpaceSlug = strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_")
-
 		spaces = append(spaces, data)
 
 	}
@@ -119,7 +135,7 @@ func IndexView(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "Title": "Spaces", "Logged": flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "Title": "Spaces", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
 
 }
 func truncateDescription(description string, limit int) string {

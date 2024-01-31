@@ -5,7 +5,7 @@
     <div class="logo-new">
       <img src="/static/icons/logo-new-login.png" alt="">
     </div>
-    <form id="loginform" method="post" name="loginform" enctype="multipart/form-data" action="">
+    <form id="loginform" method="post" name="loginform" action="/checkmemberlogin">
       <div class="new-login-details">
         <h3>Log Into SpurtCMS</h3>
         <p>Please sign in to your account</p>
@@ -27,7 +27,7 @@
           <a href="/retrieve">Don’t remember your password?</a>
         </div>
         <div class="login-btn">
-          <button type="button" id="submit">Log In</button>
+          <button type="submit" id="submit">Log In</button>
           <p>Don’t have an account?
             <a href="/signup">Register here</a>
           </p>

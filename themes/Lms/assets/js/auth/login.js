@@ -77,40 +77,46 @@ $(document).on("click", "#submit", function () {
     var email = $("#myInput").val()
     var password = $("#myPassword").val()
 
+    console.log(formcheck,"--");
+
     if (formcheck == true) {
-        $.ajax({
-            url: "/checkmemberlogin",
-            method: "POST",
-            data: { "email": email, "password": password },
-            datatype: 'json',
-            success: function (data) {
-                console.log(data);
-                if (data.verify == "Email Required") {
-                    var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Email Required'
-                    $("#myInput-error").html(content)
-                    $("#myInput-error").show()
-                }
-                if (data.verify == "password Required") {
-                    var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />password Required'
-                    $("#myPassword-error").html(content)
-                    $("#myPassword-error").show()
-                }
-                if (data.verify == "your email not registered") {
-                    var content = 'your email not registered'
-                    $("#myInput-error").html(content)
-                    $("#myInput-error").show()
-                } if (data.verify == "invalid password") {
-                    var content = 'invalid password'
-                    $("#myPassword-error").html(content)
-                    $("#myPassword-error").show()
-                }
 
-                if (data.verify == "") {
-                    window.location.href = "/"
-                }
+        console.log("++++");
 
-            }
-        })
+        $("#loginform").submit();
+        // $.ajax({
+        //     url: "/checkmemberlogin",
+        //     method: "POST",
+        //     data: { "email": email, "password": password },
+        //     datatype: 'json',
+        //     success: function (data) {
+        //         console.log(data);
+        //         if (data.verify == "Email Required") {
+        //             var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Email Required'
+        //             $("#myInput-error").html(content)
+        //             $("#myInput-error").show()
+        //         }
+        //         if (data.verify == "password Required") {
+        //             var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />password Required'
+        //             $("#myPassword-error").html(content)
+        //             $("#myPassword-error").show()
+        //         }
+        //         if (data.verify == "your email not registered") {
+        //             var content = 'your email not registered'
+        //             $("#myInput-error").html(content)
+        //             $("#myInput-error").show()
+        //         } if (data.verify == "invalid password") {
+        //             var content = 'invalid password'
+        //             $("#myPassword-error").html(content)
+        //             $("#myPassword-error").show()
+        //         }
+
+        //         if (data.verify == "") {
+        //             window.location.href = "/"
+        //         }
+
+        //     }
+        // })
 
     } else {
 

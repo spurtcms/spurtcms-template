@@ -2,6 +2,7 @@ package controller
 
 import (
 	"fmt"
+	"log"
 	"math/rand"
 	"net/http"
 	"net/smtp"
@@ -14,11 +15,14 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gorilla/sessions"
 )
+
+var Store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 
 func GenarateOtp(email string) (em bool, err error) {
 
-	mem.Auth = &auth1
+	mem.Auth = &Auth1
 
 	memdetail, mailcheck, err := mem.CheckEmailInMember(0, email)
 
@@ -129,4 +133,16 @@ func RenderTemplate(c *gin.Context, tmpl *template.Template, templateName string
 
 		c.String(http.StatusInternalServerError, err.Error())
 	}
+}
+
+func FileNotFoundPage(c *gin.Context) {
+	// Parse templates
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/404.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+
+	if err != nil {
+
+		log.Fatal(err)
+	}
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "Login"})
 }

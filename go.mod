@@ -4,9 +4,11 @@ go 1.19
 
 require (
 	github.com/gin-gonic/gin v1.9.1
+	github.com/golang-jwt/jwt v3.2.2+incompatible
+	github.com/gorilla/sessions v1.2.2
 	github.com/joho/godotenv v1.5.1
-	github.com/spurtcms/pkgcontent v1.0.37
-	github.com/spurtcms/pkgcore v1.0.34
+	github.com/spurtcms/pkgcontent v1.0.49
+	github.com/spurtcms/pkgcore v1.0.37
 	gorm.io/driver/postgres v1.5.4
 )
 
@@ -30,6 +32,7 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.14.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
+	github.com/gorilla/securecookie v1.1.2 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
 	github.com/jackc/pgx/v5 v5.5.1 // indirect
