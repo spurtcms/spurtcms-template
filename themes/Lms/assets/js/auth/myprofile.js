@@ -78,19 +78,20 @@ $(document).on("click", "#update-btn", function () {
 
     if ( formcheck == true){
 
-        $.ajax({
-            url: "/myprofileupdate",
-            method: "POST",
-            data: { "fname": fname, "lname": lname, "mobile": mobile ,"crop_data":crop_data},
-            datatype: 'json',
-            success: function (data) {
+        $("form[name ='myprofileform']").submit()
+        // $.ajax({
+        //     url: "/myprofileupdate",
+        //     method: "POST",
+        //     data: { "fname": fname, "lname": lname, "mobile": mobile ,"crop_data":crop_data},
+        //     datatype: 'json',
+        //     success: function (data) {
                 
-                if (data.verify == "") {
-                    window.location.href = "/myprofile"
-                }
+        //         if (data.verify == "") {
+        //             window.location.href = "/myprofile"
+        //         }
     
-            }
-        })
+        //     }
+        // })
 
     }else{
 

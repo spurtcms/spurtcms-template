@@ -19,7 +19,9 @@ var Flg bool
 
 var DBIns *gorm.DB
 
-var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9 ]+`)
+// var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9 ]+`)
+
+var nonAlphanumericRegex = regexp.MustCompile(`[^\w]`)
 
 func GetTheme(themename string) {
 

@@ -6,11 +6,11 @@
         </div>
         <div class="new-siginup-details">
             <h3>Sign up Into SpurtCMS</h3>
-            <form id="signupform" name="signupform" enctype="multipart/form-data" method="post" action="">
+            <form id="signupform" name="signupform" enctype="multipart/form-data" method="post" action="/memberregister">
                 <div class="ig-input">
                     <div class="ig-row" id="fname-con">
                         <p>First name</p>
-                        <input type="text" id="firstname" name="firstname" placeholder="First name" class="mx-400 field"
+                        <input type="text" id="firstname" name="fname" placeholder="First name" class="mx-400 field"
                             required />
                         <label id="firstname-error" class="error err-txt" for="firstname" style="display: none;">
                             <img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter
@@ -20,18 +20,12 @@
                     </div>
                     <div class="ig-row" id="lname-con">
                         <p>Last name</p>
-                        <input type="text" id="lastname" name="lastname" placeholder="Last name" class="mx-400 field"
-                            required />
-                        <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
-                            <img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter
-                            Your
-                            Last Name
-                        </label>
+                        <input type="text" id="lastname" name="lname" placeholder="Last name" class="mx-400 field"/>
                     </div>
                 </div>
                 <div class="ig-row" id="mobile-con">
                     <p>Mobile number</p>
-                    <input type="text" id="myNumber" name="myNumber" maxlength="14" class="mx-400 field"
+                    <input type="text" id="myNumber" name="mobile" maxlength="14" class="mx-400 field"
                         placeholder="Mobile number (with country code)" required />
                     <label id="myNumber-error" class="error err-txt" for="myNumber" style="display: none;">
                         Please Enter The Mobile NUmber </label>
@@ -46,7 +40,7 @@
                 </div>
                 <div class="ig-row password passwordEye signupEye" id="pass-con">
                     <p>Password</p>
-                    <input type="password" id="myPassword" name="myPassword" placeholder="Password" class="mx-400 field"
+                    <input type="password" id="myPassword" name="password" placeholder="Password" class="mx-400 field"
                         required />
                     <label id="myPassword-error" class="error err-txt" for="myPassword" style="display: none;">
                         <img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter The

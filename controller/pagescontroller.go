@@ -205,7 +205,7 @@ func SpaceDetail(c *gin.Context) {
 
 				singlepage.Pages.Title = val.Name
 
-				singlepage.Pages.Permalink = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(clearString(val.Name), " ", "_")) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
+				singlepage.Pages.Permalink = "/space/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Name, " ", "_"))) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
 
 				PageDetailss = append(PageDetailss, singlepage)
 			}
@@ -257,7 +257,7 @@ func SpaceDetail(c *gin.Context) {
 
 					singlepage.Pages.Title = val.Name
 
-					singlepage.Pages.Permalink = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(clearString(val.Name), " ", "_")) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
+					singlepage.Pages.Permalink = "/space/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Name, " ", "_"))) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
 
 					PageDetailss = append(PageDetailss, singlepage)
 
@@ -290,7 +290,7 @@ func SpaceDetail(c *gin.Context) {
 
 					singlepage.Title = page.Name
 
-					singlepage.Permalink = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(clearString(page.Name), " ", "_")) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(page.PgId)
+					singlepage.Permalink = "/space/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(page.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(page.PgId)
 
 					PG = append(PG, singlepage)
 
@@ -349,7 +349,7 @@ func SpaceDetail(c *gin.Context) {
 
 					singlepage.Title = sub.Name
 
-					singlepage.Permalink = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(clearString(grppagesub.Title), " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(clearString(sub.Name), " ", "_")) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
+					singlepage.Permalink = "/space/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(grppagesub.Title, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
 
 					Sub = append(Sub, singlepage)
 				}
@@ -384,7 +384,7 @@ func SpaceDetail(c *gin.Context) {
 
 				singlepage.Title = sub.Name
 
-				singlepage.Permalink = "/space/" + strings.ToLower(strings.ReplaceAll(spacename, " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(clearString(val.Pages.Title), " ", "_")) + "/" + strings.ToLower(strings.ReplaceAll(clearString(sub.Name), " ", "_")) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
+				singlepage.Permalink = "/space/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Pages.Title, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
 
 				Sub = append(Sub, singlepage)
 			}

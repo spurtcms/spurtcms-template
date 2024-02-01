@@ -3,7 +3,6 @@ package controller
 import (
 	"log"
 	"os"
-	"regexp"
 	"strconv"
 	"strings"
 	"text/template"
@@ -73,7 +72,7 @@ func IndexView(c *gin.Context) {
 
 		data.Id = space.SpacesId
 
-		data.SpaceSlug = strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_")
+		data.SpaceSlug = clearString(strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_"))
 
 		_, pages, _, _ := pl.MemberPageList(space.SpacesId)
 
@@ -81,11 +80,11 @@ func IndexView(c *gin.Context) {
 
 			if val.OrderIndex == 1 {
 
-				data.PageSlug = strings.ReplaceAll(regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(strings.ToLower(val.Name), " "), " ", "_")
+				data.PageSlug = clearString(strings.ReplaceAll(strings.ToLower(val.Name), " ", "_"))
 
 				data.PageId = val.PgId
 
-				data.Permalink = "/space/" + clearString(data.SpaceSlug) + "/" + clearString(data.PageSlug) + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
+				data.Permalink = "/space/" + data.SpaceSlug + "/" + data.PageSlug + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
 
 				break
 			}

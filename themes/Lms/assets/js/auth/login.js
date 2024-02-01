@@ -77,7 +77,7 @@ $(document).on("click", "#submit", function () {
     var email = $("#myInput").val()
     var password = $("#myPassword").val()
 
-    console.log(formcheck,"--");
+    console.log(formcheck, "--");
 
     if (formcheck == true) {
 
@@ -158,3 +158,30 @@ $(document).on('click', '#lpswdeye', function () {
 
     }
 })
+
+var Cookie = getCookie("Error");
+
+if (Cookie == "invalid+password") {
+
+    var content = 'invalid password'
+    
+    $("#myPassword-error").html(content)
+    
+    $("#myPassword-error").show()
+    
+    $('#myPassword-error').parent('.ig-row').addClass('err')
+    
+    delete_cookie("Error")
+    
+} else if (Cookie == "your+email+not+registered") {
+    
+    var content = 'your email not registered'
+    
+    $("#myInput-error").html(content)
+    
+    $("#myInput-error").show()
+    
+    $("#myInput-error").parent('.ig-row').addClass('err')
+    
+    delete_cookie("Error")
+}

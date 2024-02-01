@@ -86,7 +86,7 @@ func CheckMemberLogin(c *gin.Context) {
 
 		}
 
-		c.SetCookie("Alert", errorz.Error(), 3600, "", "", false, false)
+		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
 		c.Redirect(301, "/login")
 
@@ -112,7 +112,7 @@ func CheckMemberLogin(c *gin.Context) {
 
 		// c.JSON(200, gin.H{"verify": err.Error()})
 
-		c.SetCookie("success", err.Error(), 3600, "", "", false, false)
+		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
 
 		c.Redirect(301, "/login")
 
@@ -164,9 +164,13 @@ func MemberRegister(c *gin.Context) {
 			errorz = errors.New("password Required")
 
 		}
-		c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/signup")
 
 		return
+		// c.JSON(200, gin.H{"verify": errorz.Error()})
 	}
 
 	GetAuth("")
@@ -189,6 +193,15 @@ func MemberRegister(c *gin.Context) {
 
 	log.Println("chk", err5)
 
+	if err5 != nil {
+
+		c.SetCookie("Error", err5.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/signup")
+
+		return
+	}
+
 	data := map[string]interface{}{
 
 		"fname": fname,
@@ -206,7 +219,7 @@ func MemberRegister(c *gin.Context) {
 
 	close(Chan)
 
-	c.JSON(200, gin.H{"verify": ""})
+	c.Redirect(301, "/login")
 
 }
 
@@ -295,7 +308,11 @@ func MyprofileUpdate(c *gin.Context) {
 
 		}
 
-		c.JSON(200, gin.H{"verify": errorz.Error()})
+		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/myprofile")
+
+		// c.JSON(200, gin.H{"verify": errorz.Error()})
 
 		return
 
@@ -321,7 +338,11 @@ func MyprofileUpdate(c *gin.Context) {
 
 	log.Println("update", upt)
 
-	c.JSON(200, gin.H{"verify": ""})
+	// c.JSON(200, gin.H{"verify": ""})
+
+	c.SetCookie("Success", "Updated Successfully", 3600, "", "", false, false)
+
+	c.Redirect(301, "/myprofile")
 }
 
 func ChangeEmail(c *gin.Context) {
