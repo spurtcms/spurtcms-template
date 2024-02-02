@@ -27,6 +27,7 @@ type SpaceData struct {
 	ImagePath        string
 	Permalink        string
 	PageId           int
+	CreatedDate      string
 	Categories       []string
 }
 

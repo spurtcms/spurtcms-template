@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt"
@@ -18,6 +19,8 @@ var Template string
 var Flg bool
 
 var DBIns *gorm.DB
+
+var TZONE, _ = time.LoadLocation(os.Getenv("TIME_ZONE"))
 
 // var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9 ]+`)
 

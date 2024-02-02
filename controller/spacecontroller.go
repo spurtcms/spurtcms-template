@@ -120,6 +120,8 @@ func IndexView(c *gin.Context) {
 
 		}
 
+		data.CreatedDate = space.CreatedOn.In(TZONE).Format("02 Jan 2006")
+
 		data.Categories = allcat
 
 		spaces = append(spaces, data)
