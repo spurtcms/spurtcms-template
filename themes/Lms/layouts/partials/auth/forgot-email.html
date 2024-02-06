@@ -7,7 +7,7 @@
         <div class="new-retrive-details">
             <h3>Retrieve Your Account</h3>
             <p>You will receive an OTP on your registered credentials</p>
-            <form action="" name="forgetform" id="forgetform" method="post" enctype="multipart/form-data">
+            <form action="/otp-genrate" name="forgetform" id="forgetform" method="post">
                 <div class="ig-row">
                     <p>Email address</p>
                     <input type="text" id="email" name="email" placeholder="Email" class="mx-400 field" required />
@@ -16,7 +16,7 @@
                         Please Enter Your Email Address</label>
                 </div>
                 <div class="submit-btn">
-                    <a><button class="cms-btn-dark mx-400" type="button" id="forgotemailsubmit">Submit</button></a>
+                    <a><button class="cms-btn-dark mx-400" type="submit" id="forgotemailsubmit">Submit</button></a>
                 </div>
                 <div class="lg-return">
                     <a href="/login">Return to Login</a>

@@ -16,11 +16,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
+	spurtcore "github.com/spurtcms/pkgcore"
+	"github.com/spurtcms/pkgcore/auth"
 )
 
 var Store = sessions.NewCookieStore([]byte(os.Getenv("SESSION_KEY")))
 
 func GenarateOtp(email string) (em bool, err error) {
+
+	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: ""})
 
 	mem.Auth = &Auth1
 
@@ -56,7 +60,12 @@ func GenarateOtp(email string) (em bool, err error) {
 		close(Chan)
 
 	}
-	return em, err
+
+	if err != nil {
+
+		return false, err
+	}
+	return true, err
 
 }
 func MemberCreateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]interface{}, email, action string) {

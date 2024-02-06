@@ -6,7 +6,7 @@
     </div>
     <div class="login-content">
         <div class="mail-signIn mx-400">
-            <form id="otpform" name="otpform" method="" enctype="multipart/form-data">
+            <form action="/otp-genrate1" id="otpform" name="otpform" method="post" enctype="multipart/form-data">
                 <div class="input-container mb-16" id="email-con">
                     <input type="text" id="oldemail" name="email" class="mx-400 field" />
                     <label for="myInput" class="input-label">Old Email address</label>
@@ -14,7 +14,7 @@
                     <label id="oldemail-error" class="error err-txt" for="oldemail" style="display: none;">
                         Please Enter Your Old Email Address</label>
                 </div>
-                <button class="cms-btn-dark mx-400" type="button" id="changeemailotpsubmit">Submit</button>
+                <button class="cms-btn-dark mx-400" type="submit" id="changeemailotpsubmit">Submit</button>
             </form>
         </div>
     </div>

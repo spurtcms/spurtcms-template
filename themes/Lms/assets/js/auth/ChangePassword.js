@@ -134,20 +134,17 @@ function Validationcheck() {
 }
 
 // Password Change
-
 $(document).on('click', '#pswdeye', function () {
 
-    var This = $("#mynewPassword")
+    if ($("#mynewPassword").attr('type') == 'password') {
 
-    if ($(This).attr('type') === 'password') {
-
-        $(This).attr('type', 'text');
+        $("#mynewPassword").attr('type', 'text');
 
         $(this).addClass('active')
 
     } else {
 
-        $(This).attr('type', 'password');
+        $("#mynewPassword").attr('type', 'password');
 
         $(this).removeClass('active')
     }
@@ -172,23 +169,23 @@ $(document).on('click', '#cpswdeye', function () {
 
     }
 })
-/* Resend Otp */
-$(document).on("click", "#againotp", function () {
+// /* Resend Otp */
+// $(document).on("click", "#againotp", function () {
 
-    var url = window.location.search;
-    const urlpar = new URLSearchParams(url);
-    email = urlpar.get('emailid');
-
-
-    $.ajax({
-        url: "/send-otp-genrate",
-        method: "POST",
-        data: { "email": email },
-        datatype: 'json',
-        success: function (data) {
-
-        }
-    })
+//     var url = window.location.search;
+//     const urlpar = new URLSearchParams(url);
+//     email = urlpar.get('emailid');
 
 
-})
+//     $.ajax({
+//         url: "/send-otp-genrate",
+//         method: "POST",
+//         data: { "email": email },
+//         datatype: 'json',
+//         success: function (data) {
+
+//         }
+//     })
+
+
+// })

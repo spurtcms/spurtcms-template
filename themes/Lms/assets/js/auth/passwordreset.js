@@ -53,69 +53,69 @@ $(document).ready(function () {
 
 })
 
-$(document).on("click", "#passwordrestsubmit", function () {
+// $(document).on("click", "#passwordrestsubmit", function () {
 
-    var url = window.location.search;
-    const urlpar = new URLSearchParams(url);
-    id = urlpar.get('emailid');
+//     var url = window.location.search;
+//     const urlpar = new URLSearchParams(url);
+//     id = urlpar.get('emailid');
 
-    var formcheck = $("form[name ='changepasswordform']").valid()
+//     var formcheck = $("form[name ='changepasswordform']").valid()
 
-    var otp = $("#otp").val()
-    var newpassword = $("#mynewPassword").val()
-    var confirmpassword = $("#confrimPassword").val()
-    if (formcheck == true) {
-        $.ajax({
-            url: "/verify-otppass",
-            method: "POST",
-            data: { "id": id, "otp": otp, "mynewPassword": newpassword, "confrimPassword": confirmpassword },
-            datatype: 'json',
-            success: function (data) {
-                console.log(data);
-                if (data.verify == "Otp Required") {
-                    var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Otp Required'
-                    $("#otp-error").html(content)
-                    $("#otp-error").show()
-                } if (data.verify == "Password Required") {
-                    var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Password Required'
-                    $("#mynewPassword-error").html(content)
-                    $("#mynewPassword-error").show()
-                } if (data.verify == "invalid otp") {
-                    var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid otp'
-                    $("#otp-error").html(content)
-                    $("#otp-error").show()
-                } if (data.verify == "otp exipred") {
-                    var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />otp exipred'
-                    $("#otp-error").html(content)
-                    $("#otp-error").show()
-                } if (data.verify == "") {
-                    window.location.href = "/login"
-                }
+//     var otp = $("#otp").val()
+//     var newpassword = $("#mynewPassword").val()
+//     var confirmpassword = $("#confrimPassword").val()
+//     if (formcheck == true) {
+//         $.ajax({
+//             url: "/verify-otppass",
+//             method: "POST",
+//             data: { "id": id, "otp": otp, "mynewPassword": newpassword, "confrimPassword": confirmpassword },
+//             datatype: 'json',
+//             success: function (data) {
+//                 console.log(data);
+//                 if (data.verify == "Otp Required") {
+//                     var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Otp Required'
+//                     $("#otp-error").html(content)
+//                     $("#otp-error").show()
+//                 } if (data.verify == "Password Required") {
+//                     var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Password Required'
+//                     $("#mynewPassword-error").html(content)
+//                     $("#mynewPassword-error").show()
+//                 } if (data.verify == "invalid otp") {
+//                     var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid otp'
+//                     $("#otp-error").html(content)
+//                     $("#otp-error").show()
+//                 } if (data.verify == "otp exipred") {
+//                     var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />otp exipred'
+//                     $("#otp-error").html(content)
+//                     $("#otp-error").show()
+//                 } if (data.verify == "") {
+//                     window.location.href = "/login"
+//                 }
 
-            }
-        })
-
-
-    } else {
-
-        $(document).on('keyup', ".field", function () {
-            Validationcheck()
-        })
-        $('.ig-row').each(function () {
-            var inputField = $(this).find('input');
-            var inputName = inputField.attr('name');
-
-            if (!inputField.valid()) {
-                $(this).addClass("err");
-
-            } else {
-                $(this).removeClass("err")
-            }
-        })
-    }
+//             }
+//         })
 
 
-})
+//     } else {
+
+//         $(document).on('keyup', ".field", function () {
+//             Validationcheck()
+//         })
+//         $('.ig-row').each(function () {
+//             var inputField = $(this).find('input');
+//             var inputName = inputField.attr('name');
+
+//             if (!inputField.valid()) {
+//                 $(this).addClass("err");
+
+//             } else {
+//                 $(this).removeClass("err")
+//             }
+//         })
+//     }
+
+
+// })
 
 function Validationcheck() {
     let inputGro = document.querySelectorAll('.ig-row');

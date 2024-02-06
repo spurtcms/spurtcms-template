@@ -135,7 +135,7 @@ func CheckMemberLogin(c *gin.Context) {
 
 	sp.MemAuth = &Auth
 
-	c.SetCookie("success", "login successfully", 3600, "", "", false, false)
+	// c.SetCookie("success", "login successfully", 3600, "", "", false, false)
 
 	c.Redirect(301, "/")
 
@@ -259,7 +259,7 @@ func PassReset(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "Reset"})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "Reset", "EmailId": c.Query("emailid")})
 
 	// c.HTML(200, "passwordreset.html", gin.H{"title": "Reset"})
 
@@ -296,9 +296,9 @@ func MyprofileUpdate(c *gin.Context) {
 
 	var storagePath string
 
-	if c.PostForm("fname") == "" || c.PostForm("mobile") == "" {
+	if c.PostForm("firstname") == "" || c.PostForm("mobileNumber") == "" {
 
-		if c.PostForm("fname") == "" {
+		if c.PostForm("firstname") == "" {
 
 			errorz = errors.New("First Name Required")
 
@@ -319,11 +319,11 @@ func MyprofileUpdate(c *gin.Context) {
 	}
 	mem.Auth = &Auth
 
-	fname := c.PostForm("fname")
+	fname := c.PostForm("firstname")
 
-	lname := c.PostForm("lname")
+	lname := c.PostForm("lastname")
 
-	mobile := c.PostForm("mobile")
+	mobile := c.PostForm("mobileNumber")
 
 	imageData := c.PostForm("crop_data")
 
@@ -408,17 +408,61 @@ func OtpGenarate(c *gin.Context) {
 	_, err := GenarateOtp(email)
 
 	if err != nil {
-		c.JSON(200, gin.H{"verify": err.Error()})
-	} else {
-		c.JSON(200, gin.H{"verify": ""})
+
+		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/retrieve")
+
+		return
+
 	}
 
+	// c.SetCookie("success", "", 3600, "", "", false, false)
+
+	c.Redirect(301, "/reset?emailid="+email)
+
 }
+
+func OtpGenarate1(c *gin.Context) {
+
+	email := c.PostForm("email")
+
+	mem.Auth = &Auth
+
+	memb, _ := mem.GetMemberDetails()
+
+	if memb.Email != email {
+
+		c.SetCookie("Error", "Please enter the login email id", 3600, "", "", false, false)
+
+		c.Redirect(301, "/change-email")
+
+		return
+	}
+
+	_, err := GenarateOtp(email)
+
+	if err != nil {
+
+		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/change-email")
+
+		return
+
+	}
+
+	c.SetCookie("success", "otp sended successfully", 3600, "", "", false, false)
+
+	c.Redirect(301, "/new-email")
+
+}
+
 func OtpVerifyemail(c *gin.Context) {
 
 	var errorz error
 
-	if c.PostForm("otp") == "" || c.PostForm("newemail") == "" {
+	if c.PostForm("otp") == "" || c.PostForm("emailaddress") == "" {
 
 		if c.PostForm("otp") == "" {
 
@@ -430,7 +474,11 @@ func OtpVerifyemail(c *gin.Context) {
 
 		}
 
-		c.JSON(200, gin.H{"verify": errorz.Error()})
+		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/new-email")
+
+		// c.JSON(200, gin.H{"verify": errorz.Error()})
 
 		return
 
@@ -439,9 +487,9 @@ func OtpVerifyemail(c *gin.Context) {
 
 	otp, _ := strconv.Atoi(num)
 
-	newemail := c.PostForm("newemail")
+	newemail := c.PostForm("emailaddress")
 
-	email := c.PostForm("oldemailid")
+	email := c.PostForm("confirmemail")
 
 	_, _, err := mem.CheckEmailInMember(0, email)
 
@@ -454,13 +502,17 @@ func OtpVerifyemail(c *gin.Context) {
 
 	if err != nil {
 
-		c.JSON(200, gin.H{"verify": err.Error()})
+		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-	} else {
+		c.Redirect(301, "/new-email")
 
-		c.JSON(200, gin.H{"verify": ""})
+		return
 
 	}
+
+	c.SetCookie("Success", "Email Updated Successfully", 3600, "", "", false, false)
+
+	c.Redirect(301, "/myprofile")
 
 }
 
@@ -482,9 +534,13 @@ func OtpVerifypass(c *gin.Context) {
 
 		}
 
-		c.JSON(200, gin.H{"verify": errorz.Error()})
+		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-		return
+		c.Redirect(301, "/reset")
+
+		// c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		// return
 
 	}
 	num := c.PostForm("otp")
@@ -494,6 +550,10 @@ func OtpVerifypass(c *gin.Context) {
 	newpass := c.PostForm("mynewPassword")
 
 	email := c.PostForm("id")
+
+	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: os.Getenv("JWT_SECRET")})
+
+	mem.Auth = &Auth1
 
 	memdetail, mailcheck, err := mem.CheckEmailInMember(0, email)
 
@@ -506,16 +566,27 @@ func OtpVerifypass(c *gin.Context) {
 
 	_, err1 := mem.ChangePassword(otp, memdetail.Id, newpass)
 
+	log.Println("------", err1)
+
+	log.Println("------", err1.Error())
+
 	if err1 != nil {
 
-		c.JSON(200, gin.H{"verify": err1.Error()})
+		c.SetCookie("Error", err1.Error(), 3600, "", "", false, false)
 
-	} else {
+		c.Redirect(301, "/reset")
 
-		c.JSON(200, gin.H{"verify": ""})
+		// c.JSON(200, gin.H{"verify": err1.Error()})
+
+		return
 
 	}
 
+	// c.SetCookie("success", "", 3600, "", "", false, false)
+
+	// c.JSON(200, gin.H{"verify": ""})
+
+	c.Redirect(301, "/login")
 }
 
 func ConvertBase64(imageData string, storagepath string) (imgname string, path string, err error) {
@@ -560,9 +631,14 @@ func ConvertBase64(imageData string, storagepath string) (imgname string, path s
 /* Resend Otp */
 func AgainOtpGenarate(c *gin.Context) {
 
-	email := c.PostForm("email")
+	// email := c.PostForm("email")
+	mem.Auth = &Auth
 
-	verify, err := GenarateOtp(email)
+	memb, _ := mem.GetMemberDetails()
+
+	log.Println(memb)
+
+	verify, err := GenarateOtp(memb.Email)
 
 	if err != nil {
 		c.JSON(200, gin.H{"verify": err.Error()})

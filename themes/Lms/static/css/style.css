@@ -1895,6 +1895,10 @@ textarea::-webkit-scrollbar {
     text-align: center;
 }
 
+.new-reset-details{
+    max-width: 400px;
+}
+
 .new-reset-details p span {
     font-size: .875rem;
     font-weight: 400;

@@ -24,53 +24,53 @@ $(document).ready(function () {
 })
 
 
-$(document).on("click", "#forgotemailsubmit", function () {
+// $(document).on("click", "#forgotemailsubmit", function () {
 
-    var formcheck = $("form[name='forgetform']").valid()
+//     var formcheck = $("form[name='forgetform']").valid()
 
-    var email = $("#email").val()
+//     var email = $("#email").val()
 
-    if (formcheck == true) {
+//     if (formcheck == true) {
 
-        $.ajax({
-            url: "/otp-genrate",
-            method: "POST",
-            data: { "email": email },
-            datatype: 'json',
-            success: function (data) {
-                console.log(data);
-                if (data.verify == "invalid email") {
-                    var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid email'
-                    $("#email-error").html(content)
-                    $("#email-error").show()
-                } if (data.verify == "") {
-                    window.location.href = "/reset?emailid="+email
-                }
+//         $.ajax({
+//             url: "/otp-genrate",
+//             method: "POST",
+//             data: { "email": email },
+//             datatype: 'json',
+//             success: function (data) {
+//                 console.log(data);
+//                 if (data.verify == "invalid email") {
+//                     var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />invalid email'
+//                     $("#email-error").html(content)
+//                     $("#email-error").show()
+//                 } if (data.verify == "") {
+//                     window.location.href = "/reset?emailid="+email
+//                 }
 
-            }
-        })
+//             }
+//         })
 
-    } else {
+//     } else {
 
-        $(document).on('keyup', ".field", function () {
-            Validationcheck()
-        })
-        $('.ig-row').each(function () {
-            var inputField = $(this).find('input');
-            var inputName = inputField.attr('name');
+//         $(document).on('keyup', ".field", function () {
+//             Validationcheck()
+//         })
+//         $('.ig-row').each(function () {
+//             var inputField = $(this).find('input');
+//             var inputName = inputField.attr('name');
 
-            if (!inputField.valid()) {
-                $(this).addClass("err");
+//             if (!inputField.valid()) {
+//                 $(this).addClass("err");
 
-            } else {
-                $(this).removeClass("err")
-            }
+//             } else {
+//                 $(this).removeClass("err")
+//             }
 
-        })
+//         })
 
-    }
+//     }
 
-})
+// })
 
 function Validationcheck() {
     let inputGro = document.querySelectorAll('.ig-row');

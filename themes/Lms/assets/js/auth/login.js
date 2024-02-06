@@ -159,29 +159,29 @@ $(document).on('click', '#lpswdeye', function () {
     }
 })
 
-var Cookie = getCookie("Error");
+// var Cookie = getCookie("Error");
 
-if (Cookie == "invalid+password") {
+// if (Cookie == "invalid+password") {
 
-    var content = 'invalid password'
+//     var content = 'invalid password'
     
-    $("#myPassword-error").html(content)
+//     $("#myPassword-error").html(content)
     
-    $("#myPassword-error").show()
+//     $("#myPassword-error").show()
     
-    $('#myPassword-error').parent('.ig-row').addClass('err')
+//     $('#myPassword-error').parent('.ig-row').addClass('err')
     
-    delete_cookie("Error")
+//     delete_cookie("Error")
     
-} else if (Cookie == "your+email+not+registered") {
+// } else if (Cookie == "your+email+not+registered") {
     
-    var content = 'your email not registered'
+//     var content = 'your email not registered'
     
-    $("#myInput-error").html(content)
+//     $("#myInput-error").html(content)
     
-    $("#myInput-error").show()
+//     $("#myInput-error").show()
     
-    $("#myInput-error").parent('.ig-row').addClass('err')
+//     $("#myInput-error").parent('.ig-row').addClass('err')
     
-    delete_cookie("Error")
-}
+//     delete_cookie("Error")
+// }

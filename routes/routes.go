@@ -101,6 +101,8 @@ func SetupRoutes() *gin.Engine {
 
 	r.POST("/otp-genrate", controller.OtpGenarate)
 
+	r.POST("/otp-genrate1", controller.OtpGenarate1)
+
 	r.POST("/verify-email-otp", controller.OtpVerifyemail)
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html"); err == nil {
