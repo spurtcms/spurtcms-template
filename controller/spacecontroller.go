@@ -42,8 +42,7 @@ var profileimg string
 func IndexView(c *gin.Context) {
 
 	sp.MemAuth = &Auth1
-	log.Println("loginflg", Flg)
-	log.Println("--", &Auth1)
+
 	if Flg {
 
 		pl.MemAuth = &Auth

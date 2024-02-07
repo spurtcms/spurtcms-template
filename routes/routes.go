@@ -99,6 +99,8 @@ func SetupRoutes() *gin.Engine {
 
 	r.POST("/myprofileupdate", controller.MyprofileUpdate)
 
+	r.POST("/passwordotp", controller.PassOtpGenarate)
+
 	r.POST("/otp-genrate", controller.OtpGenarate)
 
 	r.POST("/otp-genrate1", controller.OtpGenarate1)
@@ -131,6 +133,8 @@ func SetupRoutes() *gin.Engine {
 	r.GET("/passwordchange", controller.AddNewPassword)
 
 	r.POST("/verify-otppass", controller.OtpVerifypass)
+
+	r.POST("/verify-otpprofpass", controller.OtpVerifypassMyprofile)
 
 	r.POST("/send-otp-genrate", controller.AgainOtpGenarate)
 

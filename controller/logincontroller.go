@@ -45,11 +45,7 @@ func MemberLogin(c *gin.Context) {
 }
 func MemberLogout(c *gin.Context) {
 
-	log.Println("cc", c)
-
 	Flg = false
-
-	log.Println("logoutflg", Flg)
 
 	session, err := Store.Get(c.Request, os.Getenv("SESSION_KEY"))
 
@@ -104,8 +100,6 @@ func CheckMemberLogin(c *gin.Context) {
 
 	token, err := mem.CheckMemberLogin(member.MemberLogin{Emailid: name, Password: password}, DBIns, os.Getenv("JWT_SECRET"))
 
-	log.Println("-------", err)
-
 	if err != nil {
 
 		log.Println("if")
@@ -124,8 +118,6 @@ func CheckMemberLogin(c *gin.Context) {
 
 	// c.JSON(200, gin.H{"verify": ""})
 	GetAuth(token)
-
-	log.Println(token)
 
 	Session, _ := Store.Get(c.Request, os.Getenv("SESSION_KEY"))
 
@@ -190,8 +182,6 @@ func MemberRegister(c *gin.Context) {
 	chk, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
 
 	log.Println("chk", chk)
-
-	log.Println("chk", err5)
 
 	if err5 != nil {
 
@@ -334,9 +324,8 @@ func MyprofileUpdate(c *gin.Context) {
 		fmt.Println("imgname", imageName, storagePath)
 	}
 
-	upt, _ := mem.MemberUpdate(member.MemberCreation{FirstName: fname, LastName: lname, MobileNo: mobile, ProfileImage: imageName, ProfileImagePath: storagePath})
+	mem.MemberUpdate(member.MemberCreation{FirstName: fname, LastName: lname, MobileNo: mobile, ProfileImage: imageName, ProfileImagePath: storagePath})
 
-	log.Println("update", upt)
 
 	// c.JSON(200, gin.H{"verify": ""})
 
@@ -397,7 +386,11 @@ func AddNewPassword(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
+	mem.Auth = &Auth
+
+	memb, _ := mem.GetMemberDetails()
+
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "Email": memb.Email})
 
 }
 
@@ -420,6 +413,41 @@ func OtpGenarate(c *gin.Context) {
 	// c.SetCookie("success", "", 3600, "", "", false, false)
 
 	c.Redirect(301, "/reset?emailid="+email)
+
+}
+
+func PassOtpGenarate(c *gin.Context) {
+
+	email := c.PostForm("email")
+
+	mem.Auth = &Auth
+
+	memb, _ := mem.GetMemberDetails()
+
+	if memb.Email != email {
+
+		c.SetCookie("Error", "Please enter the login email id", 3600, "", "", false, false)
+
+		c.Redirect(301, "/passwordotp")
+
+		return
+	}
+
+	_, err := GenarateOtp(email)
+
+	if err != nil {
+
+		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/passwordotp")
+
+		return
+
+	}
+
+	// c.SetCookie("success", "", 3600, "", "", false, false)
+
+	c.Redirect(301, "/passwordchange")
 
 }
 
@@ -517,7 +545,6 @@ func OtpVerifyemail(c *gin.Context) {
 }
 
 // Change Password
-
 func OtpVerifypass(c *gin.Context) {
 
 	var errorz error
@@ -566,9 +593,6 @@ func OtpVerifypass(c *gin.Context) {
 
 	_, err1 := mem.ChangePassword(otp, memdetail.Id, newpass)
 
-	log.Println("------", err1)
-
-	log.Println("------", err1.Error())
 
 	if err1 != nil {
 
@@ -587,6 +611,78 @@ func OtpVerifypass(c *gin.Context) {
 	// c.JSON(200, gin.H{"verify": ""})
 
 	c.Redirect(301, "/login")
+}
+
+// Change Password
+func OtpVerifypassMyprofile(c *gin.Context) {
+
+	var errorz error
+
+	if c.PostForm("otp") == "" || c.PostForm("mynewPassword") == "" {
+
+		if c.PostForm("otp") == "" {
+
+			errorz = errors.New("Otp Required")
+
+		} else if c.PostForm("mynewPassword") == "" {
+
+			errorz = errors.New("Password Required")
+
+		}
+
+		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/passwordchange")
+
+		// c.JSON(200, gin.H{"verify": errorz.Error()})
+
+		// return
+
+	}
+	num := c.PostForm("otp")
+
+	otp, _ := strconv.Atoi(num)
+
+	newpass := c.PostForm("mynewPassword")
+
+	// email := c.PostForm("id")
+
+	mem.Auth = &Auth
+
+	memb, _ := mem.GetMemberDetails()
+
+	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: os.Getenv("JWT_SECRET")})
+
+	mem.Auth = &Auth1
+
+	memdetail, mailcheck, err := mem.CheckEmailInMember(0, memb.Email)
+
+	if err != nil {
+
+		fmt.Println(err)
+	}
+
+	fmt.Println(mailcheck)
+
+	_, err1 := mem.ChangePassword(otp, memdetail.Id, newpass)
+
+	if err1 != nil {
+
+		c.SetCookie("Error", err1.Error(), 3600, "", "", false, false)
+
+		c.Redirect(301, "/passwordchange")
+
+		// c.JSON(200, gin.H{"verify": err1.Error()})
+
+		return
+
+	}
+
+	// c.SetCookie("success", "", 3600, "", "", false, false)
+
+	// c.JSON(200, gin.H{"verify": ""})
+
+	c.Redirect(301, "/myprofile")
 }
 
 func ConvertBase64(imageData string, storagepath string) (imgname string, path string, err error) {

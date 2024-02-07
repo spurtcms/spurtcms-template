@@ -532,8 +532,6 @@ func PageView(c *gin.Context) {
 
 	var highlight, _ = pl.GetHighlights(pid)
 
-	log.Println("log----", Error)
-
 	var note, _ = pl.GetNotes(pid)
 
 	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "Title": "Pages", "content": Content, "error": Error, "Logged": Flg, "profilename": profilename})
@@ -575,9 +573,7 @@ func UpdateHighlights(c *gin.Context) {
 
 	high.ContentColor = c.PostForm("con_clr")
 
-	res, _ := pl.UpdateHighlights(high)
-
-	log.Println("res", res)
+	pl.UpdateHighlights(high)
 
 	var highlight, _ = pl.GetHighlights(pid)
 
@@ -603,13 +599,9 @@ func UpdateNotes(c *gin.Context) {
 
 	content := c.PostForm("content")
 
-	res, _ := pl.UpdateNotes(page_id, content)
-
-	log.Println("result", res)
+	pl.UpdateNotes(page_id, content)
 
 	var note, _ = pl.GetNotes(page_id)
-
-	log.Println("n", note)
 
 	c.JSON(200, gin.H{"note": note})
 }
@@ -634,9 +626,7 @@ func DeleteHighlights(c *gin.Context) {
 
 	pgid, _ := strconv.Atoi(pid)
 
-	result, _ := pl.RemoveHighlightsandNotes(del_id)
-
-	log.Println("res", result)
+	pl.RemoveHighlightsandNotes(del_id)
 
 	var note, _ = pl.GetNotes(pgid)
 

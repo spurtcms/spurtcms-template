@@ -47,8 +47,6 @@ func JWTAuth() gin.HandlerFunc {
 
 		tkn := session.Values["token"]
 
-		log.Println("---", tkn)
-
 		if tkn == nil {
 
 			// c.Abort()
