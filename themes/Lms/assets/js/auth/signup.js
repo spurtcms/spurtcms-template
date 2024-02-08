@@ -154,45 +154,16 @@ $(document).ready(function () {
 
 
 $(document).on("click", "#create-btn", function () {
+   
     var formcheck = $("form[name ='signupform']").valid()
-
-    var fname = $("#firstname").val()
-    var lname = $("#lastname").val()
-    var mobile = $("#myNumber").val()
-    console.log("mobile",mobile);
-    var email = $("#email").val()
-    var password = $("#myPassword").val()
+    
     if (formcheck == true) {
-        $("form[name ='signupform']").submit()
-        // $.ajax({
-        //     url: "/memberregister",
-        //     method: "POST",
-        //     data: { "fname": fname, "lname": lname, "mobile": mobile, "email": email, "password": password },
-        //     datatype: 'json',
-        //     success: function (data) {
-        //         if (data.verify == "First Name Required") {
-        //             var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />First Name Required'
-        //             $("#firstname-error").html(content)
-        //             $("#firstname-error").show()
-        //         } if (data.verify == "Mobile Required") {
-        //             var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Moblie Required'
-        //             $("#myNumber-error").html(content)
-        //             $("#myNumber-error").show()
-        //         } if (data.verify == "Email Required") {
-        //             var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Email Required'
-        //             $("#email-error").html(content)
-        //             $("#email-error").show()
-        //         } if (data.verify == "Password Required") {
-        //             var content = '<img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />Password Required'
-        //             $("#myPassword-error").html(content)
-        //             $("#myPassword-error").show()
-        //         }
-        //         if (data.verify == "") {
-        //             window.location.href = "/login"
-        //         }
 
-        //     }
-        // })
+        $('.spinner-border').show();
+
+        $('#create-btn').attr('disabled',true);
+
+        $("form[name ='signupform']").submit()
 
     } else {
 
@@ -271,3 +242,27 @@ if (Cookie == "email+already+exists+cannot+register") {
     
     delete_cookie("Error")
 }
+
+$('#myNumber').keyup(function () {
+    this.value = this.value.replace(/[^0-9\.]/g, '');
+});
+
+// Password Change
+$(document).on('click', '#rpswdeye', function () {
+
+    var This = $("#myPassword")
+
+    if ($(This).attr('type') === 'password') {
+
+        $(This).attr('type', 'text');
+
+        $(this).addClass('active')
+
+    } else {
+
+        $(This).attr('type', 'password');
+
+        $(this).removeClass('active')
+
+    }
+})

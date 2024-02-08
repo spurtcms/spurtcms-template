@@ -179,6 +179,28 @@ func MemberRegister(c *gin.Context) {
 
 	password := c.PostForm("password")
 
+	_, flg, _ := mem.CheckEmailInMember(0, email)
+
+	if flg {
+
+		c.SetCookie("Error", "Email Already Exists", 3600, "", "", false, false)
+
+		c.Redirect(301, "/signup")
+
+		return
+	}
+
+	flg1, _ := mem.CheckNumberInMember(0, mobile)
+
+	if flg1 {
+
+		c.SetCookie("Error", "mobile Already Exists", 3600, "", "", false, false)
+
+		c.Redirect(301, "/signup")
+
+		return
+	}
+
 	chk, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
 
 	log.Println("chk", chk)
@@ -208,6 +230,8 @@ func MemberRegister(c *gin.Context) {
 	go MemberCreateEmail(Chan, &wg, data, email, "createmember")
 
 	close(Chan)
+
+	c.SetCookie("Success", "User Registered Successfully", 3600, "", "", false, false)
 
 	c.Redirect(301, "/login")
 
@@ -325,7 +349,6 @@ func MyprofileUpdate(c *gin.Context) {
 	}
 
 	mem.MemberUpdate(member.MemberCreation{FirstName: fname, LastName: lname, MobileNo: mobile, ProfileImage: imageName, ProfileImagePath: storagePath})
-
 
 	// c.JSON(200, gin.H{"verify": ""})
 
@@ -519,18 +542,29 @@ func OtpVerifyemail(c *gin.Context) {
 
 	email := c.PostForm("confirmemail")
 
-	_, _, err := mem.CheckEmailInMember(0, email)
+	mem.Auth = &Auth
+
+	_, flg, err := mem.CheckEmailInMember(0, email)
 
 	if err != nil {
 
 		fmt.Println(err)
 	}
 
+	if flg {
+
+		c.SetCookie("Error", "Email Already Exists", 3600, "", "", false, false)
+
+		c.Redirect(301, "/new-email")
+
+		return
+	}
+
 	_, err = mem.ChangeEmailId(otp, newemail)
 
 	if err != nil {
 
-		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
+		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
 
 		c.Redirect(301, "/new-email")
 
@@ -580,7 +614,7 @@ func OtpVerifypass(c *gin.Context) {
 
 	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: os.Getenv("JWT_SECRET")})
 
-	mem.Auth = &Auth1
+	mem.Auth = &Auth
 
 	memdetail, mailcheck, err := mem.CheckEmailInMember(0, email)
 
@@ -592,7 +626,6 @@ func OtpVerifypass(c *gin.Context) {
 	fmt.Println(mailcheck)
 
 	_, err1 := mem.ChangePassword(otp, memdetail.Id, newpass)
-
 
 	if err1 != nil {
 

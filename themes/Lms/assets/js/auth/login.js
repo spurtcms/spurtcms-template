@@ -74,16 +74,17 @@ $(document).on("click", "#submit", function () {
 
     var formcheck = $("form[name ='loginform']").valid()
 
-    var email = $("#myInput").val()
-    var password = $("#myPassword").val()
-
     console.log(formcheck, "--");
 
     if (formcheck == true) {
 
-        console.log("++++");
+        $('.spinner-border').show();
 
         $("#loginform").submit();
+
+        // $('#submit').attr('disabled',true);
+
+ 
         // $.ajax({
         //     url: "/checkmemberlogin",
         //     method: "POST",
