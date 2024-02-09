@@ -7,7 +7,7 @@ require (
 	github.com/golang-jwt/jwt v3.2.2+incompatible
 	github.com/gorilla/sessions v1.2.2
 	github.com/joho/godotenv v1.5.1
-	github.com/spurtcms/pkgcontent v1.0.55
+	github.com/spurtcms/pkgcontent v1.0.56
 	github.com/spurtcms/pkgcore v1.0.40
 	gorm.io/driver/postgres v1.5.4
 )

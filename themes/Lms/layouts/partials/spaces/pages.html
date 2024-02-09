@@ -1,8 +1,13 @@
 {{- define "singlemain"}}
 <div class="space-detail">
+
     <div class="tab space-tab">
+        <div class="lft-arrow" style="display: none;">
+            <img class="leftarrow" src="/static/icons/arrow-lft-svgrepo-com (2).svg" alt="">
+        </div>
         <input type="hidden" value="{{.Spaceid}}" id="spid">
         <input type="hidden" value="{{.PageId}}" id="pgid">
+        <div class="tab space-tab st-2">
         {{range .Spaces}}
         <input type="hidden" value="{{.SpaceSlug}}" id="spSulg">
         <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/?spid={{.Id}}&&pageid={{.PageId}}">
@@ -10,7 +15,12 @@
                 {{.SpaceTitle}}
             </button>
         </a>
+    
         {{end}}
+    </div>
+        <div class="rght-arrow" style="display: none;">
+            <img class="rightarrow" src="/static/icons/arrow-lft-svgrepo-com (2).svg" alt="">
+        </div>
     </div>
 
     {{$pageId := .PageId}}
@@ -31,31 +41,52 @@
             </div>
 
             <div class="edit-div-rgt">
-                <button class="grey-bg smText">
+                <button class="grey-bg smText" data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip"
+                    data-bs-html="true" data-bs-placement="top" aria-label="Small Text"
+                    data-bs-original-title="Small Text">
                     <img src="/static/icons/Mask Group 47.svg" alt="" />
                 </button>
 
-                <button class="grey-bg lgText">
+                <button class="grey-bg lgText" data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip"
+                    data-bs-html="true" data-bs-placement="top" aria-label="Large Text"
+                    data-bs-original-title="Large Text">
                     <img src="/static/icons/Mask Group 46.svg" alt="" />
                 </button>
 
-                <button class="grey-bg" type="btn" id="liveToastBtn" data-tab-id="#demo-tab-active3">
+
+
+                {{if eq .RestrictContent false}}
+                <button class="grey-bg" type="btn" id="liveToastBtn" data-tab-id="#demo-tab-active3"
+                    data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip" data-bs-html="true"
+                    data-bs-placement="top" aria-label="Reader" data-bs-original-title="Reader">
                     <img src="/static/icons/Mask Group 44.svg" alt="" />
                 </button>
                 <!-- <button class="grey-bg" id="pauseButton">P</button>
                     <button class="grey-bg" id="resumeButton">R</button> -->
 
-                <button class="grey-bg search-btn" data-tab-id="#demo-tab-active4">
+                <button class="grey-bg search-btn" data-tab-id="#demo-tab-active4" data-bs-toggle="tooltip"
+                    data-bs-custom-class="lms-tooltip" data-bs-html="true" data-bs-placement="top" aria-label="Search"
+                    data-bs-original-title="Search">
                     <img src="/static/icons/Mask Group 42.svg" alt="" />
                 </button>
+                {{end}}
+
                 {{if .Logged}}
-                <button class="grey-bg" onclick="toggleNavRgt() " data-tab-id="#demo-tab-active5">
+                {{if eq .RestrictContent false}}
+                <button class="grey-bg" onclick="toggleNavRgt() " data-tab-id="#demo-tab-active5"
+                    data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip" data-bs-html="true"
+                    data-bs-placement="top" aria-label="Notes" data-bs-original-title="Notes">
                     <img src="/static/icons/notes-svgrepo-com.svg" alt="" />
                 </button>
 
-                <button class="grey-bg" onclick="toggleNavRgtHigh()" data-tab-id="#demo-tab-active6">
+                <button class="grey-bg" onclick="toggleNavRgtHigh()" data-tab-id="#demo-tab-active6"
+                    data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip" data-bs-html="true"
+                    data-bs-placement="top" aria-label="Highlights" data-bs-original-title="Highlights">
                     <img src="/static/icons/Group 13.svg" alt="" />
                 </button>
+
+
+                {{end}}
                 {{end}}
             </div>
         </div>
@@ -84,7 +115,7 @@
                     {{if ne .Pages.Id 0}}
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{$index}}">
-                            <div class="titlediv">
+                            <div class="titlediv {{if eq $pageId .Pages.Id}}pageseleted{{end}}">
                                 <a class="titlebtn" href="{{.Pages.Permalink}}">{{.Pages.Title}}</a>
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapse{{$index}}" aria-controls="collapse{{$index}}">
@@ -95,13 +126,12 @@
                             </div>
                         </h2>
                         {{range .Pages.SubPageData}}
-                        <div id="collapse{{$index}}"
-                            class="accordion-collapse   {{if eq $pageId .Id}} collapsed show {{else}} collapse{{end}}"
+                        <div id="collapse{{$index}}" class="accordion-collapse  collapsed show"
                             aria-labelledby="heading{{$index}}" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
 
                                 <a href="{{.Permalink}}">
-                                    <p>{{.Title}}</p>
+                                    <p class="{{if eq $pageId .Id}}pageseleted{{end}}">{{.Title}}</p>
                                 </a>
 
                             </div>
@@ -116,7 +146,7 @@
                         {{range $index1,$value := .Group.PageData}}
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="heading{{$index}}{{$index1}}">
-                                <div class="titlediv">
+                                <div class="titlediv {{if eq $pageId .Id}}pageseleted{{end}}">
                                     <a class="titlebtn" href="{{.Permalink}}">{{.Title}}</a>
                                     <button class="accordion-button" type="button" data-bs-toggle="collapse"
                                         data-bs-target="#collapse{{$index}}{{$index1}}"
@@ -127,13 +157,12 @@
                                     </button>
                                 </div>
                             </h2>
-                            <div id="collapse{{$index}}{{$index1}}"
-                                class="accordion-collapse  {{range .SubPageData}} {{if eq $pageId .Id}} collapsed show {{else}} collapse {{end}} {{end}}"
+                            <div id="collapse{{$index}}{{$index1}}" class="accordion-collapse collapsed show"
                                 aria-labelledby="heading{{$index}}{{$index1}}" data-bs-parent="#accordionExample">
                                 <div class="accordion-body">
                                     {{range .SubPageData}}
                                     <a href="{{.Permalink}}">
-                                        <p>{{.Title}}</p>
+                                        <p class="{{if eq $pageId .Id}}pageseleted{{end}}">{{.Title}}</p>
                                     </a>
                                     {{end}}
                                 </div>
@@ -152,32 +181,32 @@
                 <div class="secton-content">
                     {{if eq .Logged true}}
 
-                        {{if eq .RestrictContent true}}
-                            <div class="login-read">
-                                <h3>
-                                    Oops !!!
-                                </h3>
-                                <p>Seems like you do not have member permission to access this screen. You may access only those
-                                    screens for which you hold granted member permission. </p>
-                            </div>
-                        {{else}}
-                             {{.Content}}
-                        {{end}}
+                    {{if eq .RestrictContent true}}
+                    <div class="login-read">
+                        <h3>
+                            Oops !!!
+                        </h3>
+                        <p>Seems like you do not have member permission to access this screen. You may access only those
+                            screens for which you hold granted member permission. </p>
+                    </div>
+                    {{else}}
+                    {{.Content}}
+                    {{end}}
 
                     {{else}}
 
-                        {{if eq .RestrictContent true}}
-                            <div class="login-read">
-                                <h3>
-                                    Hey, you have logged in as a Guest User
-                                </h3>
-                                <p>To access the screens of the CMS for which you have the permission, login as a Member User.
-                                    .</p>
-                                <a href="/login"> <button> Log In</button> </a>
-                            </div>
-                        {{else}}
-                            {{.Content}}
-                        {{end}}
+                    {{if eq .RestrictContent true}}
+                    <div class="login-read">
+                        <h3>
+                            Hey, you have logged in as a Guest User
+                        </h3>
+                        <p>To access the screens of the CMS for which you have the permission, login as a Member User.
+                            .</p>
+                        <a href="/login"> <button> Log In</button> </a>
+                    </div>
+                    {{else}}
+                    {{.Content}}
+                    {{end}}
 
                     {{end}}
 

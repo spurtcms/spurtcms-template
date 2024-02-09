@@ -179,3 +179,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     delete_cookie("Error");
 
 })
+
+ // Initialize tooltips
+ var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+   return new bootstrap.Tooltip(tooltipTriggerEl)
+ })

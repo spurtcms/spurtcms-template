@@ -71,9 +71,23 @@ type Highlights struct {
 
 func SpaceDetail(c *gin.Context) {
 
+	log.Println(Auth)
+
+	log.Println(&Auth1)
+
+	log.Println(Flg)
+
 	if Flg {
 
 		sp.MemAuth = &Auth
+
+		mem.Auth = &Auth
+
+		member, _ := mem.GetMemberDetails()
+
+		profilename = member.FirstName + " " + member.LastName
+
+		profileimg = member.ProfileImagePath
 
 	} else {
 
@@ -108,7 +122,9 @@ func SpaceDetail(c *gin.Context) {
 
 		for _, value := range pages {
 
-			if value.OrderIndex == 1 {
+			fmt.Println("---", value)
+
+			if value.OrderIndex == 1 || value.Status == "publish" {
 
 				data.PageSlug = clearString(strings.ReplaceAll(strings.ToLower(value.Name), " ", "_"))
 
@@ -198,7 +214,7 @@ func SpaceDetail(c *gin.Context) {
 
 			orderindex = val.OrderIndex
 
-			if val.Pgroupid == 0 {
+			if val.Pgroupid == 0 && val.Status == "publish" {
 
 				var singlepage PageDetails
 
@@ -250,7 +266,7 @@ func SpaceDetail(c *gin.Context) {
 
 			for _, val := range pages {
 
-				if orderindex+1 == val.OrderIndex {
+				if orderindex+1 == val.OrderIndex && val.Status == "publish" {
 
 					var singlepage PageDetails
 
@@ -302,7 +318,7 @@ func SpaceDetail(c *gin.Context) {
 
 		for _, sub := range subpages {
 
-			if sub.ParentId == val.Pages.Id {
+			if sub.ParentId == val.Pages.Id && sub.Status == "publish" {
 
 				var singlepage SubData
 
@@ -342,7 +358,7 @@ func SpaceDetail(c *gin.Context) {
 
 			for _, sub := range subpages {
 
-				if grppagesub.Id == sub.ParentId {
+				if grppagesub.Id == sub.ParentId && sub.Status == "publish" {
 
 					var singlepage SubData
 
@@ -377,7 +393,7 @@ func SpaceDetail(c *gin.Context) {
 
 		for _, sub := range subpages {
 
-			if val.Pages.Id == sub.ParentId {
+			if val.Pages.Id == sub.ParentId && sub.Status == "publish" {
 
 				var singlepage SubData
 
@@ -500,7 +516,7 @@ func SpaceDetail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": "Pages", "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": spacename, "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error})
 
 }
 

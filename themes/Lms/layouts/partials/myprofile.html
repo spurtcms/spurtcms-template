@@ -8,7 +8,7 @@
                 <h3>Basic Profile</h3>
                 <div class="profile-pic-form">
                     <div class="profile-img">
-                        <img src="/{{.Member.ProfileImagePath}}" alt="" id="profpic" />
+                        <img src="{{if .Member.ProfileImagePath}}/{{.Member.ProfileImagePath}}{{else}} /static/icons/default_profile.svg{{end}}" alt="" id="profpic" />
                         <input type="file" id="myfile" name="image">
                     </div>
                     <div class="profile-form">

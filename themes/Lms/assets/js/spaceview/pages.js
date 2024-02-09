@@ -201,6 +201,32 @@ $("#down-icon").click(function () {
 $(document).on('click', '#save-btn', function () {
   var Pageid = $("#pgid").val();
   var text = $("#Textarea").val();
+  if (text == "") {
+
+    $.toast({
+      text: "Please enter the notes", // Text that is to be shown in the toast
+      heading: 'Note', // Optional heading to be shown on the toast
+      icon: 'warning', // Type of toast icon
+      showHideTransition: 'fade', // fade, slide or plain
+      allowToastClose: true, // Boolean value true or false
+      hideAfter: 3000, // false to make it sticky or number representing the miliseconds as time after which toast needs to be hidden
+      stack: 2, // false if there should be only one toast at a time or a number representing the maximum number of toasts to be shown at a time
+      position: 'top-right', // bottom-left or bottom-right or bottom-center or top-left or top-right or top-center or mid-center or an object representing the left, right, top, bottom values
+
+
+
+      textAlign: 'left',  // Text alignment i.e. left, right or center
+      loader: true,  // Whether to show loader or not. True by default
+      loaderBg: '#9EC600',  // Background color of the toast loader
+      beforeShow: function () { }, // will be triggered before the toast is shown
+      afterShown: function () { }, // will be triggered after the toat has been shown
+      beforeHide: function () { }, // will be triggered before the toast gets hidden
+      afterHidden: function () { }  // will be triggered after the toast has been hidden
+    });
+
+    return
+  }
+
   $.ajax({
     type: "post",
     url: "/notes",

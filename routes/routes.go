@@ -116,27 +116,27 @@ func SetupRoutes() *gin.Engine {
 		log.Println("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html no such file found")
 	}
 
-	r.GET("/space/:stitle/:pgtitle/", controller.SpaceDetail)
+	D.GET("/space/:stitle/:pgtitle/", controller.SpaceDetail)
 
-	r.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
+	D.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
 
-	r.GET("/page", controller.PageView)
+	D.GET("/page", controller.PageView)
 
-	r.POST("/highlights", controller.UpdateHighlights)
+	D.POST("/highlights", controller.UpdateHighlights)
 
-	r.POST("deletehighlights", controller.DeleteHighlights)
+	D.POST("deletehighlights", controller.DeleteHighlights)
 
-	r.POST("/notes", controller.UpdateNotes)
+	D.POST("/notes", controller.UpdateNotes)
 
-	r.GET("/passwordotp", controller.ChangePassword)
+	D.GET("/passwordotp", controller.ChangePassword)
 
-	r.GET("/passwordchange", controller.AddNewPassword)
+	D.GET("/passwordchange", controller.AddNewPassword)
 
-	r.POST("/verify-otppass", controller.OtpVerifypass)
+	D.POST("/verify-otppass", controller.OtpVerifypass)
 
-	r.POST("/verify-otpprofpass", controller.OtpVerifypassMyprofile)
+	D.POST("/verify-otpprofpass", controller.OtpVerifypassMyprofile)
 
-	r.POST("/send-otp-genrate", controller.AgainOtpGenarate)
+	D.POST("/send-otp-genrate", controller.AgainOtpGenarate)
 
 	return r
 }

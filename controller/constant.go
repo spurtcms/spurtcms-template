@@ -49,11 +49,11 @@ func JWTAuth() gin.HandlerFunc {
 
 		if tkn == nil {
 
+			Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: ""})
+
 			// c.Abort()
 
 			// c.Writer.Header().Set("Pragma", "no-cache")
-
-			Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: ""})
 
 			// c.Redirect(301, "/")
 
@@ -79,7 +79,7 @@ func JWTAuth() gin.HandlerFunc {
 					return
 				}
 
-				// fmt.Println(err, "+++++++++++++++++++++++")
+				fmt.Println(err, "+++++++++++++++++++++++")
 				c.Abort()
 
 				c.Writer.Header().Set("Pragma", "no-cache")
@@ -110,8 +110,6 @@ func JWTAuth() gin.HandlerFunc {
 
 			c.Header("Pragma", "no-cache")
 
-			c.Header("Expires", "0")
-
 			c.Next()
 
 		}
@@ -119,21 +117,21 @@ func JWTAuth() gin.HandlerFunc {
 	}
 }
 
-func DashBoardAuth() gin.HandlerFunc {
+// func DashBoardAuth() gin.HandlerFunc {
 
-	return func(c *gin.Context) {
-		session, _ := Store.Get(c.Request, os.Getenv("SESSION_KEY"))
+// 	return func(c *gin.Context) {
+// 		session, _ := Store.Get(c.Request, os.Getenv("SESSION_KEY"))
 
-		token := session.Values["token"]
+// 		token := session.Values["token"]
 
-		if token != nil {
+// 		if token != nil {
 
-			c.Writer.Header().Set("Pragma", "no-cache")
+// 			c.Writer.Header().Set("Pragma", "no-cache")
 
-			c.Redirect(301, "/")
+// 			c.Redirect(301, "/")
 
-			return
-		}
+// 			return
+// 		}
 
-	}
-}
+// 	}
+// }

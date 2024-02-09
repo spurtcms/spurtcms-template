@@ -61,7 +61,9 @@ func IndexView(c *gin.Context) {
 
 	}
 
-	spacelist, count, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
+	spacelist, _, _ := sp.MemberSpaceList(10, 0, spaces.Filter{})
+
+	count := len(spacelist)
 
 	var spaces []SpaceData
 
@@ -77,7 +79,7 @@ func IndexView(c *gin.Context) {
 
 		for _, val := range pages {
 
-			if val.OrderIndex == 1 {
+			if val.OrderIndex == 1 || val.Status == "publish" {
 
 				data.PageSlug = clearString(strings.ReplaceAll(strings.ToLower(val.Name), " ", "_"))
 
