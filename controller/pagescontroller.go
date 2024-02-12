@@ -516,7 +516,7 @@ func SpaceDetail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": spacename, "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": spacename, "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter,})
 
 }
 
@@ -550,7 +550,7 @@ func PageView(c *gin.Context) {
 
 	var note, _ = pl.GetNotes(pid)
 
-	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "Title": "Pages", "content": Content, "error": Error, "Logged": Flg, "profilename": profilename})
+	json.NewEncoder(c.Writer).Encode(gin.H{"group": pagegroups, "pages": pages, "subpage": subpages, "highlight": highlight, "note": note, "Title": "Pages", "content": Content, "error": Error, "Logged": Flg, "profilename": profilename, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 }
 
 /* Update Highlights */

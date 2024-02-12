@@ -34,13 +34,7 @@ func SetupRoutes() *gin.Engine {
 
 	r.Static("/storage", "./storage")
 
-	// r.Use(controller.DashBoardAuth())
-
 	r.NoRoute(controller.FileNotFoundPage)
-
-	D := r.Group("")
-
-	D.Use(controller.JWTAuth())
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/login.html"); err == nil {
 
@@ -97,8 +91,6 @@ func SetupRoutes() *gin.Engine {
 
 	r.POST("/memberregister", controller.MemberRegister)
 
-	r.POST("/myprofileupdate", controller.MyprofileUpdate)
-
 	r.POST("/passwordotp", controller.PassOtpGenarate)
 
 	r.POST("/otp-genrate", controller.OtpGenarate)
@@ -106,6 +98,10 @@ func SetupRoutes() *gin.Engine {
 	r.POST("/otp-genrate1", controller.OtpGenarate1)
 
 	r.POST("/verify-email-otp", controller.OtpVerifyemail)
+
+	D := r.Group("")
+
+	D.Use(controller.JWTAuth())
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html"); err == nil {
 
@@ -137,6 +133,8 @@ func SetupRoutes() *gin.Engine {
 	D.POST("/verify-otpprofpass", controller.OtpVerifypassMyprofile)
 
 	D.POST("/send-otp-genrate", controller.AgainOtpGenarate)
+
+	D.POST("/myprofileupdate", controller.MyprofileUpdate)
 
 	return r
 }

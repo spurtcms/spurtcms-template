@@ -10,7 +10,7 @@
       {{if .profileimg}}
       <img src="/{{.profileimg}}" class="usr-profile-img" alt="" />
       {{else}}
-      <div style="background-color: white;width: 25px;border-radius: 50%;height: 25px;display: flex;align-items: center;justify-content: center;"><span style="font-size: 14px;">HR</span></div>
+      <div style="background-color: white;width: 25px;border-radius: 50%;height: 25px;display: flex;align-items: center;justify-content: center;"><span style="font-size: 14px;">{{.FirstLetter}}{{.LastLetter}}</span></div>
       {{end}}
       <span class="usr-name">{{.profilename}}</span>
     </div>

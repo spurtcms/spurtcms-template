@@ -86,10 +86,6 @@ func CheckMemberLogin(c *gin.Context) {
 
 		c.Redirect(301, "/login")
 
-		// c.JSON(200, gin.H{"verify": errorz.Error()})
-
-		// return
-
 	}
 
 	name := c.PostForm("email")
@@ -298,7 +294,7 @@ func MyProfile(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "Member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "My Profile", "Member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 
 }
 
@@ -367,7 +363,7 @@ func ChangeEmail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangeEmail", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangeEmail", "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 
 }
 
@@ -381,7 +377,7 @@ func AddNewEmail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewEmail", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewEmail", "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 
 }
 
@@ -395,7 +391,7 @@ func ChangePassword(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangePassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "ChangePassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 
 }
 
@@ -413,7 +409,7 @@ func AddNewPassword(c *gin.Context) {
 
 	memb, _ := mem.GetMemberDetails()
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "Email": memb.Email})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "NewPassword", "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "Email": memb.Email, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 
 }
 

@@ -22,6 +22,10 @@ var DBIns *gorm.DB
 
 var TZONE, _ = time.LoadLocation(os.Getenv("TIME_ZONE"))
 
+var FirstNameLetter string
+
+var LastNameLetter string
+
 // var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9 ]+`)
 
 var nonAlphanumericRegex = regexp.MustCompile(`[^\w]`)
@@ -51,13 +55,7 @@ func JWTAuth() gin.HandlerFunc {
 
 			Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: ""})
 
-			// c.Abort()
-
-			// c.Writer.Header().Set("Pragma", "no-cache")
-
-			// c.Redirect(301, "/")
-
-			// c.Next()
+			Flg = false
 
 		} else {
 
@@ -70,16 +68,17 @@ func JWTAuth() gin.HandlerFunc {
 			token := tkn.(string)
 
 			Claims := jwt.MapClaims{}
+
 			tkn, err := jwt.ParseWithClaims(token, Claims, func(token *jwt.Token) (interface{}, error) {
 				return []byte(os.Getenv("ACCESS_SECRET")), nil
 			})
+
 			if err != nil {
 				if err == jwt.ErrSignatureInvalid {
 					fmt.Println(err)
 					return
 				}
 
-				fmt.Println(err, "+++++++++++++++++++++++")
 				c.Abort()
 
 				c.Writer.Header().Set("Pragma", "no-cache")
@@ -88,9 +87,9 @@ func JWTAuth() gin.HandlerFunc {
 
 				session.Save(c.Request, c.Writer)
 
-				// c.Redirect(301, "/")
 				return
 			}
+
 			if !tkn.Valid {
 				fmt.Println(tkn)
 				return
@@ -104,6 +103,17 @@ func JWTAuth() gin.HandlerFunc {
 
 			memberid := Claims["member_id"]
 
+			mem.Auth = &Auth1
+
+			member, _ := mem.GetMemberDetails()
+
+			FirstNameLetter = member.FirstName[0:1]
+
+			if member.LastName != "" {
+
+				FirstNameLetter = member.LastName[0:1]
+			}
+
 			c.Set("userid", memberid)
 
 			c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -116,22 +126,3 @@ func JWTAuth() gin.HandlerFunc {
 
 	}
 }
-
-// func DashBoardAuth() gin.HandlerFunc {
-
-// 	return func(c *gin.Context) {
-// 		session, _ := Store.Get(c.Request, os.Getenv("SESSION_KEY"))
-
-// 		token := session.Values["token"]
-
-// 		if token != nil {
-
-// 			c.Writer.Header().Set("Pragma", "no-cache")
-
-// 			c.Redirect(301, "/")
-
-// 			return
-// 		}
-
-// 	}
-// }

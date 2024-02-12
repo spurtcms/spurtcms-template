@@ -23,22 +23,6 @@ var profilename string
 
 var profileimg string
 
-// func init() {
-
-// 	er := godotenv.Load()
-
-// 	if er != nil {
-
-// 		log.Fatalf("Error loading .env file")
-
-// 	}
-
-// 	DB = spurtcore.DBInstance(os.Getenv("DB_HOST"), os.Getenv("DB_USERNAME"), os.Getenv("DB_PASSWORD"), os.Getenv("DB_NAME"))
-
-// 	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DB, Token: "", Secret: ""})
-
-// }
-
 func IndexView(c *gin.Context) {
 
 	sp.MemAuth = &Auth1
@@ -137,7 +121,7 @@ func IndexView(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "Title": "Spaces", "Logged": Flg, "profilename": profilename, "profileimg": profileimg})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Space": spaces, "Data": spaces, "Count": count, "Title": "Spaces", "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 
 }
 func truncateDescription(description string, limit int) string {
