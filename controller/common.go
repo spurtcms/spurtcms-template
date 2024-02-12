@@ -83,7 +83,7 @@ func MemberCreateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]i
 		"{memberid}", data["memid"].(string),
 		"{password}", data["Pass"].(string),
 	)
-	fmt.Println("repla", replacer, data["fname"])
+	// fmt.Println("repla", replacer, data["fname"])
 
 	msg = replacer.Replace(msg)
 

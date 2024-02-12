@@ -71,12 +71,6 @@ type Highlights struct {
 
 func SpaceDetail(c *gin.Context) {
 
-	log.Println(Auth)
-
-	log.Println(&Auth1)
-
-	log.Println(Flg)
-
 	if Flg {
 
 		sp.MemAuth = &Auth
@@ -120,9 +114,11 @@ func SpaceDetail(c *gin.Context) {
 
 		_, pages, _, _ := pl.MemberPageList(space.SpacesId)
 
-		for _, value := range pages {
+		sort.Slice(pages, func(i, j int) bool {
+			return pages[i].OrderIndex < pages[j].OrderIndex
+		})
 
-			fmt.Println("---", value)
+		for _, value := range pages {
 
 			if value.OrderIndex == 1 || value.Status == "publish" {
 
@@ -133,6 +129,7 @@ func SpaceDetail(c *gin.Context) {
 				break
 			}
 		}
+		
 		data.SpaceTitle = space.SpacesName
 
 		data.SpaceDescription = space.SpacesDescription
@@ -516,7 +513,7 @@ func SpaceDetail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": spacename, "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter,})
+	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": spacename, "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
 
 }
 

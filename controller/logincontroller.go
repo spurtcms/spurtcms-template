@@ -197,9 +197,7 @@ func MemberRegister(c *gin.Context) {
 		return
 	}
 
-	chk, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
-
-	log.Println("chk", chk)
+	_, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
 
 	if err5 != nil {
 

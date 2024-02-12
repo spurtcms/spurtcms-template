@@ -111,7 +111,7 @@ func JWTAuth() gin.HandlerFunc {
 
 			if member.LastName != "" {
 
-				FirstNameLetter = member.LastName[0:1]
+				LastNameLetter = member.LastName[0:1]
 			}
 
 			c.Set("userid", memberid)

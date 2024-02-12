@@ -3,6 +3,7 @@ package controller
 import (
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 	"text/template"
@@ -60,6 +61,10 @@ func IndexView(c *gin.Context) {
 		data.SpaceSlug = clearString(strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_"))
 
 		_, pages, _, _ := pl.MemberPageList(space.SpacesId)
+
+		sort.Slice(pages, func(i, j int) bool {
+			return pages[i].OrderIndex < pages[j].OrderIndex
+		})
 
 		for _, val := range pages {
 
