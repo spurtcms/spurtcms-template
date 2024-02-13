@@ -33,7 +33,7 @@ func GetAuth(token string) {
 func MemberLogin(c *gin.Context) {
 
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/login.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/login.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
 
 	if err != nil {
 
@@ -234,7 +234,7 @@ func MemberRegister(c *gin.Context) {
 func SignUp(c *gin.Context) {
 
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/signup.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/signup.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
 
 	if err != nil {
 
