@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -107,11 +108,11 @@ func JWTAuth() gin.HandlerFunc {
 
 			member, _ := mem.GetMemberDetails()
 
-			FirstNameLetter = member.FirstName[0:1]
+			FirstNameLetter = strings.ToUpper(member.FirstName[0:1])
 
 			if member.LastName != "" {
 
-				LastNameLetter = member.LastName[0:1]
+				LastNameLetter = strings.ToUpper(member.LastName[0:1])
 			}
 
 			c.Set("userid", memberid)

@@ -285,7 +285,7 @@ func MyProfile(c *gin.Context) {
 	}
 
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/myprofile.html", "themes/"+Template+"/layouts/partials/crop-modal.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/myprofile.html", "themes/"+Template+"/layouts/partials/crop-modal.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
 
 	if err != nil {
 
