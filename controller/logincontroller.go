@@ -248,7 +248,7 @@ func SignUp(c *gin.Context) {
 func Retrieve(c *gin.Context) {
 
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/forgot-email.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/forgot-email.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
 
 	if err != nil {
 
@@ -260,7 +260,7 @@ func Retrieve(c *gin.Context) {
 }
 func PassReset(c *gin.Context) {
 
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/authfooter.html", "themes/"+Template+"/layouts/partials/auth/password-reset.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/auth/password-reset.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html")
 
 	if err != nil {
 
@@ -427,7 +427,7 @@ func OtpGenarate(c *gin.Context) {
 
 	}
 
-	// c.SetCookie("success", "", 3600, "", "", false, false)
+	c.SetCookie("Success", "OTP sended successfully", 3600, "", "", false, false)
 
 	c.Redirect(301, "/reset?emailid="+email)
 
@@ -497,7 +497,7 @@ func OtpGenarate1(c *gin.Context) {
 
 	}
 
-	c.SetCookie("success", "otp sended successfully", 3600, "", "", false, false)
+	c.SetCookie("Success", "otp sended successfully", 3600, "", "", false, false)
 
 	c.Redirect(301, "/new-email")
 
@@ -591,7 +591,7 @@ func OtpVerifypass(c *gin.Context) {
 
 		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/reset")
+		c.Redirect(301, "/reset?emailid="+c.PostForm("emailid"))
 
 		// c.JSON(200, gin.H{"verify": errorz.Error()})
 
@@ -604,13 +604,13 @@ func OtpVerifypass(c *gin.Context) {
 
 	newpass := c.PostForm("mynewPassword")
 
-	email := c.PostForm("id")
+	// email := c.PostForm("id")
 
 	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: os.Getenv("JWT_SECRET")})
 
-	mem.Auth = &Auth
+	mem.Auth = &Auth1
 
-	memdetail, mailcheck, err := mem.CheckEmailInMember(0, email)
+	memdetail, mailcheck, err := mem.CheckEmailInMember(0, c.PostForm("emailid"))
 
 	if err != nil {
 
@@ -625,7 +625,7 @@ func OtpVerifypass(c *gin.Context) {
 
 		c.SetCookie("Error", err1.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/reset")
+		c.Redirect(301, "/reset?emailid="+c.PostForm("emailid"))
 
 		// c.JSON(200, gin.H{"verify": err1.Error()})
 
@@ -633,9 +633,7 @@ func OtpVerifypass(c *gin.Context) {
 
 	}
 
-	// c.SetCookie("success", "", 3600, "", "", false, false)
-
-	// c.JSON(200, gin.H{"verify": ""})
+	c.SetCookie("Success", "Password Changed Successfully", 3600, "", "", false, false)
 
 	c.Redirect(301, "/login")
 }
@@ -762,6 +760,26 @@ func AgainOtpGenarate(c *gin.Context) {
 	log.Println(memb)
 
 	verify, err := GenarateOtp(memb.Email)
+
+	if err != nil {
+		c.JSON(200, gin.H{"verify": err.Error()})
+	} else {
+		c.JSON(200, gin.H{"verify": verify})
+	}
+
+}
+
+/* Resend Otp */
+func AgainOtpGenarate1(c *gin.Context) {
+
+	email := c.PostForm("email")
+	// mem.Auth = &Auth
+
+	// memb, _ := mem.GetMemberDetails()
+
+	// log.Println(memb)
+
+	verify, err := GenarateOtp(email)
 
 	if err != nil {
 		c.JSON(200, gin.H{"verify": err.Error()})

@@ -134,6 +134,8 @@ func SetupRoutes() *gin.Engine {
 
 	D.POST("/send-otp-genrate", controller.AgainOtpGenarate)
 
+	D.POST("/send-otp-genrate1", controller.AgainOtpGenarate1)
+
 	D.POST("/myprofileupdate", controller.MyprofileUpdate)
 
 	return r
