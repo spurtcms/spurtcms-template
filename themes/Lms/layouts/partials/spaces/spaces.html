@@ -1,0 +1,41 @@
+{{- define "listmain"}}
+<div class="space-container">
+    <div class="space-container-top">
+        <h1>Spaces</h1>
+        <span>{{.Count}} Spaces</span>
+    </div>
+    
+    <!--grid-card-->
+    <div class="space-container-bottom">
+        <!--crd-->
+        {{range .Space}}
+        <div class="space-container-crd">
+            <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/?spid={{.Id}}&&pageid={{.PageId}}">
+                <div class="space-container-crd-top">
+
+                    {{if eq .ImagePath ""}}
+                    <img src="/static/icons/Rectangle 2979.png" alt="" />
+                    {{else}}
+                    <img src="{{.ImagePath}}" alt="" />
+                    {{end}}
+                </div>
+
+                <div class="space-container-crd-btm">
+                    <span class="crd-badge">{{range .Categories}}{{.}} 
+                        <img src="/static/icons/arrow-rgt-svgrepo-com (2).svg"> {{end}}</span>
+                    <h5>{{.SpaceTitle}}</h5>
+                    <input type="hidden" value="{{.SpaceDescription}}" id="demodescription">
+                    <p id="description">
+                        {{.SpaceDescription}}
+                    </p>
+                    <div class="time-n-date">
+                        <span>3 min read</span> <span>{{.CreatedDate}}</span>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {{end}}
+
+    </div>
+</div>
+{{end}}

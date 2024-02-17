@@ -1,0 +1,402 @@
+{{- define "singlemain"}}
+<div class="space-detail">
+
+    <div class="tab space-tab">
+        <div class="lft-arrow" style="display: none;">
+            <img class="leftarrow" src="/static/icons/arrow-lft-svgrepo-com (2).svg" alt="">
+        </div>
+        <input type="hidden" value="{{.Spaceid}}" id="spid">
+        <input type="hidden" value="{{.PageId}}" id="pgid">
+        <div class="tab space-tab st-2">
+        {{range .Spaces}}
+        <input type="hidden" value="{{.SpaceSlug}}" id="spSulg">
+        <a href="/space/{{.SpaceSlug}}/{{.PageSlug}}/?spid={{.Id}}&&pageid={{.PageId}}">
+            <button class="tablinks" sp-id="{{.Id}}" onclick="openCity(event, 'AccountsInDailyLife')">
+                {{.SpaceTitle}}
+            </button>
+        </a>
+    
+        {{end}}
+    </div>
+        <div class="rght-arrow" style="display: none;">
+            <img class="rightarrow" src="/static/icons/arrow-lft-svgrepo-com (2).svg" alt="">
+        </div>
+    </div>
+
+    {{$pageId := .PageId}}
+
+    <!--tab-content-->
+    <div id="AccountsInDailyLife" class="tabcontent" style="display: block">
+        <div class="edit-div" id="search1">
+            <div class="edit-div-lft">
+                <a href="/">
+                    <img src="/static/icons/arrow-lft-svgrepo-com (2).svg" alt="" />
+                </a>
+
+                <div class="grey-bg togglebtn" onclick="toggleNav()" data-tab-id="#demo-tab-active7">
+                    <img src="/static/icons/Mask Group 49.svg" alt="" />
+                </div>
+
+                <h2 id="Title">{{.PageTitle}}</h2>
+            </div>
+
+            <div class="edit-div-rgt">
+                <button class="grey-bg smText" data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip"
+                    data-bs-html="true" data-bs-placement="top" aria-label="Small Text"
+                    data-bs-original-title="Small Text">
+                    <img src="/static/icons/Mask Group 47.svg" alt="" />
+                </button>
+
+                <button class="grey-bg lgText" data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip"
+                    data-bs-html="true" data-bs-placement="top" aria-label="Large Text"
+                    data-bs-original-title="Large Text">
+                    <img src="/static/icons/Mask Group 46.svg" alt="" />
+                </button>
+
+
+
+                {{if eq .RestrictContent false}}
+                <button class="grey-bg" type="btn" id="liveToastBtn" data-tab-id="#demo-tab-active3"
+                    data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip" data-bs-html="true"
+                    data-bs-placement="top" aria-label="Reader" data-bs-original-title="Reader">
+                    <img src="/static/icons/Mask Group 44.svg" alt="" />
+                </button>
+                <!-- <button class="grey-bg" id="pauseButton">P</button>
+                    <button class="grey-bg" id="resumeButton">R</button> -->
+
+                <button class="grey-bg search-btn" data-tab-id="#demo-tab-active4" data-bs-toggle="tooltip"
+                    data-bs-custom-class="lms-tooltip" data-bs-html="true" data-bs-placement="top" aria-label="Search"
+                    data-bs-original-title="Search">
+                    <img src="/static/icons/Mask Group 42.svg" alt="" />
+                </button>
+                {{end}}
+
+                {{if .Logged}}
+                {{if eq .RestrictContent false}}
+                <button class="grey-bg" onclick="toggleNavRgt()" data-tab-id="#demo-tab-active5"
+                    data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip" data-bs-html="true"
+                    data-bs-placement="top" aria-label="Notes" data-bs-original-title="Notes">
+                    <img src="/static/icons/notes-svgrepo-com.svg" alt="" />
+                </button>
+
+                <button class="grey-bg" onclick="toggleNavRgtHigh()" data-tab-id="#demo-tab-active6"
+                    data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip" data-bs-html="true"
+                    data-bs-placement="top" aria-label="Highlights" data-bs-original-title="Highlights">
+                    <img src="/static/icons/Group 13.svg" alt="" />
+                </button>
+
+
+                {{end}}
+                {{end}}
+            </div>
+        </div>
+        <div class="search-100 search2" id="search" style="display: none;">
+            <img src="/static/icons/Mask Group 42.svg" alt="" />
+            <input type="text" placeholder="Find words" name="sname" id="search-data" />
+            <div class="srch-arrow">
+                <button id="down-icon">
+                    <img src="/static/icons/arrow-down-svgrepo-com (2).svg" alt="" />
+                </button>
+                <button id="up-icon">
+                    <img src="/static/icons/arrow-down-svgrepo-com (2) (1).svg" alt="" />
+                </button>
+                <span id="count">02 of 24</span>
+            </div>
+            <button class="cls-srch search-cnl">
+                <img src="/static/icons/close-svgrepo-com (3).svg" alt="" />
+            </button>
+        </div>
+        <div class="sid-lft-rgt-sect">
+            <div class="lft-sidebar sidenav" id="mySidenav" style="display: block; width: 100%; padding: 0px;">
+                <!-- <div class="lft-sidebar"> -->
+                <div class="accordion" id="accordionExample">
+
+                    {{range $index,$value := .SpaceDetails}}
+                    {{if ne .Pages.Id 0}}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading{{$index}}">
+                            <div class="titlediv {{if eq $pageId .Pages.Id}}pageseleted{{end}}">
+                                <a class="titlebtn" href="{{.Pages.Permalink}}">{{.Pages.Title}}</a>
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapse{{$index}}" aria-controls="collapse{{$index}}">
+                                    {{if .Pages.SubPageData}}
+                                    <img src="/static/icons/arrow-rgt-svgrepo-com (2).svg">
+                                    {{end}}
+                                </button>
+                            </div>
+                        </h2>
+                        {{range .Pages.SubPageData}}
+                        <div id="collapse{{$index}}" class="accordion-collapse  collapsed show"
+                            aria-labelledby="heading{{$index}}" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+
+                                <a href="{{.Permalink}}">
+                                    <p class="{{if eq $pageId .Id}}pageseleted{{end}}">{{.Title}}</p>
+                                </a>
+
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                    {{else}}
+                    <h5 class="gry-txt">{{.Group.Title}}</h5>
+                    {{end}}
+                    {{if .Group.PageData}}
+                    <div style="margin-left: 15px;">
+                        {{range $index1,$value := .Group.PageData}}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="heading{{$index}}{{$index1}}">
+                                <div class="titlediv {{if eq $pageId .Id}}pageseleted{{end}}">
+                                    <a class="titlebtn" href="{{.Permalink}}">{{.Title}}</a>
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapse{{$index}}{{$index1}}"
+                                        aria-controls="collapse{{$index}}{{$index1}}">
+                                        {{if .SubPageData}}
+                                        <img src="/static/icons/arrow-rgt-svgrepo-com (2).svg">
+                                        {{end}}
+                                    </button>
+                                </div>
+                            </h2>
+                            <div id="collapse{{$index}}{{$index1}}" class="accordion-collapse collapsed show"
+                                aria-labelledby="heading{{$index}}{{$index1}}" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    {{range .SubPageData}}
+                                    <a href="{{.Permalink}}">
+                                        <p class="{{if eq $pageId .Id}}pageseleted{{end}}">{{.Title}}</p>
+                                    </a>
+                                    {{end}}
+                                </div>
+                            </div>
+                        </div>
+                        {{end}}
+                    </div>
+                    {{end}}
+                    {{end}}
+                </div>
+            </div>
+
+            <!--tab-center-->
+
+            <div class="center-section content" id="centerSection">
+                <div class="secton-content">
+                    {{if eq .Logged true}}
+
+                    {{if eq .RestrictContent true}}
+                    <div class="login-read">
+                        <h3>
+                            Oops !!!
+                        </h3>
+                        <p>Seems like you do not have member permission to access this screen. You may access only those
+                            screens for which you hold granted member permission. </p>
+                    </div>
+                    {{else}}
+                    {{.Content}}
+                    {{end}}
+
+                    {{else}}
+
+                    {{if eq .RestrictContent true}}
+                    <div class="login-read">
+                        <h3>
+                            Hey, you have logged in as a Guest User
+                        </h3>
+                        <p>To access the screens of the CMS for which you have the permission, login as a Member User.
+                            .</p>
+                        <a href="/login"> <button> Log In</button> </a>
+                    </div>
+                    {{else}}
+                    {{.Content}}
+                    {{end}}
+
+                    {{end}}
+
+                </div>
+                <!--color-picker-->
+
+                <div class="color-picker hoverMenu" id="control">
+                    <div class="clrs-left">
+                        <span class="clr-yellow clr" color-value="yellow"></span><span class="clr-pink clr"
+                            color-value="pink"></span><span class="clr-green clr" color-value="green"></span><span
+                            class="clr-blue clr" color-value="blue"></span>
+                    </div>
+                    <div class="tst-cpy" data-tab-id="#demo-tab-active3" data-bs-toggle="tooltip" data-bs-custom-class="lms-tooltip" data-bs-html="true" data-bs-placement="top" aria-label="Reader" data-bs-original-title="Reader">
+                        <img src="/static/icons/Mask Group 44.svg" class="clr" color-value="read" alt="" />
+                        <button id="copybtn"><img src="/static/icons/copy-svgrepo-com (2).svg" alt="" /></button>
+                    </div>
+                </div>
+            </div>
+            <!---tab-rgt-->
+            <div class="rgt-sidebar sidenav" id="mySidenavRgt">
+                <div class="note">
+                    <img src="/static/icons/notes-svgrepo-com.svg" alt="" />
+                    <span>Notes</span>
+                </div>
+
+                <div class="note-content">
+                    {{range .Notes}}
+                    <div class="note-content-detail">
+                        <h5>{{.Content}}</h5>
+                        <h3>Saved on {{.CreateDate}} <img class="del-btn" data-id="{{.Id}}"
+                                src="/static/icons/delete-highlights.svg" alt=""></h3>
+                    </div>
+                    {{end}}
+                </div>
+                <div class="save-note">
+                    <div class="type-content">
+                        <textarea id="Textarea"></textarea>
+                    </div>
+                    <div class="save-content-div" id="save-btn">
+                        <button class="save-btn">
+                            <img src="/static/icons/save-svgrepo-com (1).svg" alt="" />
+                            <span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!--tab-rgt-highlights-->
+            <div class="rgt-sidebar sidenav" id="mySidenavRgtHigh">
+                <div class="note">
+                    <img src="/static/icons/Group 13.svg" alt="" />
+                    <span>Highlights</span>
+                </div>
+
+                <div class="note-content">
+                    {{range .Highligts}}
+                    <div class="note-content-detail">
+                        <input type="hidden" class="highlig" data-start="{{.Start}}" data-offset="{{.Offset}}" data-color="{{.Color}}">
+                        <p class="selectParaaa" style="display: none;">{{.SelectPara}}</p>
+                        {{.Content}}
+                        <h3>Saved on {{.CreateDate}} <img class="del-btn" data-id="{{.Id}}"
+                                src="/static/icons/delete-highlights.svg" alt=""></h3>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--toast-->
+<div class="toast-btm toast-container position-fixed bottom-0 end-0">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+        <button type="button" data-bs-dismiss="toast" class="toast-close" aria-label="Close">
+            <img src="/static/icons/close-svgrepo-com (3).svg" id="read-cnl" alt="" />
+        </button>
+        <div class="toast-header">
+            <h2>
+                But content doesn’t affect just marketing — it has become a core
+                part of businesses and touches almost every department, including
+                sales, merchandising, and development
+            </h2>
+        </div>
+    </div>
+</div>
+
+<!--tab-function-->
+<script>
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
+</script>
+
+<!--sidebar-lft-->
+<script>
+    function toggleNav() {
+        const sidenav = document.getElementById("mySidenav");
+        const main = document.getElementById("main");
+
+        if (sidenav.style.width === "100%") {
+            sidenav.style.width = "0";
+            sidenav.style.display = "none";
+            sidenav.style.padding = "0";
+            main.style.marginLeft = "0";
+        } else {
+            sidenav.style.display = "block";
+            sidenav.style.width = "100%";
+            // main.style.marginLeft = "100%";
+        }
+    }
+</script>
+
+<!--sidebar-rgt-->
+<script>
+    function toggleNavRgt() {
+        document.getElementById("mySidenavRgtHigh").style.width = "0";
+        document.getElementById("mySidenavRgtHigh").style.display = "none";
+        const sidenav = document.getElementById("mySidenavRgt");
+        const main = document.getElementById("main");
+
+        if (sidenav.style.width === "100%") {
+            sidenav.style.width = "0";
+            sidenav.style.display = "none";
+
+            main.style.marginLeft = "0";
+        } else {
+            sidenav.style.display = "block";
+            sidenav.style.width = "100%";
+
+            main.style.marginLeft = "100%";
+        }
+    }
+</script>
+
+<!--sidebar-high-->
+<script>
+    function toggleNavRgtHigh() {
+        document.getElementById("mySidenavRgt").style.width = "0";
+        document.getElementById("mySidenavRgt").style.display = "none";
+        const sidenav = document.getElementById("mySidenavRgtHigh");
+
+        const main = document.getElementById("main");
+
+        if (sidenav.style.width === "100%") {
+            sidenav.style.width = "0";
+            sidenav.style.display = "none";
+            sidenav.style.padding = "0";
+            main.style.marginLeft = "0";
+        } else {
+            sidenav.style.width = "100%";
+            sidenav.style.display = "block";
+            // main.style.marginLeft = "100%";
+        }
+    }
+</script>
+
+<!--toast-bottom-->
+<script>
+    const toastTrigger = document.getElementById("liveToastBtn");
+    const toastLiveExample = document.getElementById("liveToast");
+    if (toastTrigger) {
+        toastTrigger.addEventListener("click", () => {
+            const toast = new bootstrap.Toast(toastLiveExample);
+
+            toast.show();
+        });
+    }
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $(".grey-bg").click(function () {
+            $(this).siblings().removeClass("active");
+            $(this).toggleClass("active");
+
+            $(".demo-tab-imgs").removeClass("active");
+            var tabId = $(this).attr("data-tab-id");
+            $(tabId).addClass("active");
+        });
+    });
+</script>
+{{end}}

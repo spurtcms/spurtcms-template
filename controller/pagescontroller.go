@@ -4,7 +4,6 @@ import (
 	// "log"
 
 	"encoding/json"
-	"fmt"
 	"log"
 	"sort"
 	"strconv"
@@ -67,6 +66,10 @@ type Highlights struct {
 	Id         int
 	Content    string
 	CreateDate string
+	Color      string
+	Start      int
+	Offset     int
+	SelectPara string
 }
 
 func SpaceDetail(c *gin.Context) {
@@ -120,7 +123,7 @@ func SpaceDetail(c *gin.Context) {
 
 		for _, value := range pages {
 
-			if value.OrderIndex == 1 || value.Status == "publish" {
+			if value.OrderIndex == 1 && value.Status == "publish" || value.Status == "publish" {
 
 				data.PageSlug = clearString(strings.ReplaceAll(strings.ToLower(value.Name), " ", "_"))
 
@@ -129,7 +132,7 @@ func SpaceDetail(c *gin.Context) {
 				break
 			}
 		}
-		
+
 		data.SpaceTitle = space.SpacesName
 
 		data.SpaceDescription = space.SpacesDescription
@@ -491,19 +494,33 @@ func SpaceDetail(c *gin.Context) {
 
 		nt.Content = val.NotesHighlightsContent
 
+		var s map[string]interface{}
+
+		h, _ := val.HighlightsConfiguration.MarshalJSON()
+
+		json.Unmarshal(h, &s)
+
+		nt.Color = s["color"].(string)
+
+		nt.Offset = int(s["offset"].(float64))
+
+		nt.SelectPara = s["selectedpara"].(string) 
+
+		nt.Start = int(s["start"].(float64))
+
 		nt.CreateDate = val.CreatedOn.Format("02 Jan 2006 03:04 PM")
 
 		HIGH = append(HIGH, nt)
 
 	}
 
-	for _, val := range LastFinal1 {
+	// for _, val := range LastFinal1 {
 
-		fmt.Println(val)
+	// 	fmt.Println(val)
 
-		fmt.Println()
+	// 	fmt.Println()
 
-	}
+	// }
 
 	// Parse templates
 	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/spaces/pages.html")

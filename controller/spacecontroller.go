@@ -68,7 +68,7 @@ func IndexView(c *gin.Context) {
 
 		for _, val := range pages {
 
-			if val.OrderIndex == 1 || val.Status == "publish" {
+			if val.OrderIndex == 1 && val.Status == "publish" || val.Status == "publish" {
 
 				data.PageSlug = clearString(strings.ReplaceAll(strings.ToLower(val.Name), " ", "_"))
 
