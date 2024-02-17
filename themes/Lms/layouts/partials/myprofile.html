@@ -62,7 +62,7 @@
             <h3>Login info</h3>
             <div class="profile-pic-form">
                 <div class="profile-form">
-                    <form action="">
+                    <form action="" autocomplete="off">
                         <div class="input-container change">
                             <input type="text" id="emailAddress" class="w-100 label-style" value="{{.Member.Email}}"
                                 required readonly />
@@ -70,7 +70,7 @@
                             <a href="/change-email">Change</a>
                         </div>
                         <div class="input-container change">
-                            <input type="password" id="myPassword " class="w-100 label-style" value="" />
+                            <input type="password" id="myPassword " class="w-100 label-style" value="" autocomplete="off" />
                             <!-- <label for="myInput">Password</label> -->
                             <a href="/passwordotp">Change</a>
                         </div>

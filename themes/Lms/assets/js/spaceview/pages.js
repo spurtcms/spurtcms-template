@@ -26,11 +26,14 @@ document.querySelector("#centerSection").addEventListener("mouseup", () => {
       posXAdjusted = window.innerWidth - colorPickerWidth;
     }
 
+    var divHeight = $('#centerSection');
+
     hoverMenu.style.left = posXAdjusted + "px";
-    let posY = rect.top + window.scrollY - 150 + "px";
+    let posY = divHeight.scrollTop() + 25 + "px";
     hoverMenu.style.top = posY;
 
     // Set the position of the color-picker
+    // console.log(posY);
     colorPicker.style.left = posXAdjusted + "px";
     colorPicker.style.top = posY;
   }
@@ -139,7 +142,7 @@ var count
 var currentIndex = 0
 function updateCount() {
   count = $(".highlight-content").length
-  console.log("co", count);
+  // console.log("co", count);
   $("#count").text((currentIndex + 1) + " of " + count);
   focusCurrentIndex();
 }
@@ -255,67 +258,67 @@ var selectedContent;
 var selectedTag, s_offset, e_offset
 var span
 $(document).on("click", ".secton-content", function () {
-  
+
   var startOffsetRelativeToP = 0;
-  
+
   var endOffsetRelativeToP = 0;
-  
+
   selection = window.getSelection()
-  
+
   selectedContent = selection.toString();
-  
+
   var range = selection.getRangeAt(0);
-  
+
   selectedTag = range.startContainer.parentNode.innerText;
 
-  console.log(selectedTag);
-  
+  // console.log(selectedTag);
+
   var startContainerTagName = range.startContainer.parentNode.tagName.toLowerCase();
-  
+
   var endContainerTagname = range.endContainer.parentNode.tagName.toLowerCase()
-  
+
   if ((startContainerTagName == "span" && $(".secton-content span").hasClass("clear_clr")) || (endContainerTagname == "span" && $(".secton-content span").hasClass("clear_clr"))) {
-   
+
     $(".hoverMenu").hide()
-  
+
   } if ($(".secton-content div").hasClass("login-read")) {
-   
+
     $(".hoverMenu").hide()
   }
-  
+
   var startContainer = range.startContainer;
-  
+
   var endContainer = range.endContainer;
 
   while (startContainer.previousSibling) {
-   
+
     startContainer = startContainer.previousSibling;
-   
+
     startOffsetRelativeToP += startContainer.textContent.length;
 
   }
 
   while (endContainer.previousSibling) {
-   
+
     endContainer = endContainer.previousSibling;
-   
+
     endOffsetRelativeToP += endContainer.textContent.length;
   }
 
   startOffsetRelativeToP += range.startOffset;
-  
+
   endOffsetRelativeToP += range.endOffset;
-  
+
   s_offset = startOffsetRelativeToP
-  
+
   e_offset = endOffsetRelativeToP
-  
+
   span = document.createElement('span');
-  
+
   span.classList.add('clear_clr')
-  
+
   range.surroundContents(span);
-  
+
   selection.removeAllRanges();
 });
 
@@ -362,7 +365,7 @@ $(document).on("click", ".clr", function () {
     con_clr = "rgba(77, 200, 142, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5>'
   }
-  console.log(selectedTag);
+  // console.log(selectedTag);
   $.ajax({
     type: "post",
     url: "/highlights",
@@ -393,19 +396,13 @@ var ReadContent
 
 $(document).ready(function () {
 
-  $('.highlig').each(function(){
+  $('.highlig').each(function () {
 
     var start = parseInt($(this).attr('data-start'));
-    
+
     var offset = parseInt($(this).attr('data-offset'));
 
-    // var s_para ="`"+$(this).siblings('.selectParaaa').html().slice(1,-1)+"`"
-
-    var s_para =$(this).siblings('.selectParaaa').text().slice(1,-1)
-
-    // console.log(s_para);
-
-    // var SPARA = s_para.replace(/(&quot\;)/g,"\"");
+    var s_para = $(this).siblings('.selectParaaa').text().slice(1, -1)
 
     var c_clr = $(this).attr('data-color');
 
@@ -413,30 +410,43 @@ $(document).ready(function () {
 
       var elementText = $(this).text()
 
-      console.log(elementText);
-
-      console.log(s_para,elementText == s_para);
-
       if (elementText == s_para) {
 
-        console.log("----");
-
-        var originalContent = $(this).html(); // Use html() to preserve &nbsp;
-
-        console.log("html",originalContent);
+        var originalContent = $(this).text(); // Use html() to preserve &nbsp;
 
         var content = originalContent.substring(start, offset);
-
-        console.log("content",content);
 
         var regex = new RegExp(escapeRegExp(content), "g");
 
         var highlightedContent = originalContent.replace(regex, '<span class="clear_clr" style="background-color:' + c_clr + '">$&</span>');
 
-        console.log("highlighted",highlightedContent);
-
         $(this).html(highlightedContent);
       }
+    });
+
+    $(".secton-content ol,ul").each(function () {
+
+      $(this).children('li').each(function () {
+
+        var elementText = $(this).text()
+
+        console.log(elementText);
+
+        if (elementText == s_para) {
+
+          var originalContent = $(this).text(); // Use html() to preserve &nbsp;
+
+          var content = originalContent.substring(start, offset);
+
+          var regex = new RegExp(escapeRegExp(content), "g");
+
+          var highlightedContent = originalContent.replace(regex, '<span class="clear_clr" style="background-color:' + c_clr + '">$&</span>');
+
+          $(this).html(highlightedContent);
+
+        }
+      })
+
     });
 
   })
