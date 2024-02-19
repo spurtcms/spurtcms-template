@@ -271,7 +271,7 @@ $(document).on("click", ".secton-content", function () {
 
   selectedTag = range.startContainer.parentNode.innerText;
 
-  // console.log(selectedTag);
+  console.log("--",range);
 
   var startContainerTagName = range.startContainer.parentNode.tagName.toLowerCase();
 
@@ -312,6 +312,11 @@ $(document).on("click", ".secton-content", function () {
   s_offset = startOffsetRelativeToP
 
   e_offset = endOffsetRelativeToP
+
+  if(e_offset<s_offset) {
+
+    e_offset = s_offset+ e_offset
+  }
 
   span = document.createElement('span');
 
@@ -412,15 +417,15 @@ $(document).ready(function () {
 
       if (elementText == s_para) {
 
-        var originalContent = $(this).text(); // Use html() to preserve &nbsp;
+        var originalContent = $(this).text();
+
+        var html = $(this).html()
 
         var content = originalContent.substring(start, offset);
 
-        var regex = new RegExp(escapeRegExp(content), "g");
+        var highlightedContent = '<span class="clear_clr" style="background-color:' + c_clr + '">' + content + '</span>';
 
-        var highlightedContent = originalContent.replace(regex, '<span class="clear_clr" style="background-color:' + c_clr + '">$&</span>');
-
-        $(this).html(highlightedContent);
+        $(this).html(html.replace(content, highlightedContent))
       }
     });
 
@@ -430,27 +435,23 @@ $(document).ready(function () {
 
         var elementText = $(this).text()
 
-        console.log(elementText);
-
         if (elementText == s_para) {
 
-          var originalContent = $(this).text(); // Use html() to preserve &nbsp;
-
+          var originalContent = $(this).text();
+  
+          var html = $(this).html()
+  
           var content = originalContent.substring(start, offset);
-
-          var regex = new RegExp(escapeRegExp(content), "g");
-
-          var highlightedContent = originalContent.replace(regex, '<span class="clear_clr" style="background-color:' + c_clr + '">$&</span>');
-
-          $(this).html(highlightedContent);
-
+  
+          var highlightedContent = '<span class="clear_clr" style="background-color:' + c_clr + '">' + content + '</span>';
+  
+          $(this).html(html.replace(content, highlightedContent))
         }
       })
 
     });
 
   })
-
 })
 
 // Function to escape special characters for regex
@@ -629,3 +630,28 @@ $(document).ready(function () {
 
   });
 });
+
+function highlightText(searchTerm) {
+  // Get all elements containing text
+  const elements = document.querySelectorAll(".secton-content p");
+  // Loop through each element
+  elements.forEach((element) => {
+    const text = element.innerText;
+    const regex = new RegExp(`(${searchTerm})`, "gi");
+    // Check if the element's text contains the search term
+    if (text.match(regex)) {
+      // Split the text into parts (matched and unmatched)
+      const parts = text.split(regex);
+      // Create a new HTML structure with the matched term highlighted
+      const highlightedText = parts
+        .map((part) =>
+          part.match(regex)
+            ? `<span style="background-color: yellow;">${part}</span>`
+            : part
+        )
+        .join("");
+      // Replace the original text with the highlighted version
+      element.innerHTML = highlightedText;
+    }
+  });
+}

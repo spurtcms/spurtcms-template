@@ -115,6 +115,8 @@ func JWTAuth() gin.HandlerFunc {
 				LastNameLetter = strings.ToUpper(member.LastName[0:1])
 			}
 
+			log.Println(FirstNameLetter, "-----", LastNameLetter)
+
 			c.Set("userid", memberid)
 
 			c.Header("Cache-Control", "no-cache, no-store, must-revalidate")

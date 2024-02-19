@@ -44,9 +44,9 @@ header {
     background: #0D1726 0% 0% no-repeat padding-box;
     display: flex;
     justify-content: space-between;
-    /* position: sticky; */
-    /* top: 0; */
-    /* z-index: 10; */
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
 .usr-name {
