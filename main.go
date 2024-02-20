@@ -10,6 +10,7 @@ import (
 	"spurt-page-view/routes"
 )
 
+//Read config json file
 func Readjson() map[string]interface{} {
 
 	// Open our jsonFile

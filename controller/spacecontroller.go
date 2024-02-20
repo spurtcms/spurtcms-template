@@ -20,10 +20,6 @@ var DB *gorm.DB
 
 var Auth1 auth.Authorization
 
-var profilename string
-
-var profileimg string
-
 func IndexView(c *gin.Context) {
 
 	sp.MemAuth = &Auth1

@@ -72,7 +72,7 @@ func MemberCreateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]i
 
 	var templates models.TblEmailTemplate
 
-	models.GetTemplates(&templates, "createmember")
+	models.GetTemplates(&templates, "Createmember")
 
 	sub := templates.TemplateSubject
 
@@ -117,7 +117,7 @@ func OtpGenarateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]in
 
 	var templates models.TblEmailTemplate
 
-	models.GetTemplates(&templates, "OTPgenerate")
+	models.GetTemplates(&templates, "Otpgenarate")
 
 	sub := templates.TemplateSubject
 

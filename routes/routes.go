@@ -74,15 +74,6 @@ func SetupRoutes() *gin.Engine {
 		log.Println("themes/" + controller.Template + "/layouts/partials/auth/password-reset.html no such file found")
 	}
 
-	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/myprofile.html"); err == nil {
-
-		r.GET("/myprofile", controller.MyProfile)
-
-	} else if errors.Is(err, os.ErrNotExist) {
-
-		log.Println("themes/" + controller.Template + "/layouts/partials/auth/myprofile.html no such file found")
-	}
-
 	r.GET("/change-email", controller.ChangeEmail)
 
 	r.GET("/new-email", controller.AddNewEmail)
@@ -137,6 +128,15 @@ func SetupRoutes() *gin.Engine {
 	D.POST("/send-otp-genrate1", controller.AgainOtpGenarate1)
 
 	D.POST("/myprofileupdate", controller.MyprofileUpdate)
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/myprofile.html"); err == nil {
+
+		D.GET("/myprofile", controller.MyProfile)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/auth/myprofile.html no such file found")
+	}
 
 	return r
 }

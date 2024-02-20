@@ -15,19 +15,21 @@ import (
 	"gorm.io/gorm"
 )
 
-var Template string
+var Template string //Template name dynamically bind using config.json
 
-var Flg bool
+var Flg bool //Flg is used for user login or not
 
-var DBIns *gorm.DB
+var DBIns *gorm.DB //dbinstance
 
-var TZONE, _ = time.LoadLocation(os.Getenv("TIME_ZONE"))
+var TZONE, _ = time.LoadLocation(os.Getenv("TIME_ZONE")) //convert UTC to based your country
 
-var FirstNameLetter string
+var FirstNameLetter string //login user firstletter
 
-var LastNameLetter string
+var LastNameLetter string //login user lastletter
 
-// var nonAlphanumericRegex = regexp.MustCompile(`[^a-zA-Z0-9 ]+`)
+var profilename string //login user name
+
+var profileimg string //login user img
 
 var nonAlphanumericRegex = regexp.MustCompile(`[^\w]`)
 
@@ -114,6 +116,8 @@ func JWTAuth() gin.HandlerFunc {
 
 				LastNameLetter = strings.ToUpper(member.LastName[0:1])
 			}
+
+			profilename = member.FirstName + " " + member.LastName
 
 			log.Println(FirstNameLetter, "-----", LastNameLetter)
 

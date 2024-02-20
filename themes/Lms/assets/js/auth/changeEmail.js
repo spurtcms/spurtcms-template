@@ -82,7 +82,7 @@ $(document).on("click", "#againotp", function () {
 
                 $.toast({
                     text: "otp sended successfully", // Text that is to be shown in the toast
-                    heading: 'Note', // Optional heading to be shown on the toast
+                    heading: 'Success', // Optional heading to be shown on the toast
                     icon: 'success', // Type of toast icon
                     showHideTransition: 'fade', // fade, slide or plain
                     allowToastClose: true, // Boolean value true or false
@@ -104,7 +104,7 @@ $(document).on("click", "#againotp", function () {
 
                 $.toast({
                     text: data.verify, // Text that is to be shown in the toast
-                    heading: 'Note', // Optional heading to be shown on the toast
+                    heading: 'Warning', // Optional heading to be shown on the toast
                     icon: 'warning', // Type of toast icon
                     showHideTransition: 'fade', // fade, slide or plain
                     allowToastClose: true, // Boolean value true or false
@@ -150,7 +150,7 @@ $(document).on("click", "#againotp1", function () {
 
                 $.toast({
                     text: "otp sended successfully", // Text that is to be shown in the toast
-                    heading: 'Note', // Optional heading to be shown on the toast
+                    heading: 'Success', // Optional heading to be shown on the toast
                     icon: 'success', // Type of toast icon
                     showHideTransition: 'fade', // fade, slide or plain
                     allowToastClose: true, // Boolean value true or false
@@ -172,7 +172,7 @@ $(document).on("click", "#againotp1", function () {
 
                 $.toast({
                     text: data.verify, // Text that is to be shown in the toast
-                    heading: 'Note', // Optional heading to be shown on the toast
+                    heading: 'Warning', // Optional heading to be shown on the toast
                     icon: 'warning', // Type of toast icon
                     showHideTransition: 'fade', // fade, slide or plain
                     allowToastClose: true, // Boolean value true or false
