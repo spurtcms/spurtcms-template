@@ -9,7 +9,7 @@ import (
 	"text/template"
 
 	"github.com/gin-gonic/gin"
-	spaces "github.com/spurtcms/pkgcontent/lms"
+	spaces "github.com/spurtcms/pkgcontent/spaces"
 	"github.com/spurtcms/pkgcore/auth"
 	"gorm.io/gorm"
 )

@@ -11,7 +11,7 @@ import (
 	"text/template"
 
 	"github.com/gin-gonic/gin"
-	pages "github.com/spurtcms/pkgcontent/lms"
+	pages "github.com/spurtcms/pkgcontent/spaces"
 	"github.com/spurtcms/pkgcore/member"
 )
 
