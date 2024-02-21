@@ -5,7 +5,7 @@
     <div class="logo-new">
       <img src="/static/icons/logo-new-login.png" alt="">
     </div>
-    <form id="loginform" method="post" name="loginform" action="/checkmemberlogin">
+    <form id="loginform" method="post" name="loginform" action="/spaces/checkmemberlogin">
       <div class="new-login-details">
         <h3>Log Into SpurtCMS</h3>
         <p>Please sign in to your account</p>
@@ -24,12 +24,12 @@
             Please Enter Your Password </label>
           <button id="lpswdeye" class="" type="button"><img src="/static/icons/MaskGroup51.svg" alt="">
             <img src="/static/icons/MaskGroup54.svg" alt=""></button>
-          <a href="/retrieve">Don’t remember your password?</a>
+          <a href="/spaces/retrieve">Don’t remember your password?</a>
         </div>
         <div class="login-btn">
           <button type="submit" id="submit">Log In  <span class="spinner-border spinner-border-sm" style="display: none;" role="status" aria-hidden="true"></span></button>
           <p>Don’t have an account?
-            <a href="/signup">Register here</a>
+            <a href="/spaces/signup">Register here</a>
           </p>
         </div>
         <div class="or-guest">
@@ -38,7 +38,7 @@
               <p>OR</p>
               <div class="line-or"></div>
           </div>
-          <a href="/"><button type="button" class="guest">Continue as Guest</button></a>
+          <a href="/spaces/"><button type="button" class="guest">Continue as Guest</button></a>
       </div>
       </div>
     </form>

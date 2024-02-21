@@ -84,7 +84,7 @@ func CheckMemberLogin(c *gin.Context) {
 
 		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/login")
+		c.Redirect(301, "/spaces/login")
 
 	}
 
@@ -104,7 +104,7 @@ func CheckMemberLogin(c *gin.Context) {
 
 		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/login")
+		c.Redirect(301, "/spaces/login")
 
 		return
 
@@ -125,7 +125,7 @@ func CheckMemberLogin(c *gin.Context) {
 
 	// c.SetCookie("success", "login successfully", 3600, "", "", false, false)
 
-	c.Redirect(301, "/")
+	c.Redirect(301, "/spaces/")
 
 }
 
@@ -155,7 +155,7 @@ func MemberRegister(c *gin.Context) {
 
 		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/signup")
+		c.Redirect(301, "/spaces/signup")
 
 		return
 		// c.JSON(200, gin.H{"verify": errorz.Error()})
@@ -181,7 +181,7 @@ func MemberRegister(c *gin.Context) {
 
 		c.SetCookie("Error", "Email Already Exists", 3600, "", "", false, false)
 
-		c.Redirect(301, "/signup")
+		c.Redirect(301, "/spaces/signup")
 
 		return
 	}
@@ -192,7 +192,7 @@ func MemberRegister(c *gin.Context) {
 
 		c.SetCookie("Error", "mobile Already Exists", 3600, "", "", false, false)
 
-		c.Redirect(301, "/signup")
+		c.Redirect(301, "/spaces/signup")
 
 		return
 	}
@@ -203,7 +203,7 @@ func MemberRegister(c *gin.Context) {
 
 		c.SetCookie("Error", err5.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/signup")
+		c.Redirect(301, "/spaces/signup")
 
 		return
 	}
@@ -227,7 +227,7 @@ func MemberRegister(c *gin.Context) {
 
 	c.SetCookie("Success", "User Registered Successfully", 3600, "", "", false, false)
 
-	c.Redirect(301, "/login")
+	c.Redirect(301, "/spaces/login")
 
 }
 
@@ -281,7 +281,7 @@ func MyProfile(c *gin.Context) {
 
 	if !Flg {
 
-		c.Redirect(302, "/login")
+		c.Redirect(302, "/spaces/login")
 	}
 
 	// Parse templates
@@ -421,7 +421,7 @@ func OtpGenarate(c *gin.Context) {
 
 		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/retrieve")
+		c.Redirect(301, "/spaces/retrieve")
 
 		return
 
@@ -429,7 +429,7 @@ func OtpGenarate(c *gin.Context) {
 
 	c.SetCookie("Success", "OTP sended successfully", 3600, "", "", false, false)
 
-	c.Redirect(301, "/reset?emailid="+email)
+	c.Redirect(301, "/spaces/reset?emailid="+email)
 
 }
 
@@ -456,7 +456,7 @@ func PassOtpGenarate(c *gin.Context) {
 
 		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/passwordotp")
+		c.Redirect(301, "/spaces/passwordotp")
 
 		return
 
@@ -464,7 +464,7 @@ func PassOtpGenarate(c *gin.Context) {
 
 	// c.SetCookie("success", "", 3600, "", "", false, false)
 
-	c.Redirect(301, "/passwordchange")
+	c.Redirect(301, "/spaces/passwordchange")
 
 }
 
@@ -491,7 +491,7 @@ func OtpGenarate1(c *gin.Context) {
 
 		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/change-email")
+		c.Redirect(301, "/spaces/change-email")
 
 		return
 
@@ -499,7 +499,7 @@ func OtpGenarate1(c *gin.Context) {
 
 	c.SetCookie("Success", "otp sended successfully", 3600, "", "", false, false)
 
-	c.Redirect(301, "/new-email")
+	c.Redirect(301, "/spaces/new-email")
 
 }
 
@@ -521,7 +521,7 @@ func OtpVerifyemail(c *gin.Context) {
 
 		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/new-email")
+		c.Redirect(301, "/spaces/new-email")
 
 		// c.JSON(200, gin.H{"verify": errorz.Error()})
 
@@ -549,7 +549,7 @@ func OtpVerifyemail(c *gin.Context) {
 
 		c.SetCookie("Error", "Email Already Exists", 3600, "", "", false, false)
 
-		c.Redirect(301, "/new-email")
+		c.Redirect(301, "/spaces/new-email")
 
 		return
 	}
@@ -560,7 +560,7 @@ func OtpVerifyemail(c *gin.Context) {
 
 		c.SetCookie("Error", err.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/new-email")
+		c.Redirect(301, "/spaces/new-email")
 
 		return
 
@@ -568,7 +568,7 @@ func OtpVerifyemail(c *gin.Context) {
 
 	c.SetCookie("Success", "Email Updated Successfully", 3600, "", "", false, false)
 
-	c.Redirect(301, "/myprofile")
+	c.Redirect(301, "/spaces/myprofile")
 
 }
 
@@ -635,7 +635,7 @@ func OtpVerifypass(c *gin.Context) {
 
 	c.SetCookie("Success", "Password Changed Successfully", 3600, "", "", false, false)
 
-	c.Redirect(301, "/login")
+	c.Redirect(301, "/spaces/login")
 }
 
 // Change Password
@@ -657,7 +657,7 @@ func OtpVerifypassMyprofile(c *gin.Context) {
 
 		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/passwordchange")
+		c.Redirect(301, "/spaces/passwordchange")
 
 		// c.JSON(200, gin.H{"verify": errorz.Error()})
 
@@ -695,7 +695,7 @@ func OtpVerifypassMyprofile(c *gin.Context) {
 
 		c.SetCookie("Error", err1.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301, "/passwordchange")
+		c.Redirect(301, "/spaces/passwordchange")
 
 		// c.JSON(200, gin.H{"verify": err1.Error()})
 
@@ -707,7 +707,7 @@ func OtpVerifypassMyprofile(c *gin.Context) {
 
 	// c.JSON(200, gin.H{"verify": ""})
 
-	c.Redirect(301, "/myprofile")
+	c.Redirect(301, "/spaces/myprofile")
 }
 
 func ConvertBase64(imageData string, storagepath string) (imgname string, path string, err error) {

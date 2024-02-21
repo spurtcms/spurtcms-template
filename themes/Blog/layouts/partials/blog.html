@@ -1,0 +1,80 @@
+{{- define "listmain"}}
+<main class="wrapper">
+    <section class="blogList__container">
+
+        <ul class="scrolling__Container">
+            <li class="scrolling__list"><a href="">All</a></li>
+            <li class="scrolling__list"><a href="">Articles</a></li>
+            <li class="scrolling__list"><a href="">Blogs</a></li>
+            <li class="scrolling__list"><a href="">Career</a></li>
+            <li class="scrolling__list"><a href="">Automation</a></li>
+            <li class="scrolling__list"><a href="">Managing</a></li>
+            <li class="scrolling__list"><a href="">Engineering</a></li>
+            <li class="scrolling__list"><a href="">Soft Skills</a></li>
+            <li class="scrolling__list"><a href="">Design</a></li>
+            <li class="scrolling__list"><a href="">Project</a></li>
+            <li class="scrolling__list"><a href="">Managing</a></li>
+            <li class="scrolling__list"><a href="">Engineering</a></li>
+            <li class="scrolling__list"><a href="">Soft Skills</a></li>
+            <li class="scrolling__list"><a href="">Design</a></li>
+            <li class="scrolling__list"><a href="">Project</a></li>
+        </ul>
+
+        {{range .Entries}}
+        <div class="blog__bottom">
+
+            <div class="blog__bottomRight">
+                <div class="blog__details">
+                    <span class="paralight__two">{{.CreatedDate}}</span>
+                    <span class="paralight__two">1 min read</span>
+                    <span class="paralight__two">views 1245</span>
+                    <div class="detail__flexx">
+                        <a href="" class="paralight__two prof__name">{{.Author}}</a>
+                        <p class="prof__badge"><span class="paralight__two">Recruiting</span></p>
+                    </div>
+                </div>
+                <a href="/blog/{{.Slug}}" class="heading__two">{{.Title}}</a>
+                <p class="para__two">Handling timeouts and backpressure are critical aspects of building resilient
+                    stream processing
+                    applications with Akka Streams. Implementing timeouts prevents infinite waiting periods while
+                    managing backpressure ensures system stability under varying loads. Strategies like using
+                    buffers, throttling and adaptive conflation help maintain system performance...</p>
+
+            </div>
+
+            <div class="blog__bottomLeft">
+                <img src="{{.ImagePath}}" alt="blogimage">
+            </div>
+
+        </div>
+        {{end}}
+        <!-- <div class="blog__bottom">
+
+            <div class="blog__bottomRight">
+                <div class="blog__details">
+                    <span class="paralight__two">January 24, 2023</span>
+                    <span class="paralight__two">1 min read</span>
+                    <span class="paralight__two">views 1245</span>
+                    <div class="detail__flexx">
+                    <a href="" class="paralight__two prof__name">Sasha Bondar</a>
+                    <p class="prof__badge"><span class="paralight__two">Recruiting</span></p></div>
+                </div>
+                <a href="/blog/handling_timeouts_and_backpressure_in_akka_streams" class="heading__two">Handling Timeouts and Backpressure in Akka Streams</a>
+                <p class="para__two">Handling timeouts and backpressure are critical aspects of building resilient
+                    stream processing
+                    applications with Akka Streams. Implementing timeouts prevents infinite waiting periods while
+                    managing backpressure ensures system stability under varying loads. Strategies like using
+                    buffers, throttling and adaptive conflation help maintain system performance...</p>
+
+            </div>
+
+            <div class="blog__bottomLeft">
+                <img src="/static/icons/blog-img-one.png" alt="blogimage">
+            </div>
+
+        </div> -->
+
+
+    </section>
+</main>
+{{end}}

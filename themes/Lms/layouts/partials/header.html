@@ -1,7 +1,7 @@
 {{- define "header"}}
 <header>
   <div class="ourLogo">
-    <a href="/"><img src="/static/icons/MaskGroup39.svg" alt="" /></a>
+    <a href="/spaces/"><img src="/static/icons/MaskGroup39.svg" alt="" /></a>
   </div>
   {{if eq .Logged true}}
   <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-auto-close="outside"
@@ -16,11 +16,11 @@
     </div>
   </button>
   <ul class="dropdown-menu">
-    <li><a class="dropdown-item" href="/myprofile">My Profile</a></li>
-    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+    <li><a class="dropdown-item" href="/spaces/myprofile">My Profile</a></li>
+    <li><a class="dropdown-item" href="/spaces/logout">Logout</a></li>
   </ul>
   {{else}}
-  <a href="/login"><button class="login-name">Login </button></a>
+  <a href="/spaces/login"><button class="login-name">Login </button></a>
   {{end}}
 </header>
 {{end}}

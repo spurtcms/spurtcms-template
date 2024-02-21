@@ -36,6 +36,8 @@ func SetupRoutes() *gin.Engine {
 
 	r.NoRoute(controller.FileNotFoundPage)
 
+	SP := r.Group("spaces")
+
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/login.html"); err == nil {
 
 		r.GET("/login", controller.MemberLogin)
@@ -74,23 +76,23 @@ func SetupRoutes() *gin.Engine {
 		log.Println("themes/" + controller.Template + "/layouts/partials/auth/password-reset.html no such file found")
 	}
 
-	r.GET("/change-email", controller.ChangeEmail)
+	SP.GET("/change-email", controller.ChangeEmail)
 
-	r.GET("/new-email", controller.AddNewEmail)
+	SP.GET("/new-email", controller.AddNewEmail)
 
-	r.POST("/checkmemberlogin", controller.CheckMemberLogin)
+	SP.POST("/checkmemberlogin", controller.CheckMemberLogin)
 
-	r.POST("/memberregister", controller.MemberRegister)
+	SP.POST("/memberregister", controller.MemberRegister)
 
-	r.POST("/passwordotp", controller.PassOtpGenarate)
+	SP.POST("/passwordotp", controller.PassOtpGenarate)
 
-	r.POST("/otp-genrate", controller.OtpGenarate)
+	SP.POST("/otp-genrate", controller.OtpGenarate)
 
-	r.POST("/otp-genrate1", controller.OtpGenarate1)
+	SP.POST("/otp-genrate1", controller.OtpGenarate1)
 
-	r.POST("/verify-email-otp", controller.OtpVerifyemail)
+	SP.POST("/verify-email-otp", controller.OtpVerifyemail)
 
-	D := r.Group("")
+	D := SP.Group("")
 
 	D.Use(controller.JWTAuth())
 
@@ -103,9 +105,9 @@ func SetupRoutes() *gin.Engine {
 		log.Println("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html no such file found")
 	}
 
-	D.GET("/space/:stitle/:pgtitle/", controller.SpaceDetail)
+	D.GET("/:stitle/:pgtitle/", controller.SpaceDetail)
 
-	D.GET("/space/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
+	D.GET("/:stitle/:pgtitle/:subtitle/", controller.SpaceDetail)
 
 	D.GET("/page", controller.PageView)
 
@@ -136,6 +138,28 @@ func SetupRoutes() *gin.Engine {
 	} else if errors.Is(err, os.ErrNotExist) {
 
 		log.Println("themes/" + controller.Template + "/layouts/partials/auth/myprofile.html no such file found")
+	}
+
+	BL := r.Group("/:channelname")
+
+	BL.Use(controller.JWTAuth())
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/blog.html"); err == nil {
+
+		BL.GET("/", controller.EntriesList)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/blog.html no such file found")
+	}
+
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/blogdetails.html"); err == nil {
+
+		BL.GET("/:entriestitle/", controller.EntriesDetails)
+
+	} else if errors.Is(err, os.ErrNotExist) {
+
+		log.Println("themes/" + controller.Template + "/layouts/partials/blogdetails.html no such file found")
 	}
 
 	return r
