@@ -4,12 +4,12 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"html/template"
 	"log"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
-	"text/template"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -208,11 +208,22 @@ func MemberRegister(c *gin.Context) {
 		return
 	}
 
+	var web_url = os.Getenv("WEB_URL")
+
+	var url_prefix = os.Getenv("DOMAIN_URL")
+
+	fmt.Println(fname, email, password, "checkvalues")
+
 	data := map[string]interface{}{
 
-		"fname": fname,
-		"memid": email,
-		"Pass":  password,
+		"fname":         fname,
+		"memid":         email,
+		"Pass":          password,
+		"login_url":     web_url,
+		"admin_logo":    url_prefix + "public/img/spurtcms.png",
+		"fb_logo":       url_prefix + "public/img/facebook.png",
+		"linkedin_logo": url_prefix + "public/img/linkedin.png",
+		"twitter_logo":  url_prefix + "public/img/twitter.png",
 	}
 
 	var wg sync.WaitGroup

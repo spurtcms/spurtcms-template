@@ -1,7 +1,9 @@
 package controller
 
 import (
+	"bytes"
 	"fmt"
+	"html/template"
 	"log"
 	"math/rand"
 	"net/http"
@@ -11,7 +13,6 @@ import (
 	"strconv"
 	"strings"
 	"sync"
-	"text/template"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -44,9 +45,15 @@ func GenarateOtp(email string) (em bool, err error) {
 
 		mem.UpdateOtp(randomNumber, memdetail.Id)
 
+		var url_prefix = os.Getenv("DOMAIN_URL")
+
 		data := map[string]interface{}{
 
-			"otp": otp,
+			"otp":           otp,
+			"admin_logo":    url_prefix + "public/img/spurtcms.png",
+			"fb_logo":       url_prefix + "public/img/facebook.png",
+			"linkedin_logo": url_prefix + "public/img/linkedin.png",
+			"twitter_logo":  url_prefix + "public/img/twitter.png",
 		}
 
 		var wg sync.WaitGroup
@@ -77,19 +84,39 @@ func MemberCreateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]i
 	sub := templates.TemplateSubject
 
 	msg := templates.TemplateMessage
-
+	
 	replacer := strings.NewReplacer(
-		"{firstname}", data["fname"].(string),
-		"{memberid}", data["memid"].(string),
-		"{password}", data["Pass"].(string),
+		"{FirstName}", data["fname"].(string),
+		"{EmailId}", data["memid"].(string),
+		"{Password}", data["Pass"].(string),
+		"{Loginurl}", data["login_url"].(string),
+		"{AdminLogo}", data["admin_logo"].(string),
+		"{FbLogo}", data["fb_logo"].(string),
+		"{LinkedinLogo}", data["linkedin_logo"].(string),
+		"{TwitterLogo}", data["twitter_logo"].(string),
 	)
-	// fmt.Println("repla", replacer, data["fname"])
-
+	
 	msg = replacer.Replace(msg)
 
 	GenerateEmail(email, sub, msg, wg)
 }
 func GenerateEmail(email, subject, message string, wg *sync.WaitGroup) error {
+
+	data1 := map[string]interface{}{
+		"Body": template.HTML(message),
+	}
+
+	t, err2 := template.ParseFiles("themes/Lms/layouts/email-template.html")
+	if err2 != nil {
+		fmt.Println(err2)
+	}
+
+	var tpl bytes.Buffer
+	if err1 := t.Execute(&tpl, data1); err1 != nil {
+		log.Println(err1)
+	}
+
+	result := tpl.String()
 
 	defer wg.Done()
 	from := os.Getenv("MAIL_USERNAME")
@@ -100,7 +127,7 @@ func GenerateEmail(email, subject, message string, wg *sync.WaitGroup) error {
 	auth := smtp.PlainAuth("", os.Getenv("MAIL_USERNAME"), os.Getenv("MAIL_PASSWORD"), smtpHost)
 
 	// Compose the email.
-	emailBody := fmt.Sprintf("From: %s\r\nTo: %s\r\nSubject: %s\r\nContent-Type: %s; charset=UTF-8\r\n\r\n%s", from, email, subject, contentType, message)
+	emailBody := fmt.Sprintf("From: %s\r\nTo: %s\r\nSubject: %s\r\nContent-Type: %s; charset=UTF-8\r\n\r\n%s", from, email, subject, contentType, result)
 
 	// Connect to the SMTP server and send the email.
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, []string{email}, []byte(emailBody))
@@ -123,10 +150,20 @@ func OtpGenarateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]in
 
 	msg := templates.TemplateMessage
 
+	member, _, _ := mem.CheckEmailInMember(0, email)
+
+	fmt.Println(member.FirstName, "username")
+
 	replacer := strings.NewReplacer(
 
 		"{OTP}", data["otp"].(string),
+		"{MemberName}", member.FirstName,
+		"{AdminLogo}", data["admin_logo"].(string),
+		"{FbLogo}", data["fb_logo"].(string),
+		"{LinkedinLogo}", data["linkedin_logo"].(string),
+		"{TwitterLogo}", data["twitter_logo"].(string),
 	)
+
 	fmt.Println("repla", replacer, data["fname"])
 
 	msg = replacer.Replace(msg)

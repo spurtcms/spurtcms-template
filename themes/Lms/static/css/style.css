@@ -2104,3 +2104,17 @@ textarea::-webkit-scrollbar,
 .space-tab::-webkit-scrollbar{
     display: none;
 }
+
+.input-container.noteditable input+label{
+    transform: translateY(-27px);
+    font-size: 10px;
+    background-color: #fff;
+    color: #1F252B;
+    font-weight: normal;
+    padding: 3px;
+    line-height: 11px;
+}
+
+.input-container.noteditable input+label{
+    color: #1F252B !important;
+}

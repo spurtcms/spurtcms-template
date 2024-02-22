@@ -19,6 +19,7 @@
                             <div class="input-container">
                                 <input type="text" id="firstname" class="w-100 field" name="firstname"
                                     value="{{.Member.FirstName}}" required />
+                                    
                                 <label for="myInput" class="input-label">First name</label>
 
                                 <label id="firstname-error" class="error err-txt" for="firstname"
@@ -63,15 +64,15 @@
             <div class="profile-pic-form">
                 <div class="profile-form">
                     <form action="" autocomplete="off">
-                        <div class="input-container change">
+                        <div class="input-container change noteditable">
                             <input type="text" id="emailAddress" class="w-100 label-style" value="{{.Member.Email}}"
                                 required readonly />
-                            <!-- <label for="myInput">Email address</label> -->
+                            <label for="myInput" class="input-label">Email address</label>
                             <a href="/spaces/change-email">Change</a>
                         </div>
-                        <div class="input-container change">
-                            <input type="password" id="myPassword " class="w-100 label-style" value="" autocomplete="off" />
-                            <!-- <label for="myInput">Password</label> -->
+                        <div class="input-container change noteditable">
+                            <input type="password" id="myPassword " class="w-100 label-style" value="*******" autocomplete="off"  readonly/>
+                            <label for="myInput"  class="input-label">Password</label>
                             <a href="/spaces/passwordotp">Change</a>
                         </div>
                     </form>

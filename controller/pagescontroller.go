@@ -5,6 +5,7 @@ import (
 
 	"encoding/json"
 	"log"
+	"net/http"
 	"sort"
 	"strconv"
 	"strings"
@@ -28,6 +29,7 @@ type SpaceData struct {
 	PageId           int
 	CreatedDate      string
 	Categories       []string
+	ReadTime         string
 }
 
 type GroupData struct {
@@ -504,7 +506,7 @@ func SpaceDetail(c *gin.Context) {
 
 		nt.Offset = int(s["offset"].(float64))
 
-		nt.SelectPara = s["selectedpara"].(string) 
+		nt.SelectPara = s["selectedpara"].(string)
 
 		nt.Start = int(s["start"].(float64))
 
@@ -530,7 +532,12 @@ func SpaceDetail(c *gin.Context) {
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": spacename, "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
+	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Spaces": spaces, "Spaceid": c.Query("spid"), "Title": spacename, "PageId": pageid, "member": memb, "Logged": Flg, "profilename": profilename, "profileimg": profileimg, "SpaceDetails": LastFinal1, "PageTitle": PageTitle, "Content": Content.PageDescription, "Notes": NOTE, "Highligts": HIGH, "RestrictContent": Error, "FirstLetter": FirstNameLetter, "LastLetter": LastNameLetter})
+
+	if err1 != nil {
+
+		c.String(http.StatusInternalServerError, err.Error())
+	}
 
 }
 

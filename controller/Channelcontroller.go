@@ -1,15 +1,20 @@
 package controller
 
 import (
+	"fmt"
+	"html/template"
 	"log"
 	"os"
-	"text/template"
+	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/spurtcms/pkgcontent/categories"
 	"github.com/spurtcms/pkgcontent/channels"
 )
 
 var channelAuth channels.Channel
+
+var Categories categories.Category
 
 type Entriess struct {
 	Id          int
@@ -34,6 +39,8 @@ func EntriesList(c *gin.Context) {
 
 	channelAuth.Authority = &Auth1
 
+	Categories.Authority = &Auth1
+
 	log.Println(c.Param("channelname"))
 
 	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: c.Param("channelname")})
@@ -42,17 +49,25 @@ func EntriesList(c *gin.Context) {
 
 	for _, val := range Entries {
 
+		// fmt.Println(val)
+
 		var entry Entriess
 
 		entry.Id = val.Id
 
 		entry.Title = val.Title
 
-		entry.Slug = val.Slug
+		entry.Slug = strings.ReplaceAll(strings.ToLower(val.Title), " ", "_")
 
 		entry.Content = val.Description
 
 		entry.CreatedDate = val.CreatedOn.In(TZONE).Format("January 02, 2006")
+
+		fmt.Println("check--", val.CategoriesId)
+
+		// Catego, _ := Categories.GetParentGivenByChildId(val.CategoriesId)
+
+		// fmt.Println(Catego)
 
 		entry.Author = val.Username
 

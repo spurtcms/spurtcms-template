@@ -40,18 +40,18 @@ func SetupRoutes() *gin.Engine {
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/login.html"); err == nil {
 
-		r.GET("/login", controller.MemberLogin)
+		SP.GET("/login", controller.MemberLogin)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 
 		log.Println("themes/" + controller.Template + "/layouts/partials/auth/login.html no such file found")
 	}
 
-	r.GET("/logout", controller.MemberLogout)
+	SP.GET("/logout", controller.MemberLogout)
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/signup.html"); err == nil {
 
-		r.GET("/signup", controller.SignUp)
+		SP.GET("/signup", controller.SignUp)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 
@@ -60,7 +60,7 @@ func SetupRoutes() *gin.Engine {
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/forgot-email.html"); err == nil {
 
-		r.GET("/retrieve", controller.Retrieve)
+		SP.GET("/retrieve", controller.Retrieve)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 
@@ -69,7 +69,7 @@ func SetupRoutes() *gin.Engine {
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/password-reset.html"); err == nil {
 
-		r.GET("/reset", controller.PassReset)
+		SP.GET("/reset", controller.PassReset)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 

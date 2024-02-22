@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"fmt"
+	"html/template"
 	"log"
+	"math"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
-	"text/template"
 
 	"github.com/gin-gonic/gin"
 	spaces "github.com/spurtcms/pkgcontent/spaces"
@@ -110,7 +112,40 @@ func IndexView(c *gin.Context) {
 
 		data.Categories = allcat
 
+		var readtime int
+
+		for _, val1 := range pages {
+
+			readtime += val1.ReadTime
+
+		}
+
+		hours := math.Floor(float64(readtime) / 60)
+
+		minutes := readtime % 60
+
+		fmt.Println(hours, minutes, "mintues")
+
+		if hours != 0 {
+
+			data.ReadTime = fmt.Sprint(hours) + " hr "
+		}
+
+		if minutes != 0 {
+
+			data.ReadTime += strconv.Itoa(minutes) + " min"
+
+		}
+
+		// if (hours != 0) && (minutes != 0) {
+
+		// 	data.ReadTime = fmt.Sprint(hours) + " hr " + strconv.Itoa(minutes) + " min "
+
+		// }
+
 		spaces = append(spaces, data)
+
+		data.ReadTime = ""
 
 	}
 
