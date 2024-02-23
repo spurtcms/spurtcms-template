@@ -12,7 +12,7 @@
                         <input type="file" id="myfile" name="image">
                     </div>
                     <div class="profile-form">
-                        <form action="/spaces/myprofileupdate" id="myprofileform" name="myprofileform" method="post"
+                        <form action="/myprofileupdate" id="myprofileform" name="myprofileform" method="post"
                             enctype="multipart/form-data">
                             <input type="hidden" name="crop_data" id="crop_data">
 
@@ -68,12 +68,12 @@
                             <input type="text" id="emailAddress" class="w-100 label-style" value="{{.Member.Email}}"
                                 required readonly />
                             <label for="myInput" class="input-label">Email address</label>
-                            <a href="/spaces/change-email">Change</a>
+                            <a href="/change-email">Change</a>
                         </div>
                         <div class="input-container change noteditable">
                             <input type="password" id="myPassword " class="w-100 label-style" value="*******" autocomplete="off"  readonly/>
                             <label for="myInput"  class="input-label">Password</label>
-                            <a href="/spaces/passwordotp">Change</a>
+                            <a href="/passwordotp">Change</a>
                         </div>
                     </form>
                 </div>

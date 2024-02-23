@@ -36,7 +36,7 @@ func SetupRoutes() *gin.Engine {
 
 	r.NoRoute(controller.FileNotFoundPage)
 
-	SP := r.Group("spaces")
+	SP := r.Group("")
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/login.html"); err == nil {
 

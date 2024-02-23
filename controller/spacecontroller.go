@@ -72,7 +72,7 @@ func IndexView(c *gin.Context) {
 
 				data.PageId = val.PgId
 
-				data.Permalink = "/spaces/" + data.SpaceSlug + "/" + data.PageSlug + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
+				data.Permalink = "/" + data.SpaceSlug + "/" + data.PageSlug + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
 
 				break
 			}
