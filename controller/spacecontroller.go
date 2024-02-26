@@ -128,15 +128,25 @@ func IndexView(c *gin.Context) {
 
 		if hours != 0 {
 
-			data.ReadTime = fmt.Sprint(hours) + " hr "
+			if hours > 1 {
+
+				data.ReadTime = fmt.Sprint(hours) + " hrs "
+			} else {
+
+				data.ReadTime = fmt.Sprint(hours) + " hr "
+			}
 		}
 
 		if minutes != 0 {
 
-			data.ReadTime += strconv.Itoa(minutes) + " min"
+			if minutes > 1 {
 
+				data.ReadTime += strconv.Itoa(minutes) + " mins"
+			} else {
+
+				data.ReadTime += strconv.Itoa(minutes) + " min"
+			}
 		}
-
 		// if (hours != 0) && (minutes != 0) {
 
 		// 	data.ReadTime = fmt.Sprint(hours) + " hr " + strconv.Itoa(minutes) + " min "
