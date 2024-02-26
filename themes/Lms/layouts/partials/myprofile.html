@@ -1,0 +1,93 @@
+{{- define "singlemain"}}
+<section class="profile-section p-md-25">
+    <div class="myCms-profile">
+        <div class="profile-heading">
+            <h1>My Profile</h1>
+        </div>
+            <div class="profile-top">
+                <h3>Basic Profile</h3>
+                <div class="profile-pic-form">
+                    <div class="profile-img">
+                        <img src="{{if .Member.ProfileImagePath}}/{{.Member.ProfileImagePath}}{{else}} /static/icons/default_profile.svg{{end}}" alt="" id="profpic" />
+                        <input type="file" id="myfile" name="image">
+                    </div>
+                    <div class="profile-form">
+                        <form action="/myprofileupdate" id="myprofileform" name="myprofileform" method="post"
+                            enctype="multipart/form-data">
+                            <input type="hidden" name="crop_data" id="crop_data">
+
+                            <div class="input-container">
+                                <input type="text" id="firstname" class="w-100 field" name="firstname"
+                                    value="{{.Member.FirstName}}" required />
+                                    
+                                <label for="myInput" class="input-label">First name</label>
+
+                                <label id="firstname-error" class="error err-txt" for="firstname"
+                                    style="display: none;">
+                                    <img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />
+                                    Please
+                                    Enter Your The
+                                    First Name </label>
+
+                            </div>
+
+                            <div class="input-container">
+                                <input type="text" id="lastname" class="w-100 field" name="lastname"
+                                    value="{{.Member.LastName}}" />
+                                <label for="myInput" class="input-label">Last name</label>
+
+                                <label id="lastname-error" class="error err-txt" for="lastname" style="display: none;">
+                                    <img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" />
+                                    Please
+                                    Enter Your The
+                                    First Name </label>
+
+
+                            </div>
+
+                            <div class="input-container">
+                                <input type="text" id="mobileNumber" class="w-100 field" name="mobileNumber"
+                                    maxlength="10" value="{{.Member.MobileNo}}" required />
+                                <label for="myInput" class="input-label">Mobile number</label>
+
+                                <label id="mobileNumber-error" class="error err-txt" for="mobileNumber"
+                                    style="display: none;">
+                                    Please Enter Your Mobile Number</label>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+      
+        <div class="profile-bottom">
+            <h3>Login info</h3>
+            <div class="profile-pic-form">
+                <div class="profile-form">
+                    <form action="" autocomplete="off">
+                        <div class="input-container change noteditable">
+                            <input type="text" id="emailAddress" class="w-100 label-style" value="{{.Member.Email}}"
+                                required readonly />
+                            <label for="myInput" class="input-label">Email address</label>
+                            <a href="/change-email">Change</a>
+                        </div>
+                        <div class="input-container change noteditable">
+                            <input type="password" id="myPassword " class="w-100 label-style" value="*******" autocomplete="off"  readonly/>
+                            <label for="myInput"  class="input-label">Password</label>
+                            <a href="/passwordotp">Change</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cancel-update">
+        <div class="mx-976">
+            <button class="cancel-btn" type="reset" id="cancel-btn">Cancel</button>
+            <button class="update-btn" type="submit" id="update-btn">Update</button>
+        </div>
+    </div>
+</section>
+
+{{template "cropmodal" .}}
+{{end}}
