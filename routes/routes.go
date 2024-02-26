@@ -140,27 +140,5 @@ func SetupRoutes() *gin.Engine {
 		log.Println("themes/" + controller.Template + "/layouts/partials/auth/myprofile.html no such file found")
 	}
 
-	BL := r.Group("/:channelname")
-
-	BL.Use(controller.JWTAuth())
-
-	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/blog.html"); err == nil {
-
-		BL.GET("/", controller.EntriesList)
-
-	} else if errors.Is(err, os.ErrNotExist) {
-
-		log.Println("themes/" + controller.Template + "/layouts/partials/blog.html no such file found")
-	}
-
-	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/blogdetails.html"); err == nil {
-
-		BL.GET("/:entriestitle/", controller.EntriesDetails)
-
-	} else if errors.Is(err, os.ErrNotExist) {
-
-		log.Println("themes/" + controller.Template + "/layouts/partials/blogdetails.html no such file found")
-	}
-
 	return r
 }
