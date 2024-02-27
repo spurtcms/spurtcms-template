@@ -173,6 +173,8 @@ func MemberRegister(c *gin.Context) {
 
 	email := c.PostForm("email")
 
+	username := c.PostForm("username")
+
 	password := c.PostForm("password")
 
 	_, flg, _ := mem.CheckEmailInMember(0, email)
@@ -197,7 +199,7 @@ func MemberRegister(c *gin.Context) {
 		return
 	}
 
-	_, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
+	_, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password, Username: username})
 
 	if err5 != nil {
 

@@ -200,6 +200,7 @@ header {
     background: #0D1726 0% 0% no-repeat padding-box;
     padding: 7px 32px;
     border-top: 1px solid #192C4D;
+    align-items: center;
     /* position: sticky;
     z-index: 9;
     top: 4.5rem; */
@@ -959,29 +960,54 @@ input:focus-visible {
 .lft-sidebar:hover::-webkit-scrollbar,
 .edit-div:hover ::-webkit-scrollbar,
 textarea:hover ::-webkit-scrollbar,
-.center-section:hover::-webkit-scrollbar {
-    display: block;
+.center-section:hover::-webkit-scrollbar,
+.space-tab:hover::-webkit-scrollbar  {
+    /* display: block;
     width: 3px;
     background-color: #F6F8FC;
+    height: 3px; */
+    /* background-color: #0D1726; */
+    background-color: #F6F8FC;
+    border-radius: 5px;
+}
+
+.note-content::-webkit-scrollbar-thumb,
+.lft-sidebar::-webkit-scrollbar-thumb,
+.edit-div::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb,
+.center-section::-webkit-scrollbar-thumb,
+.space-tab::-webkit-scrollbar-thumb {
+    /* background-color: #0D1726;
+    border-radius: 5px; */
+    background-color: transparent;
 
 }
 
 .note-content:hover::-webkit-scrollbar-thumb,
-.lft-sidebar::-webkit-scrollbar-thumb,
-.edit-div::-webkit-scrollbar-thumb,
-textarea::-webkit-scrollbar-thumb,
-.center-section::-webkit-scrollbar-thumb {
-    background-color: #0D1726;
-    border-radius: 5px;
-
+.lft-sidebar:hover::-webkit-scrollbar-thumb,
+.edit-div:hover::-webkit-scrollbar-thumb,
+textarea:hover::-webkit-scrollbar-thumb,
+.center-section:hover::-webkit-scrollbar-thumb,
+.space-tab:hover::-webkit-scrollbar-thumb {
+    
+   background-color: #0D1726;
+    /*  border-radius: 5px; */
+    /* background-color: transparent; */
 
 }
 
 .note-content::-webkit-scrollbar,
 .lft-sidebar::-webkit-scrollbar,
 textarea::-webkit-scrollbar,
-.center-section::-webkit-scrollbar {
-    display: none;
+.center-section::-webkit-scrollbar,
+.space-tab::-webkit-scrollbar {
+    /* display: none; */
+    display: block;
+    width: 3px;
+    height: 3px;
+    background-color: transparent;
+
+    /* visibility: hidden; */
 }
 
 .tabcontent {
@@ -1557,11 +1583,11 @@ textarea::-webkit-scrollbar,
 }
 
 .selected-green {
-    background-color: rgba(106, 171, 250, 0.2);
+    background-color: rgba(77, 200, 142, 0.2);
 }
 
 .selected-blue {
-    background-color: rgba(77, 200, 142, 0.2);
+    background-color: rgba(106, 171, 250, 0.2);
 }
 
 #accordionExample a {
@@ -2042,6 +2068,7 @@ textarea::-webkit-scrollbar,
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    min-width: 30px;
 }
 .rght-arrow{
     border-radius: 50%;
@@ -2053,6 +2080,7 @@ textarea::-webkit-scrollbar,
     justify-content: center;
     margin-left: auto;
     cursor: pointer;
+    min-width: 30px;
 }
 
 .rightarrow{
@@ -2102,7 +2130,7 @@ textarea::-webkit-scrollbar,
 }
 
 .space-tab::-webkit-scrollbar{
-    display: none;
+    /* display: none; */
 }
 
 .input-container.noteditable input+label{
@@ -2117,4 +2145,9 @@ textarea::-webkit-scrollbar,
 
 .input-container.noteditable input+label{
     color: #1F252B !important;
+}
+
+.center-section ul {
+    /* list-style-position: inside; */
+    padding-left: 32px !important;
 }
