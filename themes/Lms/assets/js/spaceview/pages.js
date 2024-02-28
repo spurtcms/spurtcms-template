@@ -296,7 +296,15 @@ $(document).on("click", ".secton-content", function () {
 
     $(".hoverMenu").hide()
 
-  } if ($(".secton-content div").hasClass("login-read")) {
+  } 
+
+  if (endContainerTagname == "span" && $(".secton-content span").hasClass("selection")) {
+
+    $(".hoverMenu").show()
+
+  } 
+  
+  if ($(".secton-content div").hasClass("login-read")) {
 
     $(".hoverMenu").hide()
   }
@@ -336,6 +344,8 @@ $(document).on("click", ".secton-content", function () {
   span = document.createElement('span');
 
   span.classList.add('clear_clr')
+
+  span.classList.add('selection')
 
   range.surroundContents(span);
 
@@ -670,3 +680,36 @@ function highlightText(searchTerm) {
     }
   });
 }
+
+var $div = $('.st-2');
+
+// Check if the div has a vertical scrollbar
+if ($div.get(0).scrollHeight > $div.innerHeight() || $div.get(0).scrollWidth > $div.innerWidth()) {
+
+  $('.rght-arrow').show();
+
+  $('.lft-arrow').show();
+  
+} else {
+
+  $('.rght-arrow').hide();
+
+  $('.lft-arrow').hide();
+}
+
+$(document).on('click','.lft-arrow',function(){
+  
+  var leftPos = $('.st-2').scrollLeft();
+ 
+  $(".st-2").animate({scrollLeft: leftPos - 400},{duration: 500}, 1);
+
+})
+
+$(document).on('click','.rght-arrow',function(){
+  
+  var leftPos = $('.st-2').scrollLeft();
+  
+  $(".st-2").animate({scrollLeft: leftPos + 400},{duration: 500}, 1);
+
+})
+
