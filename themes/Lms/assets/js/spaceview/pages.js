@@ -3,40 +3,55 @@ document.querySelector("#centerSection").addEventListener("mouseup", () => {
   let textValue = selectionFromDocument.toString();
   var hoverMenu = document.querySelector(".hoverMenu");
   var colorPicker = document.querySelector(".color-picker");
+  var loggedflg = document.querySelector('.logged-flg');
 
-  if (textValue == "") {
-    hoverMenu.style.display = "none";
-  } else {
-    // Get the coordinates of the selected text
-    let range = selectionFromDocument.getRangeAt(0);
-    let rect = range.getBoundingClientRect();
+  console.log(loggedflg.value);
 
-    // Set the display style of the hoverMenu to block
-    hoverMenu.style.display = "flex";
-
-    // Calculate posX while keeping .color-picker within the viewport
-    let posX = rect.left + window.scrollX + rect.width / 2;
-    let colorPickerWidth = colorPicker.offsetWidth;
-    let posXAdjusted = posX - 600;
-
-    // Ensure that posXAdjusted is within the viewport
-    if (posXAdjusted < 0) {
-      posXAdjusted = 0;
-    } else if (posXAdjusted + colorPickerWidth > window.innerWidth) {
-      posXAdjusted = window.innerWidth - colorPickerWidth;
+  if (loggedflg.value=="true"){
+    
+    if (textValue == "") {
+     
+      hoverMenu.style.display = "none";
+    
+    } else {
+      // Get the coordinates of the selected text
+      let range = selectionFromDocument.getRangeAt(0);
+      let rect = range.getBoundingClientRect();
+  
+      // Set the display style of the hoverMenu to block
+      hoverMenu.style.display = "flex";
+  
+      // Calculate posX while keeping .color-picker within the viewport
+      let posX = rect.left + window.scrollX + rect.width / 2;
+      let colorPickerWidth = colorPicker.offsetWidth;
+      let posXAdjusted = posX - 600;
+  
+      // Ensure that posXAdjusted is within the viewport
+      if (posXAdjusted < 0) {
+        posXAdjusted = 0;
+      } else if (posXAdjusted + colorPickerWidth > window.innerWidth) {
+        posXAdjusted = window.innerWidth - colorPickerWidth;
+      }
+  
+      var divHeight = $('#centerSection');
+  
+      hoverMenu.style.left = posXAdjusted + "px";
+      let posY = divHeight.scrollTop() + 25 + "px";
+      hoverMenu.style.top = posY;
+  
+      // Set the position of the color-picker
+      // console.log(posY);
+      colorPicker.style.left = posXAdjusted + "px";
+      colorPicker.style.top = posY;
     }
+  }else{
 
-    var divHeight = $('#centerSection');
+    console.log("else--");
+    hoverMenu.style.display = "none";
 
-    hoverMenu.style.left = posXAdjusted + "px";
-    let posY = divHeight.scrollTop() + 25 + "px";
-    hoverMenu.style.top = posY;
-
-    // Set the position of the color-picker
-    // console.log(posY);
-    colorPicker.style.left = posXAdjusted + "px";
-    colorPicker.style.top = posY;
   }
+
+ 
 });
 
 /* HoverMenu */
@@ -281,7 +296,15 @@ $(document).on("click", ".secton-content", function () {
 
     $(".hoverMenu").hide()
 
-  } if ($(".secton-content div").hasClass("login-read")) {
+  } 
+
+  if (endContainerTagname == "span" && $(".secton-content span").hasClass("selection")) {
+
+    $(".hoverMenu").show()
+
+  } 
+  
+  if ($(".secton-content div").hasClass("login-read")) {
 
     $(".hoverMenu").hide()
   }
@@ -321,6 +344,8 @@ $(document).on("click", ".secton-content", function () {
   span = document.createElement('span');
 
   span.classList.add('clear_clr')
+
+  span.classList.add('selection')
 
   range.surroundContents(span);
 
@@ -363,12 +388,12 @@ $(document).on("click", ".clr", function () {
     htmlContent = '<h5 style="background-color: rgba(247, 156, 156, 0.2);">' + selectedContent + '</h5>'
   } if (cl == "green") {
     span.className = 'selected-green';
-    con_clr = "rgba(106, 171, 250, 0.2)"
-    htmlContent = '<h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5>'
-  } if (cl == "blue") {
-    span.className = 'selected-blue';
     con_clr = "rgba(77, 200, 142, 0.2)"
     htmlContent = '<h5 style="background-color: rgba(77, 200, 142, 0.2);">' + selectedContent + '</h5>'
+  } if (cl == "blue") {
+    span.className = 'selected-blue';
+    con_clr = "rgba(106, 171, 250, 0.2)"
+    htmlContent = '<h5 style="background-color: rgba(106, 171, 250, 0.2);">' + selectedContent + '</h5>'
   }
   // console.log(selectedTag);
   $.ajax({
@@ -655,3 +680,36 @@ function highlightText(searchTerm) {
     }
   });
 }
+
+var $div = $('.st-2');
+
+// Check if the div has a vertical scrollbar
+if ($div.get(0).scrollHeight > $div.innerHeight() || $div.get(0).scrollWidth > $div.innerWidth()) {
+
+  $('.rght-arrow').show();
+
+  $('.lft-arrow').show();
+  
+} else {
+
+  $('.rght-arrow').hide();
+
+  $('.lft-arrow').hide();
+}
+
+$(document).on('click','.lft-arrow',function(){
+  
+  var leftPos = $('.st-2').scrollLeft();
+ 
+  $(".st-2").animate({scrollLeft: leftPos - 400},{duration: 500}, 1);
+
+})
+
+$(document).on('click','.rght-arrow',function(){
+  
+  var leftPos = $('.st-2').scrollLeft();
+  
+  $(".st-2").animate({scrollLeft: leftPos + 400},{duration: 500}, 1);
+
+})
+

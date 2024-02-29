@@ -92,6 +92,10 @@ func SetupRoutes() *gin.Engine {
 
 	SP.POST("/verify-email-otp", controller.OtpVerifyemail)
 
+	SP.GET("/termsandservice", controller.TermsandService)
+
+	SP.GET("/privacypolicy",controller.PrivacyPolicy)
+
 	D := SP.Group("")
 
 	D.Use(controller.JWTAuth())

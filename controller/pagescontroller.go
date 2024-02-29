@@ -480,7 +480,7 @@ func SpaceDetail(c *gin.Context) {
 
 		nt.Content = val.NotesHighlightsContent
 
-		nt.CreateDate = val.CreatedOn.Format("02 Jan 2006 03:04 PM")
+		nt.CreateDate = val.CreatedOn.In(TZONE).Format("02 Jan 2006 03:04 PM")
 
 		NOTE = append(NOTE, nt)
 
@@ -510,7 +510,7 @@ func SpaceDetail(c *gin.Context) {
 
 		nt.Start = int(s["start"].(float64))
 
-		nt.CreateDate = val.CreatedOn.Format("02 Jan 2006 03:04 PM")
+		nt.CreateDate = val.CreatedOn.In(TZONE).Format("02 Jan 2006 03:04 PM")
 
 		HIGH = append(HIGH, nt)
 
