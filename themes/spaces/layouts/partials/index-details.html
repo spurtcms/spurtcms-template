@@ -10,7 +10,7 @@
         <div class="tab space-tab st-2">
         {{range .Spaces}}
         <input type="hidden" value="{{.SpaceSlug}}" id="spSulg">
-        <a href="/spaces/{{.SpaceSlug}}/{{.PageSlug}}/?spid={{.Id}}&&pageid={{.PageId}}">
+        <a href="/spaces/{{.SpaceSlug}}/{{.PageSlug}}/?spid={{.Id}}&&pageid={{.PageId}}" class="spaceclick">
             <button class="tablinks" sp-id="{{.Id}}" onclick="openCity(event, 'AccountsInDailyLife')">
                 {{.SpaceTitle}}
             </button>
@@ -29,7 +29,7 @@
     <div id="AccountsInDailyLife" class="tabcontent" style="display: block">
         <div class="edit-div" id="search1">
             <div class="edit-div-lft">
-                <a href="/spaces/">
+                <a href="/spaces/"">
                     <img src="/static/icons/arrow-lft-svgrepo-com (2).svg" alt="" />
                 </a>
 

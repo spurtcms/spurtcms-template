@@ -36,7 +36,15 @@ func SetupRoutes() *gin.Engine {
 
 	r.NoRoute(controller.FileNotFoundPage)
 
-	SP := r.Group("spaces")
+	r.GET("/", func(c *gin.Context) {
+
+		c.Redirect(302, strings.ReplaceAll(strings.ToLower(controller.Template), " ", "_")+"/")
+
+	})
+
+	TEM := r.Group("")
+
+	SP := TEM.Group("/spaces")
 
 	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/auth/login.html"); err == nil {
 
@@ -92,17 +100,23 @@ func SetupRoutes() *gin.Engine {
 
 	SP.POST("/verify-email-otp", controller.OtpVerifyemail)
 
+	SP.POST("/spaceclickcount", controller.AddCount)
+
+	SP.GET("/termsandservice", controller.TermsandService)
+
+	SP.GET("/privacypolicy",controller.PrivacyPolicy)
+
 	D := SP.Group("")
 
 	D.Use(controller.JWTAuth())
 
-	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html"); err == nil {
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/index.html"); err == nil {
 
 		D.GET("/", controller.IndexView)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 
-		log.Println("themes/" + controller.Template + "/layouts/partials/spaces/spaces.html no such file found")
+		log.Println("themes/" + controller.Template + "/layouts/partials/index.html no such file found")
 	}
 
 	D.GET("/:stitle/:pgtitle/", controller.SpaceDetail)
@@ -140,26 +154,26 @@ func SetupRoutes() *gin.Engine {
 		log.Println("themes/" + controller.Template + "/layouts/partials/auth/myprofile.html no such file found")
 	}
 
-	BL := r.Group("/:channelname")
+	BL := TEM.Group("/blog")
 
 	BL.Use(controller.JWTAuth())
 
-	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/blog.html"); err == nil {
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/index.html"); err == nil {
 
 		BL.GET("/", controller.EntriesList)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 
-		log.Println("themes/" + controller.Template + "/layouts/partials/blog.html no such file found")
+		log.Println("themes/" + controller.Template + "/layouts/partials/index.html no such file found")
 	}
 
-	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/blogdetails.html"); err == nil {
+	if _, err := os.Stat("themes/" + controller.Template + "/layouts/partials/index-details.html"); err == nil {
 
 		BL.GET("/:entriestitle/", controller.EntriesDetails)
 
 	} else if errors.Is(err, os.ErrNotExist) {
 
-		log.Println("themes/" + controller.Template + "/layouts/partials/blogdetails.html no such file found")
+		log.Println("themes/" + controller.Template + "/layouts/partials/index-details.html no such file found")
 	}
 
 	return r

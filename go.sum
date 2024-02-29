@@ -103,6 +103,10 @@ github.com/spurtcms/pkgcontent v1.0.66 h1:T1wd+Ux6rLs6hpx6uKPdCp2UtvsLwx3RfhGsOJ
 github.com/spurtcms/pkgcontent v1.0.66/go.mod h1:/ZOPwQaQ7HThpUPA7PlR4E1Nm5I2NGtIDoucg66J8gc=
 github.com/spurtcms/pkgcontent v1.0.67 h1:FNoJB9oRLuW1iYkQbQqkuG9IryygwjaH+inmblhgsWU=
 github.com/spurtcms/pkgcontent v1.0.67/go.mod h1:/ZOPwQaQ7HThpUPA7PlR4E1Nm5I2NGtIDoucg66J8gc=
+github.com/spurtcms/pkgcontent v1.0.72 h1:ij2N6ixTRWEWt/e3asDZkQEdUe7l52sUnDSDRRLjAuQ=
+github.com/spurtcms/pkgcontent v1.0.72/go.mod h1:/ZOPwQaQ7HThpUPA7PlR4E1Nm5I2NGtIDoucg66J8gc=
+github.com/spurtcms/pkgcontent v1.0.73 h1:cygjSyh6z5NjfKmDldXCk5XFQDI7gXpuBKodEN7NfFI=
+github.com/spurtcms/pkgcontent v1.0.73/go.mod h1:/ZOPwQaQ7HThpUPA7PlR4E1Nm5I2NGtIDoucg66J8gc=
 github.com/spurtcms/pkgcore v1.0.34 h1:6FVE92oW7nm+PfLWLz9sb1dJxlURWiix/ZaGOZIZE7g=
 github.com/spurtcms/pkgcore v1.0.34/go.mod h1:Q3vgk/jS9mzbqvb3WHW5YWJYtzIn4Uqr/xFmfrGT4vg=
 github.com/spurtcms/pkgcore v1.0.37 h1:iF83/M/yHzLj1sSmC4OBnnBD2gyeTQLT+O+JRvWChYI=

@@ -1,3 +1,36 @@
+$(document).on('click','.space-container-crd',function(){
+
+  spid= $(this).children('.spaceid').attr('id')
+ 
+  clickspace()
+
+})
+
+$(document).on('click','.spaceclick',function(){
+
+  spid= $(this).children('button').attr('sp-id')
+
+  clickspace()
+
+
+})
+
+function clickspace(){
+
+  $.ajax({
+    url:"/spaceclickcount",
+    data:{ "spaceid":spid},
+    dataType:"json",
+    type :"POST",
+    success:function (result){
+ 
+        console.log(result)
+ 
+    }
+ 
+   })
+}
+
 document.querySelector("#centerSection").addEventListener("mouseup", () => {
   let selectionFromDocument = document.getSelection();
   let textValue = selectionFromDocument.toString();
@@ -655,3 +688,6 @@ function highlightText(searchTerm) {
     }
   });
 }
+
+
+

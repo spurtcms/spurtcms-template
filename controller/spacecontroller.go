@@ -18,6 +18,8 @@ import (
 
 var sp spaces.MemberSpace
 
+var space spaces.Space
+
 var DB *gorm.DB
 
 var Auth1 auth.Authorization
@@ -72,7 +74,7 @@ func IndexView(c *gin.Context) {
 
 				data.PageId = val.PgId
 
-				data.Permalink = "/spaces/" + data.SpaceSlug + "/" + data.PageSlug + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
+				data.Permalink = "/"+Template+"/" + data.SpaceSlug + "/" + data.PageSlug + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
 
 				break
 			}
@@ -150,7 +152,7 @@ func IndexView(c *gin.Context) {
 	}
 
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/list.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/spaces/spaces.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/list.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/index.html")
 
 	if err != nil {
 
@@ -167,4 +169,25 @@ func truncateDescription(description string, limit int) string {
 
 	truncated := description[:limit] + "..."
 	return truncated
+}
+
+func AddCount(c *gin.Context) {
+
+	sp.MemAuth = &Auth1
+
+	space.Authority = &Auth1
+
+	id := c.Request.PostFormValue("spaceid")
+
+	fmt.Println("iddd", id)
+
+	// idstr, _ := strconv.Atoi(id)
+
+	// err := space.AddViewCount(idstr)
+
+	// if err != nil {
+
+	// 	log.Fatal(err)
+	// }
+
 }

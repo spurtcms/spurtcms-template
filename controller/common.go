@@ -106,7 +106,7 @@ func GenerateEmail(email, subject, message string, wg *sync.WaitGroup) error {
 		"Body": template.HTML(message),
 	}
 
-	t, err2 := template.ParseFiles("themes/Lms/layouts/email-template.html")
+	t, err2 := template.ParseFiles("themes/"+Template+"/layouts/email-template.html")
 	if err2 != nil {
 		fmt.Println(err2)
 	}

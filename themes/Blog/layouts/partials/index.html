@@ -4,7 +4,7 @@
 
         <ul class="scrolling__Container">
             <li class="scrolling__list"><a href="">All</a></li>
-            <li class="scrolling__list"><a href="">Articles</a></li>
+            <!-- <li class="scrolling__list"><a href="">Articles</a></li>
             <li class="scrolling__list"><a href="">Blogs</a></li>
             <li class="scrolling__list"><a href="">Career</a></li>
             <li class="scrolling__list"><a href="">Automation</a></li>
@@ -17,7 +17,7 @@
             <li class="scrolling__list"><a href="">Engineering</a></li>
             <li class="scrolling__list"><a href="">Soft Skills</a></li>
             <li class="scrolling__list"><a href="">Design</a></li>
-            <li class="scrolling__list"><a href="">Project</a></li>
+            <li class="scrolling__list"><a href="">Project</a></li> -->
         </ul>
 
         {{range .Entries}}
@@ -30,15 +30,13 @@
                     <span class="paralight__two">views 1245</span>
                     <div class="detail__flexx">
                         <a href="" class="paralight__two prof__name">{{.Author}}</a>
-                        <p class="prof__badge"><span class="paralight__two">Recruiting</span></p>
+                        {{range .Categories}} 
+                        <p class="prof__badge"><span class="paralight__two">{{.CategoryName}}</span></p> 
+                        {{end}}
                     </div>
                 </div>
-                <a href="/blog/{{.Slug}}" class="heading__two">{{.Title}}</a>
-                <p class="para__two">Handling timeouts and backpressure are critical aspects of building resilient
-                    stream processing
-                    applications with Akka Streams. Implementing timeouts prevents infinite waiting periods while
-                    managing backpressure ensures system stability under varying loads. Strategies like using
-                    buffers, throttling and adaptive conflation help maintain system performance...</p>
+                <a href="/blog/{{.Slug}}?id={{.Id}}" class="heading__two">{{.Title}}</a>
+                <p class="para__two">{{.Content}}</p>
 
             </div>
 

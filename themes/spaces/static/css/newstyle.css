@@ -563,3 +563,78 @@ input[type=range]::-ms-thumb {
 .clear_clr{
   text-decoration: none;
 }
+.termsdiv h2 {
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 38px;
+  color: #202224;
+  margin-bottom: 24px;
+  padding: 0rem 2rem;
+}
+.termsdiv p{
+
+  padding: 0rem 2rem 24px;
+  font-size: 16px;
+  line-height: 28px;
+  color: #202224;
+  font-weight: 400;
+}
+
+.privacydiv h1{
+
+  font-size: 35px;
+  font-weight: 500;
+  color: #202224;
+  line-height: 44px;
+}
+.privacydiv p{
+
+  font-size: 16px;
+  color: #0F0F10;
+  line-height: 28px;
+  text-align: start;
+  margin-top: 29px;
+  font-weight: 400;
+}
+.privacymain {
+  padding-block: 64px 66px;
+  padding-inline: 40px;
+
+}
+.privacydiv1 h2{
+
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 38px;
+  color: #202224;
+  margin-bottom: 24px;
+
+}
+
+.privacydiv1 h3{
+
+  font-size: 24px;
+    font-weight: 500;
+    line-height: 30px;
+    color: #202224;
+    margin-bottom: 24px;
+}
+
+.privacydiv1 p{
+
+  font-size: 16px;
+  line-height: 28px;
+  color: #202224;
+  margin-bottom: 24px;
+}
+
+.f-500 {
+  font-weight: 600;
+}
+
+.terms-link {
+  font-weight: 300;
+  line-height: 24px;
+  color: #05ACD7 !important;
+  text-decoration: none;
+}

@@ -1,0 +1,20 @@
+{{- define "singlemain"}}
+<main class="wrapper">
+    <section class="blogDetail__container">
+
+        <div class="blogDetail__top">
+            <div class="blog__details">
+                <a href="/" class="back__to__list"><img src="/static/icons/back-arrow.png" alt=""></a>
+                <span class="paralight__one">{{.Entries.CreatedDate}}</span>
+                <span class="paralight__one">1 min read</span>
+                <span class="paralight__one">views 1245</span>
+                <div class="detail__flexx">
+                <a href="" class="paralight__one prof__name">{{.Entries.Author}}</a>
+                <p class="prof__badge prof__one"><span class="paralight__one">Recruiting</span></p>
+            </div>
+            </div>
+            {{.Entries.Content}}
+        </div>
+    </section>
+</main>
+{{end}}

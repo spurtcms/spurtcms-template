@@ -4,6 +4,7 @@ import (
 	// "log"
 
 	"encoding/json"
+	"fmt"
 	"log"
 	"net/http"
 	"sort"
@@ -30,6 +31,8 @@ type SpaceData struct {
 	CreatedDate      string
 	Categories       []string
 	ReadTime         string
+	ViewCount        int
+	RecentTime       int
 }
 
 type GroupData struct {
@@ -224,7 +227,7 @@ func SpaceDetail(c *gin.Context) {
 
 				singlepage.Pages.Title = val.Name
 
-				singlepage.Pages.Permalink = "/spaces/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Name, " ", "_"))) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
+				singlepage.Pages.Permalink = "/"+Template+"/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Name, " ", "_"))) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
 
 				PageDetailss = append(PageDetailss, singlepage)
 			}
@@ -276,7 +279,7 @@ func SpaceDetail(c *gin.Context) {
 
 					singlepage.Pages.Title = val.Name
 
-					singlepage.Pages.Permalink = "/spaces/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Name, " ", "_"))) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
+					singlepage.Pages.Permalink = "/"+Template+"/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Name, " ", "_"))) + "?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(val.PgId)
 
 					PageDetailss = append(PageDetailss, singlepage)
 
@@ -309,7 +312,7 @@ func SpaceDetail(c *gin.Context) {
 
 					singlepage.Title = page.Name
 
-					singlepage.Permalink = "/spaces/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(page.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(page.PgId)
+					singlepage.Permalink = "/"+Template+"/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(page.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(page.PgId)
 
 					PG = append(PG, singlepage)
 
@@ -368,7 +371,7 @@ func SpaceDetail(c *gin.Context) {
 
 					singlepage.Title = sub.Name
 
-					singlepage.Permalink = "/spaces/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(grppagesub.Title, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
+					singlepage.Permalink = "/"+Template+"/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(grppagesub.Title, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
 
 					Sub = append(Sub, singlepage)
 				}
@@ -403,7 +406,7 @@ func SpaceDetail(c *gin.Context) {
 
 				singlepage.Title = sub.Name
 
-				singlepage.Permalink = "/spaces/" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Pages.Title, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
+				singlepage.Permalink = "/"+Template+"" + clearString(strings.ToLower(strings.ReplaceAll(spacename, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(val.Pages.Title, " ", "_"))) + "/" + clearString(strings.ToLower(strings.ReplaceAll(sub.Name, " ", "_"))) + "/?spid=" + c.Query("spid") + "&pageid=" + strconv.Itoa(sub.SpgId)
 
 				Sub = append(Sub, singlepage)
 			}
@@ -516,16 +519,16 @@ func SpaceDetail(c *gin.Context) {
 
 	}
 
-	// for _, val := range LastFinal1 {
+	for _, val := range LastFinal1 {
 
-	// 	fmt.Println(val)
+		fmt.Println(val)
 
-	// 	fmt.Println()
+		fmt.Println()
 
-	// }
+	}
 
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/spaces/pages.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/index-details.html")
 
 	if err != nil {
 

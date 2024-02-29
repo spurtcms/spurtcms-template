@@ -2,10 +2,13 @@ package controller
 
 import (
 	"fmt"
-	"html/template"
 	"log"
+	"net/http"
 	"os"
+	"regexp"
+	"strconv"
 	"strings"
+	"text/template"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spurtcms/pkgcontent/categories"
@@ -23,14 +26,28 @@ type Entriess struct {
 	Content     string
 	Author      string
 	CreatedDate string
-	Categories  string
+	Categories  []Category
 	ImagePath   string
+}
+
+type Category struct {
+	Id           int
+	CategoryName string
+}
+
+type EntrieDet struct {
+	Content     string
+	CreatedDate string
+	ReadTime    string
+	ViewCount   string
+	Author      string
+	Category    string
 }
 
 func EntriesList(c *gin.Context) {
 
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/list.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/blog.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/list.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/index.html")
 
 	if err != nil {
 
@@ -41,15 +58,11 @@ func EntriesList(c *gin.Context) {
 
 	Categories.Authority = &Auth1
 
-	log.Println(c.Param("channelname"))
-
-	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: c.Param("channelname")})
+	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: "blog"})
 
 	var EntriesDeatils []Entriess
 
 	for _, val := range Entries {
-
-		// fmt.Println(val)
 
 		var entry Entriess
 
@@ -57,17 +70,19 @@ func EntriesList(c *gin.Context) {
 
 		entry.Title = val.Title
 
-		entry.Slug = strings.ReplaceAll(strings.ToLower(val.Title), " ", "_")
+		entry.Slug = strings.ReplaceAll(regexp.MustCompile(`[^a-zA-Z0-9 ]+`).ReplaceAllString(strings.ToLower(val.Title), ""), " ", "_")
 
-		entry.Content = val.Description
+		const Template = `(<\/?[a-zA-A]+?[^>]*\/?>)*`
+
+		r := regexp.MustCompile(Template)
+
+		Trimstring := r.ReplaceAllString(val.Description, "")
+
+		entry.Content = truncateDescription(Trimstring, 346)
 
 		entry.CreatedDate = val.CreatedOn.In(TZONE).Format("January 02, 2006")
 
-		fmt.Println("check--", val.CategoriesId)
-
-		// Catego, _ := Categories.GetParentGivenByChildId(val.CategoriesId)
-
-		// fmt.Println(Catego)
+		Catego, _ := Categories.GetParentGivenByChildId(val.CategoriesId)
 
 		entry.Author = val.Username
 
@@ -80,23 +95,74 @@ func EntriesList(c *gin.Context) {
 			entry.ImagePath = os.Getenv("DOMAIN_URL") + val.CoverImage
 		}
 
+		var category []Category
+
+		for _, val := range Catego {
+
+			var SingleCat Category
+
+			SingleCat.Id = val.Id
+
+			SingleCat.CategoryName = val.CategoryName
+
+			category = append(category, SingleCat)
+
+		}
+
+		entry.Categories = category
+
 		EntriesDeatils = append(EntriesDeatils, entry)
 
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Entries": EntriesDeatils})
+	fmt.Println(len(Entries))
+
+	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Entries": EntriesDeatils})
+
+	if err1 != nil {
+
+		c.String(http.StatusInternalServerError, err.Error())
+	}
 
 }
 
 func EntriesDetails(c *gin.Context) {
 
+	channelAuth.Authority = &Auth1
+
+	entryid, _ := strconv.Atoi(c.Query("id"))
+
+	Entries, entryerr := channelAuth.GetEntryDetailsByIdTemplates(entryid)
+
+	if entryerr != nil {
+
+		log.Println(entryerr)
+
+	}
+
+	var entdetails EntrieDet
+
+	// entdetails.CoverImage = Entries.CoverImage
+
+	entdetails.Content = Entries.Description
+
+	entdetails.CreatedDate = Entries.CreatedOn.In(TZONE).Format("January 02, 2006")
+
+	entdetails.Author = Entries.Username
+
 	// Parse templates
-	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/blogdetails.html")
+	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/index-details.html")
 
 	if err != nil {
 
 		log.Fatal(err)
 	}
 
-	RenderTemplate(c, tmpl, "baseof.html", gin.H{})
+	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Entries": entdetails})
+
+	if err1 != nil {
+
+		c.String(http.StatusInternalServerError, err.Error())
+	}
+
 }
