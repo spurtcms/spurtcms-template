@@ -56,6 +56,35 @@ func EntriesList(c *gin.Context) {
 
 	channelAuth.Authority = &Auth1
 
+	TblChannel, err := channelAuth.GetchannelByName("Blog")
+
+	category, _ := channelAuth.GetChannelCategoryByIdTemplates(TblChannel.Id)
+
+	var Cate []Category
+
+	for _, val := range category {
+
+		var singcat Category
+
+		for i, val2 := range val {
+
+			singcat.Id = val2.Id
+
+			if len(val) == i+1 {
+
+				singcat.CategoryName += val2.Category
+
+			} else {
+
+				singcat.CategoryName += val2.Category + " / "
+			}
+
+		}
+		Cate = append(Cate, singcat)
+	}
+
+	log.Println(Cate)
+
 	Categories.Authority = &Auth1
 
 	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: "blog"})
@@ -117,7 +146,7 @@ func EntriesList(c *gin.Context) {
 
 	fmt.Println(len(Entries))
 
-	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Entries": EntriesDeatils})
+	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Entries": EntriesDeatils, "Category": Cate})
 
 	if err1 != nil {
 

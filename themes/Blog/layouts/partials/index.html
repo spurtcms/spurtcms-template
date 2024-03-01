@@ -4,6 +4,9 @@
 
         <ul class="scrolling__Container">
             <li class="scrolling__list"><a href="">All</a></li>
+            {{range .Category}}
+                <li class="scrolling__list"><a href="?category={{.Id}}">{{.CategoryName}}</a></li>
+            {{end}}
             <!-- <li class="scrolling__list"><a href="">Articles</a></li>
             <li class="scrolling__list"><a href="">Blogs</a></li>
             <li class="scrolling__list"><a href="">Career</a></li>
