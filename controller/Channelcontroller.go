@@ -41,7 +41,7 @@ type EntrieDet struct {
 	ReadTime    string
 	ViewCount   string
 	Author      string
-	Category    string
+	Categories  []Category
 }
 
 func EntriesList(c *gin.Context) {
@@ -53,6 +53,10 @@ func EntriesList(c *gin.Context) {
 
 		log.Fatal(err)
 	}
+
+	categoryid := c.Query("category")
+
+	catid, _ := strconv.Atoi(categoryid)
 
 	channelAuth.Authority = &Auth1
 
@@ -87,7 +91,7 @@ func EntriesList(c *gin.Context) {
 
 	Categories.Authority = &Auth1
 
-	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: "blog"})
+	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: "blog", CategoryId: categoryid})
 
 	var EntriesDeatils []Entriess
 
@@ -146,7 +150,7 @@ func EntriesList(c *gin.Context) {
 
 	fmt.Println(len(Entries))
 
-	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Entries": EntriesDeatils, "Category": Cate})
+	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Entries": EntriesDeatils, "Category": Cate, "SelectedCategory": catid})
 
 	if err1 != nil {
 
@@ -169,6 +173,8 @@ func EntriesDetails(c *gin.Context) {
 
 	}
 
+	log.Println(Entries, "---------")
+
 	var entdetails EntrieDet
 
 	// entdetails.CoverImage = Entries.CoverImage
@@ -179,6 +185,23 @@ func EntriesDetails(c *gin.Context) {
 
 	entdetails.Author = Entries.Username
 
+	Catego, _ := Categories.GetParentGivenByChildId(Entries.CategoriesId)
+
+	var category []Category
+
+	for _, val := range Catego {
+
+		var SingleCat Category
+
+		SingleCat.Id = val.Id
+
+		SingleCat.CategoryName = val.CategoryName
+
+		category = append(category, SingleCat)
+
+	}
+
+	entdetails.Categories = category
 	// Parse templates
 	tmpl, err := template.ParseFiles("themes/"+Template+"/layouts/_default/single.html", "themes/"+Template+"/layouts/_default/baseof.html", "themes/"+Template+"/layouts/partials/header.html", "themes/"+Template+"/layouts/partials/footer.html", "themes/"+Template+"/layouts/partials/head.html", "themes/"+Template+"/layouts/partials/scripts/scripts.html", "themes/"+Template+"/layouts/partials/index-details.html")
 

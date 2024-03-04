@@ -10,7 +10,12 @@
                 <span class="paralight__one">views 1245</span>
                 <div class="detail__flexx">
                 <a href="" class="paralight__one prof__name">{{.Entries.Author}}</a>
-                <p class="prof__badge prof__one"><span class="paralight__one">Recruiting</span></p>
+
+
+                {{range .Entries.Categories}} 
+                <p class="prof__badge"><span class="paralight__two">{{.CategoryName}}</span></p> 
+                {{end}}
+
             </div>
             </div>
             {{.Entries.Content}}

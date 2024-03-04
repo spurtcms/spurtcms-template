@@ -1,11 +1,11 @@
 {{- define "listmain"}}
 <main class="wrapper">
     <section class="blogList__container">
-
+        {{$SelectedCategory := .SelectedCategory}}
         <ul class="scrolling__Container">
-            <li class="scrolling__list"><a href="">All</a></li>
+            <li class="scrolling__list"><a href="/" class="{{if eq $SelectedCategory 0  }} active {{end}}">All</a></li>
             {{range .Category}}
-                <li class="scrolling__list"><a href="?category={{.Id}}">{{.CategoryName}}</a></li>
+                <li class="scrolling__list"><a href="?category={{.Id}}" class="{{if eq $SelectedCategory .Id}} active {{end}}">{{.CategoryName}}</a></li>
             {{end}}
             <!-- <li class="scrolling__list"><a href="">Articles</a></li>
             <li class="scrolling__list"><a href="">Blogs</a></li>
