@@ -639,3 +639,10 @@ input[type=range]::-ms-thumb {
   color: #05ACD7 !important;
   text-decoration: none;
 }
+
+.image.image_resized{
+  max-width: 100%;
+}
+.secton-content ul{
+  padding-left: 2rem;
+}
