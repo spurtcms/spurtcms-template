@@ -152,8 +152,6 @@ func OtpGenarateEmail(Chan chan<- string, wg *sync.WaitGroup, data map[string]in
 
 	member, _, _ := mem.CheckEmailInMember(0, email)
 
-	fmt.Println(member.FirstName, "username")
-
 	replacer := strings.NewReplacer(
 
 		"{OTP}", data["otp"].(string),

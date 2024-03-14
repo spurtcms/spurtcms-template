@@ -132,7 +132,6 @@ func IndexView(c *gin.Context) {
 
 		minutes := readtime % 60
 
-		fmt.Println(hours, minutes, "mintues")
 
 		if hours != 0 {
 
@@ -188,8 +187,6 @@ func AddCount(c *gin.Context) {
 	space.Authority = &Auth1
 
 	id := c.Request.PostFormValue("spaceid")
-
-	fmt.Println("iddd", id)
 
 	idstr, _ := strconv.Atoi(id)
 

@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -147,8 +146,6 @@ func EntriesList(c *gin.Context) {
 		EntriesDeatils = append(EntriesDeatils, entry)
 
 	}
-
-	fmt.Println(len(Entries))
 
 	err1 := tmpl.ExecuteTemplate(c.Writer, "baseof.html", gin.H{"Entries": EntriesDeatils, "Category": Cate, "SelectedCategory": catid})
 

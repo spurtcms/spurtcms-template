@@ -40,7 +40,6 @@ document.querySelector("#centerSection").addEventListener("mouseup", () => {
   var colorPicker = document.querySelector(".color-picker");
   var loggedflg = document.querySelector('.logged-flg');
 
-  console.log(loggedflg.value);
 
   if (loggedflg.value == "true") {
 

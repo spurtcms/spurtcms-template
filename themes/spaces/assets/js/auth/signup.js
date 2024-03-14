@@ -286,7 +286,6 @@ $(document).on('click',"#create-btn",function () {
     var formcheck = $("#signupform").valid();
     if (formcheck == true) {
 
-        alert(formcheck)
         $('#signupform')[0].submit();
     }
     else {

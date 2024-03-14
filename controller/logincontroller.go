@@ -225,8 +225,6 @@ func MemberRegister(c *gin.Context) {
 
 	var url_prefix = os.Getenv("DOMAIN_URL")
 
-	fmt.Println(fname, email, password, "checkvalues")
-
 	data := map[string]interface{}{
 
 		"fname":         fname,
@@ -362,8 +360,6 @@ func MyprofileUpdate(c *gin.Context) {
 	if imageData != "" {
 
 		imageName, storagePath, _ = ConvertBase64(imageData, "storage/member")
-
-		fmt.Println("imgname", imageName, storagePath)
 	}
 
 	mem.MemberUpdate(member.MemberCreation{FirstName: fname, LastName: lname, MobileNo: mobile, ProfileImage: imageName, ProfileImagePath: storagePath})
@@ -873,13 +869,9 @@ func CheckNumberInMember(c *gin.Context) {
 
 	mem.Auth = &Auth1
 
-	fmt.Println(Auth)
-
 	userid, _ := strconv.Atoi(c.PostForm("id"))
 
 	number := c.PostForm("number")
-
-	fmt.Println(number, "number")
 
 	flg, err := mem.CheckNumberInMember(userid, number)
 
