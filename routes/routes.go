@@ -104,7 +104,13 @@ func SetupRoutes() *gin.Engine {
 
 	SP.GET("/termsandservice", controller.TermsandService)
 
-	SP.GET("/privacypolicy",controller.PrivacyPolicy)
+	SP.GET("/privacypolicy", controller.PrivacyPolicy)
+
+	SP.POST("/checkemailinmember", controller.CheckEmailInMember)
+
+	SP.POST("/checknameinmember", controller.CheckNameInMember)
+
+	SP.POST("/checknumberinmember", controller.CheckNumberInMember)
 
 	D := SP.Group("")
 

@@ -2,6 +2,7 @@ package controller
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"html/template"
@@ -52,6 +53,16 @@ func MemberLogout(c *gin.Context) {
 	if err != nil {
 		fmt.Println(err)
 	}
+
+	mem.Auth = &Auth
+
+	err1 := mem.ChangeActivestatus()
+
+	if err1 != nil {
+
+		fmt.Println(err1)
+	}
+
 	session.Values["token"] = ""
 
 	session.Options.MaxAge = -1
@@ -155,7 +166,7 @@ func MemberRegister(c *gin.Context) {
 
 		c.SetCookie("Error", errorz.Error(), 3600, "", "", false, false)
 
-		c.Redirect(301,"/"+Template+"/signup")
+		c.Redirect(301, "/"+Template+"/signup")
 
 		return
 		// c.JSON(200, gin.H{"verify": errorz.Error()})
@@ -175,29 +186,31 @@ func MemberRegister(c *gin.Context) {
 
 	password := c.PostForm("password")
 
-	_, flg, _ := mem.CheckEmailInMember(0, email)
+	username := c.PostForm("username")
 
-	if flg {
+	// _, flg, _ := mem.CheckEmailInMember(0, email)
 
-		c.SetCookie("Error", "Email Already Exists", 3600, "", "", false, false)
+	// if flg {
 
-		c.Redirect(301, "/"+Template+"/signup")
+	// 	c.SetCookie("Error", "Email Already Exists", 3600, "", "", false, false)
 
-		return
-	}
+	// 	c.Redirect(301, "/"+Template+"/signup")
 
-	flg1, _ := mem.CheckNumberInMember(0, mobile)
+	// 	return
+	// }
 
-	if flg1 {
+	// flg1, _ := mem.CheckNumberInMember(0, mobile)
 
-		c.SetCookie("Error", "mobile Already Exists", 3600, "", "", false, false)
+	// if flg1 {
 
-		c.Redirect(301, "/"+Template+"/signup")
+	// 	c.SetCookie("Error", "mobile Already Exists", 3600, "", "", false, false)
 
-		return
-	}
+	// 	c.Redirect(301, "/"+Template+"/signup")
 
-	_, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password})
+	// 	return
+	// }
+
+	_, err5 := mem.MemberRegister(member.MemberCreation{FirstName: fname, LastName: lname, Email: email, MobileNo: mobile, Password: password, Username: username})
 
 	if err5 != nil {
 
@@ -824,5 +837,88 @@ func PrivacyPolicy(c *gin.Context) {
 	}
 
 	RenderTemplate(c, tmpl, "baseof.html", gin.H{"Title": "Privacy Policy"})
+
+}
+
+func CheckEmailInMember(c *gin.Context) {
+
+	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: ""})
+
+	mem.Auth = &Auth1
+
+	userid, _ := strconv.Atoi(c.PostForm("id"))
+
+	email := c.PostForm("email")
+
+	_, mailcheck, err := mem.CheckEmailInMember(userid, email)
+
+	fmt.Println(mailcheck)
+
+	if err != nil {
+
+		log.Println(err)
+
+		json.NewEncoder(c.Writer).Encode(false)
+
+		return
+	}
+
+	json.NewEncoder(c.Writer).Encode(mailcheck)
+
+}
+
+func CheckNumberInMember(c *gin.Context) {
+
+	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: ""})
+
+	mem.Auth = &Auth1
+
+	fmt.Println(Auth)
+
+	userid, _ := strconv.Atoi(c.PostForm("id"))
+
+	number := c.PostForm("number")
+
+	fmt.Println(number, "number")
+
+	flg, err := mem.CheckNumberInMember(userid, number)
+
+	if err != nil {
+
+		log.Println(err)
+
+		json.NewEncoder(c.Writer).Encode(false)
+
+		return
+	}
+
+	json.NewEncoder(c.Writer).Encode(flg)
+
+}
+
+func CheckNameInMember(c *gin.Context) {
+
+	Auth1 = spurtcore.NewInstance(&auth.Option{DB: DBIns, Token: "", Secret: ""})
+
+	mem.Auth = &Auth1
+
+	userid, _ := strconv.Atoi(c.PostForm("id"))
+
+	name := c.PostForm("name")
+
+	fmt.Println(userid, name, "check45")
+
+	// flg, err := mem.CheckNameInMember(userid, name)
+
+	// if err != nil {
+
+	// 	log.Println(err)
+
+	// 	json.NewEncoder(c.Writer).Encode(false)
+
+	// 	return
+	// }
+
+	// json.NewEncoder(c.Writer).Encode(flg)
 
 }

@@ -60,7 +60,7 @@ func IndexView(c *gin.Context) {
 
 		data.SpaceSlug = clearString(strings.ReplaceAll(strings.ToLower(space.SpacesName), " ", "_"))
 
-		_, pages, _, _ := pl.MemberPageList(space.SpacesId)
+		_, pages, subpages, _ := pl.MemberPageList(space.SpacesId)
 
 		sort.Slice(pages, func(i, j int) bool {
 			return pages[i].OrderIndex < pages[j].OrderIndex
@@ -74,7 +74,7 @@ func IndexView(c *gin.Context) {
 
 				data.PageId = val.PgId
 
-				data.Permalink = "/"+Template+"/" + data.SpaceSlug + "/" + data.PageSlug + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
+				data.Permalink = "/" + Template + "/" + data.SpaceSlug + "/" + data.PageSlug + "?spaceid=" + strconv.Itoa(space.SpacesId) + "&&pageid=" + strconv.Itoa(val.PgId)
 
 				break
 			}
@@ -122,6 +122,12 @@ func IndexView(c *gin.Context) {
 
 		}
 
+		for _, val2 := range subpages {
+
+			readtime += val2.ReadTime
+
+		}
+
 		hours := math.Floor(float64(readtime) / 60)
 
 		minutes := readtime % 60
@@ -130,21 +136,25 @@ func IndexView(c *gin.Context) {
 
 		if hours != 0 {
 
-			data.ReadTime = fmt.Sprint(hours) + " hr "
+			if hours > 1 {
+
+				data.ReadTime = fmt.Sprint(hours) + " hrs "
+			} else {
+
+				data.ReadTime = fmt.Sprint(hours) + " hr "
+			}
 		}
 
 		if minutes != 0 {
 
-			data.ReadTime += strconv.Itoa(minutes) + " min"
+			if minutes > 1 {
 
+				data.ReadTime += strconv.Itoa(minutes) + " mins"
+			} else {
+
+				data.ReadTime += strconv.Itoa(minutes) + " min"
+			}
 		}
-
-		// if (hours != 0) && (minutes != 0) {
-
-		// 	data.ReadTime = fmt.Sprint(hours) + " hr " + strconv.Itoa(minutes) + " min "
-
-		// }
-
 		spaces = append(spaces, data)
 
 		data.ReadTime = ""
@@ -181,13 +191,13 @@ func AddCount(c *gin.Context) {
 
 	fmt.Println("iddd", id)
 
-	// idstr, _ := strconv.Atoi(id)
+	idstr, _ := strconv.Atoi(id)
 
-	// err := space.AddViewCount(idstr)
+	err := space.AddViewCount(idstr)
 
-	// if err != nil {
+	if err != nil {
 
-	// 	log.Fatal(err)
-	// }
+		log.Fatal(err)
+	}
 
 }

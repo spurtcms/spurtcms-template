@@ -60,7 +60,7 @@ func EntriesList(c *gin.Context) {
 
 	channelAuth.Authority = &Auth1
 
-	TblChannel, err := channelAuth.GetchannelByName("Blog")
+	TblChannel, err := channelAuth.GetchannelByName("Default")
 
 	category, _ := channelAuth.GetChannelCategoryByIdTemplates(TblChannel.Id)
 
@@ -91,7 +91,7 @@ func EntriesList(c *gin.Context) {
 
 	Categories.Authority = &Auth1
 
-	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: "blog", CategoryId: categoryid})
+	Entries, _, _ := channelAuth.GetPublishedChannelEntriesListForTemplate(1000, 0, channels.EntriesFilter{ChannelName: "Default", CategoryId: categoryid})
 
 	var EntriesDeatils []Entriess
 

@@ -1,34 +1,36 @@
-$(document).on('click','.space-container-crd',function(){
+var Speaking = false;
 
-  spid= $(this).children('.spaceid').attr('id')
- 
-  clickspace()
+$(document).on('click', '.space-container-crd', function () {
 
-})
+  spid = $(this).children('.spaceid').attr('id')
 
-$(document).on('click','.spaceclick',function(){
-
-  spid= $(this).children('button').attr('sp-id')
-
-  clickspace()
-
+  clickspace(spid)
 
 })
 
-function clickspace(){
+$(document).on('click', '.spaceclick', function () {
+
+  spid = $(this).children('button').attr('sp-id')
+
+  clickspace(spid)
+
+
+})
+
+function clickspace(spaceid) {
 
   $.ajax({
-    url:"/spaceclickcount",
-    data:{ "spaceid":spid},
-    dataType:"json",
-    type :"POST",
-    success:function (result){
- 
-        console.log(result)
- 
+    url: "/spaces/spaceclickcount",
+    data: { "spaceid": spaceid },
+    dataType: "json",
+    type: "POST",
+    success: function (result) {
+
+      console.log(result)
+
     }
- 
-   })
+
+  })
 }
 
 document.querySelector("#centerSection").addEventListener("mouseup", () => {
@@ -36,39 +38,50 @@ document.querySelector("#centerSection").addEventListener("mouseup", () => {
   let textValue = selectionFromDocument.toString();
   var hoverMenu = document.querySelector(".hoverMenu");
   var colorPicker = document.querySelector(".color-picker");
+  var loggedflg = document.querySelector('.logged-flg');
 
-  if (textValue == "") {
-    hoverMenu.style.display = "none";
-  } else {
-    // Get the coordinates of the selected text
-    let range = selectionFromDocument.getRangeAt(0);
-    let rect = range.getBoundingClientRect();
+  console.log(loggedflg.value);
 
-    // Set the display style of the hoverMenu to block
-    hoverMenu.style.display = "flex";
+  if (loggedflg.value == "true") {
 
-    // Calculate posX while keeping .color-picker within the viewport
-    let posX = rect.left + window.scrollX + rect.width / 2;
-    let colorPickerWidth = colorPicker.offsetWidth;
-    let posXAdjusted = posX - 600;
+    if (textValue == "") {
+      hoverMenu.style.display = "none";
+    } else {
+      // Get the coordinates of the selected text
+      let range = selectionFromDocument.getRangeAt(0);
+      let rect = range.getBoundingClientRect();
 
-    // Ensure that posXAdjusted is within the viewport
-    if (posXAdjusted < 0) {
-      posXAdjusted = 0;
-    } else if (posXAdjusted + colorPickerWidth > window.innerWidth) {
-      posXAdjusted = window.innerWidth - colorPickerWidth;
+      // Set the display style of the hoverMenu to block
+      hoverMenu.style.display = "flex";
+
+      // Calculate posX while keeping .color-picker within the viewport
+      let posX = rect.left + window.scrollX + rect.width / 2;
+      let colorPickerWidth = colorPicker.offsetWidth;
+      let posXAdjusted = posX - 600;
+
+      // Ensure that posXAdjusted is within the viewport
+      if (posXAdjusted < 0) {
+        posXAdjusted = 0;
+      } else if (posXAdjusted + colorPickerWidth > window.innerWidth) {
+        posXAdjusted = window.innerWidth - colorPickerWidth;
+      }
+
+      var divHeight = $('#centerSection');
+
+      hoverMenu.style.left = posXAdjusted + "px";
+      let posY = divHeight.scrollTop() + 25 + "px";
+      hoverMenu.style.top = posY;
+
+      // Set the position of the color-picker
+      // console.log(posY);
+      colorPicker.style.left = posXAdjusted + "px";
+      colorPicker.style.top = posY;
     }
+  } else {
 
-    var divHeight = $('#centerSection');
+    console.log("else--");
+    hoverMenu.style.display = "none";
 
-    hoverMenu.style.left = posXAdjusted + "px";
-    let posY = divHeight.scrollTop() + 25 + "px";
-    hoverMenu.style.top = posY;
-
-    // Set the position of the color-picker
-    // console.log(posY);
-    colorPicker.style.left = posXAdjusted + "px";
-    colorPicker.style.top = posY;
   }
 });
 
@@ -91,8 +104,11 @@ $("input[name='sname']").keyup(function () {
   var searchTerm = $(this).val();
   $('.secton-content').removeHighlight();
 
+
   if (searchTerm) {
     $('.secton-content').highlight(searchTerm);
+
+    // $('.clear_clr').text().highlight(searchTerm)
   }
   updateCount()
 });
@@ -101,6 +117,13 @@ $("input[name='sname']").keyup(function () {
 $(document).on('click', '.search-btn', function () {
   $("#search1").hide()
   $(".search2").show()
+  // $(".secton-content span").each(function () {
+  //   $(this).contents().unwrap();
+  // });
+
+  // $(".secton-content span").each(function () {
+  //   $(this).replaceWith($(this).html());
+  // });
 })
 
 /* Search Cancel */
@@ -264,7 +287,7 @@ $(document).on('click', '#save-btn', function () {
 
   $.ajax({
     type: "post",
-    url: "/notes",
+    url: "/spaces/notes",
     dataType: 'json',
     data: {
       pgid: Pageid,
@@ -304,7 +327,7 @@ $(document).on("click", ".secton-content", function () {
 
   selectedTag = range.startContainer.parentNode.innerText;
 
-  console.log("--",range);
+  console.log("--", range);
 
   var startContainerTagName = range.startContainer.parentNode.tagName.toLowerCase();
 
@@ -346,9 +369,9 @@ $(document).on("click", ".secton-content", function () {
 
   e_offset = endOffsetRelativeToP
 
-  if(e_offset<s_offset) {
+  if (e_offset < s_offset) {
 
-    e_offset = s_offset+ e_offset
+    e_offset = s_offset + e_offset
   }
 
   span = document.createElement('span');
@@ -369,23 +392,26 @@ $(document).on("click", ".clr", function () {
   var con_clr;
   var cl = $(this).attr("color-value")
   if (cl == "read") {
-    var Speaker = false;
     var content = selectedContent
-    if (Speaker) {
+
+
+    if (Speaking) {
       if (window.speechSynthesis.speaking) {
         window.speechSynthesis.cancel();
       }
     }
-    Speaker = true;
+    Speaking = true;
 
     var utterance = new SpeechSynthesisUtterance(content);
+    $('#liveToast .toast-header h2').text(content);
+    $("#liveToast").show()
     window.speechSynthesis.speak(utterance);
 
     utterance.onend = function (event) {
-      Speaker = false;
+      Speaking = false;
+      $("#liveToast").hide()
     };
   }
-
   if (cl == "yellow") {
     span.className = 'selected-yellow';
     con_clr = "rgba(255, 215, 82, 0.2)"
@@ -406,7 +432,7 @@ $(document).on("click", ".clr", function () {
   // console.log(selectedTag);
   $.ajax({
     type: "post",
-    url: "/highlights",
+    url: "/spaces/highlights",
     dataType: 'json',
     data: {
       pgid: Pageid,
@@ -471,13 +497,13 @@ $(document).ready(function () {
         if (elementText == s_para) {
 
           var originalContent = $(this).text();
-  
+
           var html = $(this).html()
-  
+
           var content = originalContent.substring(start, offset);
-  
+
           var highlightedContent = '<span class="clear_clr" style="background-color:' + c_clr + '">' + content + '</span>';
-  
+
           $(this).html(html.replace(content, highlightedContent))
         }
       })
@@ -497,7 +523,7 @@ function escapeRegExp(string) {
 $(document).ready(function () {
   var speechContent = [];
   var Paused = false;
-  var Speaking = false;
+
   var currentSpeech;
   $("#liveToastBtn").click(function () {
     if (Speaking) {
@@ -537,8 +563,10 @@ $(document).ready(function () {
   });
 
   $('#read-cnl').click(function () {
+    console.log("yesss", Speaking);
     if (Speaking) {
       window.speechSynthesis.cancel();
+      $("#liveToast").hide()
       Paused = false;
     }
   });
@@ -558,6 +586,7 @@ $(document).ready(function () {
       var utterance = new SpeechSynthesisUtterance(chunk);
       currentSpeech = utterance;
       $('#liveToast .toast-header h2').text(chunk);
+      $("#liveToast").show()
       window.speechSynthesis.speak(utterance);
 
 
@@ -566,6 +595,7 @@ $(document).ready(function () {
           speakNextChunk();
         } else {
           Speaking = false;
+          $("#liveToast").hide()
         }
       };
     }
@@ -587,7 +617,7 @@ $(document).on("click", ".del-btn", function () {
   var del_id = $(this).attr('data-id')
   $.ajax({
     type: "post",
-    url: "/deletehighlights",
+    url: "/spaces/deletehighlights",
     dataType: 'json',
     data: {
       id: del_id,
@@ -691,3 +721,34 @@ function highlightText(searchTerm) {
 
 
 
+var $div = $('.st-2');
+
+// Check if the div has a vertical scrollbar
+if ($div.get(0).scrollHeight > $div.innerHeight() || $div.get(0).scrollWidth > $div.innerWidth()) {
+
+  $('.rght-arrow').show();
+
+  $('.lft-arrow').show();
+
+} else {
+
+  $('.rght-arrow').hide();
+
+  $('.lft-arrow').hide();
+}
+
+$(document).on('click', '.lft-arrow', function () {
+
+  var leftPos = $('.st-2').scrollLeft();
+
+  $(".st-2").animate({ scrollLeft: leftPos - 400 }, { duration: 500 }, 1);
+
+})
+
+$(document).on('click', '.rght-arrow', function () {
+
+  var leftPos = $('.st-2').scrollLeft();
+
+  $(".st-2").animate({ scrollLeft: leftPos + 400 }, { duration: 500 }, 1);
+
+})

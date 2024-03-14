@@ -7,6 +7,7 @@
         <div class="new-siginup-details">
             <h3>Sign up Into SpurtCMS</h3>
             <form id="signupform" name="signupform" enctype="multipart/form-data" method="post" action="/spaces/memberregister">
+                <input type="hidden" name="mem_id" value="" id="mem_id">
                 <div class="ig-input">
                     <div class="ig-row" id="fname-con">
                         <p>First name</p>
@@ -31,6 +32,13 @@
                         Please Enter The Mobile NUmber </label>
                 </div>
                 <div class="ig-row " id="email-con">
+                    <p>Username</p>
+                    <input type="text" id="user" name="username" placeholder="Username" class="mx-400 field" required />
+                    <label id="email-error" class="error err-txt" for="user" style="display: none;">
+                        <img src="/static/icons/Icon ionic-ios-close-circle.svg" class="m-0" alt="" /> Please Enter The
+                        Username</label>
+                </div>
+                <div class="ig-row " id="email-con">
                     <p>Email address</p>
                     <input type="text" id="email" name="email" placeholder="Email" class="mx-400 field" required />
                     <label id="email-error" class="error err-txt" for="email" style="display: none;">
@@ -50,13 +58,13 @@
                         <img src="/static/icons/MaskGroup54.svg" alt=""></button>
                 </div>
                 <div class="terms">
-                    <p>By signing up you agree to our <a href="/termsandservice" target="_blank">Terms of Service </a> and <a href="/privacypolicy" target="_blank"> Privacy Policy
-                    </a></p>
+                    <p>By signing up you agree to our <a href="javascript:void(0)">Terms of Service </a> and <a href="javascript:void(0)"> Privacy Policy
+                        </a></p>
                 </div>
                 <div class="sigin-btn">
                     <button type="submit" id="create-btn" >Create Account <span class="spinner-border spinner-border-sm" style="display: none;" role="status" aria-hidden="true"></span></button>
                     <p>Already have an account?
-                        <a href="/spaces/login">Log in here</a>
+                        <a href="/login">Log in here</a>
                     </p>
                 </div>
             </form>
