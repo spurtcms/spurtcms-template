@@ -132,7 +132,6 @@ func IndexView(c *gin.Context) {
 
 		minutes := readtime % 60
 
-
 		if hours != 0 {
 
 			if hours > 1 {
@@ -184,13 +183,15 @@ func AddCount(c *gin.Context) {
 
 	sp.MemAuth = &Auth1
 
+	member, _ := mem.GetMemberDetails()
+
 	space.Authority = &Auth1
 
 	id := c.Request.PostFormValue("spaceid")
 
 	idstr, _ := strconv.Atoi(id)
 
-	err := space.AddViewCount(idstr)
+	err := space.AddViewCount(idstr, member.Id)
 
 	if err != nil {
 
