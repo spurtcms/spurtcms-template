@@ -23,8 +23,12 @@
                 </div>
 
                 <div class="space-container-crd-btm">
+                    {{if ne (len .Categories) 0}}
                     <span class="crd-badge">{{range .Categories}}{{.}} 
                         <img src="/static/icons/arrow-rgt-svgrepo-com (2).svg"> {{end}}</span>
+                        {{else}}
+                        <span class="crd-badge ca-remove-arrow"></span>
+                            {{end}}
                     <h5>{{.SpaceTitle}}</h5>
                     <input type="hidden" value="{{.SpaceDescription}}" id="demodescription">
                     <p id="description">

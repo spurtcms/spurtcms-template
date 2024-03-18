@@ -103,13 +103,16 @@ func IndexView(c *gin.Context) {
 		data.SpaceDescription = truncatedDescription
 
 		var allcat []string
-
+		
 		for _, val := range space.CategoryNames {
 
-			allcat = append(allcat, val.CategoryName)
+			if val.CategoryName != "" {
 
+				allcat = append(allcat, val.CategoryName)
+
+			}
 		}
-
+		
 		data.CreatedDate = space.CreatedOn.In(TZONE).Format("02 Jan 2006")
 
 		data.Categories = allcat

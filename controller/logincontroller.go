@@ -900,17 +900,17 @@ func CheckNameInMember(c *gin.Context) {
 
 	fmt.Println(userid, name, "check45")
 
-	// flg, err := mem.CheckNameInMember(userid, name)
+	flg, err := mem.CheckNameInMember(userid, name)
 
-	// if err != nil {
+	if err != nil {
 
-	// 	log.Println(err)
+		log.Println(err)
 
-	// 	json.NewEncoder(c.Writer).Encode(false)
+		json.NewEncoder(c.Writer).Encode(false)
 
-	// 	return
-	// }
+		return
+	}
 
-	// json.NewEncoder(c.Writer).Encode(flg)
+	json.NewEncoder(c.Writer).Encode(flg)
 
 }

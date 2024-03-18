@@ -646,3 +646,7 @@ input[type=range]::-ms-thumb {
 .secton-content ul{
   padding-left: 2rem;
 }
+
+.ca-remove-arrow{
+  opacity: 0;
+}
